@@ -7,9 +7,8 @@ namespace SchoolBook.Data
     public class SchoolBookContext : IdentityDbContext<User>
     {
         public SchoolBookContext(DbContextOptions<SchoolBookContext> options): base(options)
-        {
-            
-        }
+        {}
+
         public DbSet<Student> Students { get; set; }
         public DbSet<Parent> Parents { get; set; }
         public DbSet<Teacher> Teachers { get; set; }

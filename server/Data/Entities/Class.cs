@@ -9,6 +9,6 @@ namespace SchoolBook.Data.Entities
         public int Grade { get; set; }
         public char GradeLetter { get; set; }
         public Teacher ClassTeacher { get; set; }
-        public IEnumerable<Class> Classes { get; set; }
+        public ICollection<Subject> Subjects { get; set; }
     }
 }

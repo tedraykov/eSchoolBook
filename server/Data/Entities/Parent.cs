@@ -4,7 +4,8 @@ namespace SchoolBook.Data.Entities
 {
     public class Parent
     {
-        public IEnumerable<Student> Children { get; set; }
+        public int Id { get; set; }
+        public ICollection<Student> Children { get; set; }
         public User User { get; set; }
     }
 }
