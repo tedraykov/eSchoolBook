@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using SchoolBook.Data;
+using SchoolBook.DataAccessLayer;
 
-namespace SchoolBook.Migrations
+namespace SchoolBook.DataAccessLayer.Migrations
 {
     [DbContext(typeof(SchoolBookContext))]
     [Migration("20191122152602_InitialDb")]

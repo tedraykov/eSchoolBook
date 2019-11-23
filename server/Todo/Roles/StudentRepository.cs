@@ -1,4 +1,6 @@
-﻿namespace SchoolBook.Data.Roles
+﻿using SchoolBook.DataAccessLayer;
+
+namespace SchoolBook.Data.Roles
 {
     public class StudentRepository
     {

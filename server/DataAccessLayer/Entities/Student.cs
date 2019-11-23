@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SchoolBook.Data.Entities
+namespace SchoolBook.DataAccessLayer.Entities
 {
     public class Student
     {

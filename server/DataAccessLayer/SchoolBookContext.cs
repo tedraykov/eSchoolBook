@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SchoolBook.Data.Entities;
+using SchoolBook.DataAccessLayer.Entities;
 
-namespace SchoolBook.Data
+namespace SchoolBook.DataAccessLayer
 {
     public class SchoolBookContext : IdentityDbContext<User>
     {

@@ -1,4 +1,4 @@
-﻿namespace SchoolBook.Data
+﻿namespace SchoolBook.BusinessLogicLayer.DTOs.Enums
 {
     public enum RoleTypes
     {

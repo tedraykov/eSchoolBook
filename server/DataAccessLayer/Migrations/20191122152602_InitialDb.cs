@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace SchoolBook.Migrations
+namespace SchoolBook.DataAccessLayer.Migrations
 {
     public partial class InitialDb : Migration
     {

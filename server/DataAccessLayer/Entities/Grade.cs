@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SchoolBook.Data.Entities
+namespace SchoolBook.DataAccessLayer.Entities
 {
     public class Grade
     {

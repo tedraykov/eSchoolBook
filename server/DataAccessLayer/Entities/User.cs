@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SchoolBook.BusinessLogicLayer.DTOs.Enums;
+using SchoolBook.Data;
 
-namespace SchoolBook.Data.Entities
+namespace SchoolBook.DataAccessLayer.Entities
 {
     public class User : IdentityUser
     {

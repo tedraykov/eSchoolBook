@@ -1,4 +1,4 @@
-﻿namespace SchoolBook.Data.Entities
+﻿namespace SchoolBook.DataAccessLayer.Entities
 {
     public class Subject
     {

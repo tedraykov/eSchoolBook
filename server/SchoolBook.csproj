@@ -5,14 +5,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.1" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.1" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
+      <Folder Include="API\Controllers" />
     </ItemGroup>
 
 </Project>
