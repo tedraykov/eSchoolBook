@@ -2,10 +2,10 @@
 
 namespace SchoolBook.DataAccessLayer.Entities
 {
-    public class Teacher
+    public class Teacher : SchoolUser
     {
-        public int Id { get; set; }
-        public ICollection<Subject> Subjects { get; set; }
+        public ICollection<TeacherToSubject> Subjects { get; set; }
+
         public User User { get; set; }
     }
 }
