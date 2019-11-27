@@ -4,7 +4,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using SchoolBook.Data;
+using SchoolBook.DataAccessLayer;
 
 namespace SchoolBook.DataAccessLayer.Migrations
 {
