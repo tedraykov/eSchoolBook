@@ -27,7 +27,7 @@ namespace SchoolBook
                 });
 
             services.AddAutoMapper(typeof(Startup));
-
+            services.AddTransient<SchoolBookSeeder>();
             services.AddControllers();
         }
 

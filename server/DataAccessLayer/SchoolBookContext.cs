@@ -10,29 +10,37 @@ namespace SchoolBook.DataAccessLayer
         {}
 
         public DbSet<Student> Students { get; set; }
-        
+
         public DbSet<Parent> Parents { get; set; }
-        
+
         public DbSet<Teacher> Teachers { get; set; }
-        
+
         public DbSet<Principal> Principals { get; set; }
-        
+
         public DbSet<School> Schools { get; set; }
-        
+
         public DbSet<Grade> Grades { get; set; }
-        
+
         public DbSet<Absence> Absences { get; set; }
-        
+
         public DbSet<Subject> Subjects { get; set; }
-        
+
         public DbSet<Class> Classes { get; set; }
-        
+
         public DbSet<ClassToSubject> ClassesToSubjects { get; set; }
+
+        public DbSet<StudentToGrade> StudentsToGrades { get; set; }
+
+        public DbSet<TeacherToSubject> TeachersToSubjects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            /* Table per concrete class configuration for school users */
+            // Not supported by EF Core. SMH
+
+            /* Many to many relationships configuration */
             builder.Entity<ClassToSubject>()
                 .HasKey(cts => new {cts.ClassId, cts.SubjectId});
             builder.Entity<ClassToSubject>()

@@ -10,8 +10,8 @@ using SchoolBook.DataAccessLayer;
 namespace SchoolBook.DataAccessLayer.Migrations
 {
     [DbContext(typeof(SchoolBookContext))]
-    [Migration("20191127185726_ManyToManyFixed")]
-    partial class ManyToManyFixed
+    [Migration("20191128091606_ManyToMany")]
+    partial class ManyToMany
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -402,7 +402,7 @@ namespace SchoolBook.DataAccessLayer.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("StudentToGrade");
+                    b.ToTable("StudentsToGrades");
                 });
 
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Subject", b =>
@@ -469,7 +469,7 @@ namespace SchoolBook.DataAccessLayer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("TeacherToSubject");
+                    b.ToTable("TeachersToSubjects");
                 });
 
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.User", b =>

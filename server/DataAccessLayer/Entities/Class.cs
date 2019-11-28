@@ -13,6 +13,7 @@ namespace SchoolBook.DataAccessLayer.Entities
         public char GradeLetter { get; set; }
 
         public Teacher ClassTeacher { get; set; }
+
         public ICollection<ClassToSubject> Subjects { get; set; }
     }
 }

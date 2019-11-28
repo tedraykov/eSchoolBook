@@ -19,4 +19,9 @@
       <Folder Include="DataAccessLayer\Migrations" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="DataAccessLayer\Migrations\20191128084936_ConcreteClassesOnly.cs" />
+      <Compile Remove="DataAccessLayer\Migrations\20191128084936_ConcreteClassesOnly.Designer.cs" />
+    </ItemGroup>
+
 </Project>

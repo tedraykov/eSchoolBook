@@ -1,0 +1,27 @@
+[
+   {
+      "Id": 1,
+      "ValueNum": 2,
+      "ValueWord": "Слаб"
+   },
+   {
+      "Id": 2,
+      "ValueNum": 3,
+      "ValueWord": "Среден"
+   },
+   {
+      "Id": 3,
+      "ValueNum": 4,
+      "ValueWord": "Добър"
+   },
+   {
+      "Id": 4,
+      "ValueNum": 5,
+      "ValueWord": "Много добър"
+   },
+   {
+      "Id": 5,
+      "ValueNum": 6,
+      "ValueWord": "Отличен"
+   }
+]
