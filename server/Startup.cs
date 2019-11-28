@@ -26,13 +26,7 @@ namespace SchoolBook
                     cfg.UseNpgsql(Configuration.GetConnectionString("SchoolBookConnectionString"));
                 });
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers();
         }
