@@ -26,6 +26,8 @@ namespace SchoolBook
                     cfg.UseNpgsql(Configuration.GetConnectionString("SchoolBookConnectionString"));
                 });
 
+            services.AddTransient<SchoolBookSeeder>();
+
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
