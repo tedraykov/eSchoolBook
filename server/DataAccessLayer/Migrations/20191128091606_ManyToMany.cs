@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SchoolBook.DataAccessLayer.Migrations
 {
-    public partial class InitialDb : Migration
+    public partial class ManyToMany : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,8 +41,6 @@ namespace SchoolBook.DataAccessLayer.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
                     Role = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -51,11 +49,23 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Grades",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ValueNum = table.Column<int>(nullable: false),
+                    ValueWord = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Schools",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Number = table.Column<int>(nullable: false),
                     Address = table.Column<string>(nullable: true)
@@ -63,6 +73,20 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Schools", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subjects",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Signature = table.Column<string>(nullable: true),
+                    GradeYear = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subjects", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,8 +199,13 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 name: "Parents",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    SecondName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Pin = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Town = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -194,8 +223,13 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 name: "Teachers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    SecondName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Pin = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Town = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -213,9 +247,14 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 name: "Principals",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    SchoolId = table.Column<int>(nullable: true),
+                    Id = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    SecondName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Pin = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Town = table.Column<string>(nullable: true),
+                    SchoolId = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -239,12 +278,11 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 name: "Classes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<string>(nullable: false),
                     StartYear = table.Column<int>(nullable: false),
                     Grade = table.Column<int>(nullable: false),
                     GradeLetter = table.Column<char>(nullable: false),
-                    ClassTeacherId = table.Column<int>(nullable: true)
+                    ClassTeacherId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -258,16 +296,72 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TeachersToSubjects",
+                columns: table => new
+                {
+                    TeacherId = table.Column<string>(nullable: false),
+                    SubjectId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeachersToSubjects", x => new { x.SubjectId, x.TeacherId });
+                    table.ForeignKey(
+                        name: "FK_TeachersToSubjects_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TeachersToSubjects_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClassesToSubjects",
+                columns: table => new
+                {
+                    ClassId = table.Column<string>(nullable: false),
+                    SubjectId = table.Column<string>(nullable: false),
+                    WeekDay = table.Column<string>(nullable: true),
+                    StartTime = table.Column<TimeSpan>(nullable: false),
+                    EndTime = table.Column<TimeSpan>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassesToSubjects", x => new { x.ClassId, x.SubjectId });
+                    table.ForeignKey(
+                        name: "FK_ClassesToSubjects_Classes_ClassId",
+                        column: x => x.ClassId,
+                        principalTable: "Classes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClassesToSubjects_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    SecondName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Pin = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Town = table.Column<string>(nullable: true),
                     StartYear = table.Column<int>(nullable: false),
-                    SchoolId = table.Column<int>(nullable: true),
-                    ClassId = table.Column<int>(nullable: true),
+                    SchoolId = table.Column<string>(nullable: true),
+                    ClassId = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
-                    ParentId = table.Column<int>(nullable: true)
+                    ParentId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -299,43 +393,13 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subjects",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Signature = table.Column<string>(nullable: true),
-                    GradeYear = table.Column<int>(nullable: false),
-                    ClassId = table.Column<int>(nullable: true),
-                    TeacherId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subjects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subjects_Classes_ClassId",
-                        column: x => x.ClassId,
-                        principalTable: "Classes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Subjects_Teachers_TeacherId",
-                        column: x => x.TeacherId,
-                        principalTable: "Teachers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Absences",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<string>(nullable: false),
                     Timestamp = table.Column<DateTime>(nullable: false),
-                    StudentId = table.Column<int>(nullable: true),
-                    SubjectId = table.Column<int>(nullable: true),
+                    StudentId = table.Column<string>(nullable: true),
+                    SubjectId = table.Column<string>(nullable: true),
                     IsFullAbsence = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -356,32 +420,35 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Grades",
+                name: "StudentsToGrades",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ValueNum = table.Column<int>(nullable: false),
-                    ValueWord = table.Column<string>(nullable: true),
-                    Timestamp = table.Column<DateTime>(nullable: false),
-                    StudentId = table.Column<int>(nullable: true),
-                    SubjectId = table.Column<int>(nullable: true)
+                    StudentId = table.Column<string>(nullable: false),
+                    GradeId = table.Column<string>(nullable: false),
+                    SubjectId = table.Column<string>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Grades", x => x.Id);
+                    table.PrimaryKey("PK_StudentsToGrades", x => new { x.StudentId, x.GradeId, x.SubjectId });
                     table.ForeignKey(
-                        name: "FK_Grades_Students_StudentId",
+                        name: "FK_StudentsToGrades_Grades_GradeId",
+                        column: x => x.GradeId,
+                        principalTable: "Grades",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentsToGrades_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Grades_Subjects_SubjectId",
+                        name: "FK_StudentsToGrades_Subjects_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -437,13 +504,8 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 column: "ClassTeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Grades_StudentId",
-                table: "Grades",
-                column: "StudentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Grades_SubjectId",
-                table: "Grades",
+                name: "IX_ClassesToSubjects_SubjectId",
+                table: "ClassesToSubjects",
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
@@ -482,19 +544,24 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subjects_ClassId",
-                table: "Subjects",
-                column: "ClassId");
+                name: "IX_StudentsToGrades_GradeId",
+                table: "StudentsToGrades",
+                column: "GradeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subjects_TeacherId",
-                table: "Subjects",
-                column: "TeacherId");
+                name: "IX_StudentsToGrades_SubjectId",
+                table: "StudentsToGrades",
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teachers_UserId",
                 table: "Teachers",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeachersToSubjects_TeacherId",
+                table: "TeachersToSubjects",
+                column: "TeacherId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -518,13 +585,22 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Grades");
+                name: "ClassesToSubjects");
 
             migrationBuilder.DropTable(
                 name: "Principals");
 
             migrationBuilder.DropTable(
+                name: "StudentsToGrades");
+
+            migrationBuilder.DropTable(
+                name: "TeachersToSubjects");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Grades");
 
             migrationBuilder.DropTable(
                 name: "Students");
@@ -533,13 +609,13 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 name: "Subjects");
 
             migrationBuilder.DropTable(
+                name: "Classes");
+
+            migrationBuilder.DropTable(
                 name: "Parents");
 
             migrationBuilder.DropTable(
                 name: "Schools");
-
-            migrationBuilder.DropTable(
-                name: "Classes");
 
             migrationBuilder.DropTable(
                 name: "Teachers");
