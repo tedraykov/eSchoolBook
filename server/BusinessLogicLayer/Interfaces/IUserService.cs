@@ -8,5 +8,9 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
     public interface IUserService
     {
         Task<LoginViewModel> LogIn(LoginInputModel loginInputModel);
+        
+        Task<RegisterViewModel> Register(RegisterInputModel registerInputModel);
+
+        Task Logout();
     }
 }
