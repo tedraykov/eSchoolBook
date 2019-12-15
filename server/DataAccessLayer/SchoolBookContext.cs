@@ -1,14 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 using SchoolBook.DataAccessLayer.Entities;
+using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 
 namespace SchoolBook.DataAccessLayer
 {
     public class SchoolBookContext : IdentityDbContext<User>
     {
-        public SchoolBookContext(DbContextOptions<SchoolBookContext> options): base(options)
-        {}
-
+        public SchoolBookContext(DbContextOptions<SchoolBookContext> options) : base(options)
+        {
+        }
+        public DbSet<SchoolUser> SchoolUsers { get; set; }
+        
         public DbSet<Student> Students { get; set; }
 
         public DbSet<Parent> Parents { get; set; }
@@ -37,9 +41,18 @@ namespace SchoolBook.DataAccessLayer
         {
             base.OnModelCreating(builder);
 
-            /* Table per concrete class configuration for school users */
-            // Not supported by EF Core. SMH
-
+            /*
+             Table per hierarchy configuration for school users
+             TPC not supported by EF Core. SMH 
+            */
+            builder.Entity<SchoolUser>()
+                .HasDiscriminator(o => o.Role)
+                .HasValue<SchoolUser>(RoleTypes.NotUser)
+                .HasValue<Student>(RoleTypes.Student)
+                .HasValue<Teacher>(RoleTypes.Teacher)
+                .HasValue<Principal>(RoleTypes.Principal)
+                .HasValue<Parent>(RoleTypes.Parent);
+            
             /* Many to many relationships configuration */
             builder.Entity<ClassToSubject>()
                 .HasKey(cts => new {cts.ClassId, cts.SubjectId});

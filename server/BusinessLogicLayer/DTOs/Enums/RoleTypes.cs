@@ -7,6 +7,7 @@
         Principal,
         Parent,
         SchoolAdmin,
-        SuperAdmin
+        SuperAdmin,
+        NotUser
     }
 }

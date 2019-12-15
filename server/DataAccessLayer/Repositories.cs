@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SchoolBook.DataAccessLayer.Entities;
+using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 using SchoolBook.DataAccessLayer.Interfaces;
 
 namespace SchoolBook.DataAccessLayer
@@ -50,5 +51,7 @@ namespace SchoolBook.DataAccessLayer
         public IGeneralRepository<Teacher> Teachers => this.GetRepository<Teacher>();
         
         public IGeneralRepository<User> Users => this.GetRepository<User>();
+
+        public IGeneralRepository<SchoolUser> SchoolUsers => this.GetRepository<SchoolUser>();
     }
 }

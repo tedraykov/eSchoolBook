@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace SchoolBook.DataAccessLayer.Migrations
+namespace SchoolBook.Migrations
 {
-    public partial class ManyToMany : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -196,7 +196,7 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Parents",
+                name: "SchoolUsers",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -206,70 +206,66 @@ namespace SchoolBook.DataAccessLayer.Migrations
                     Pin = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
                     Town = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Parents", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Parents_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Teachers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    SecondName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Pin = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    Town = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teachers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Teachers_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Principals",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    SecondName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Pin = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    Town = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true),
+                    Role = table.Column<int>(nullable: false),
                     SchoolId = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    StartYear = table.Column<int>(nullable: true),
+                    Student_SchoolId = table.Column<string>(nullable: true),
+                    ClassId = table.Column<string>(nullable: true),
+                    ParentId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Principals", x => x.Id);
+                    table.PrimaryKey("PK_SchoolUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Principals_Schools_SchoolId",
+                        name: "FK_SchoolUsers_Schools_SchoolId",
                         column: x => x.SchoolId,
                         principalTable: "Schools",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Principals_AspNetUsers_UserId",
+                        name: "FK_SchoolUsers_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SchoolUsers_SchoolUsers_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "SchoolUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SchoolUsers_Schools_Student_SchoolId",
+                        column: x => x.Student_SchoolId,
+                        principalTable: "Schools",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Absences",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Timestamp = table.Column<DateTime>(nullable: false),
+                    StudentId = table.Column<string>(nullable: true),
+                    SubjectId = table.Column<string>(nullable: true),
+                    IsFullAbsence = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Absences", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Absences_SchoolUsers_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "SchoolUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Absences_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -288,11 +284,43 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 {
                     table.PrimaryKey("PK_Classes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Classes_Teachers_ClassTeacherId",
+                        name: "FK_Classes_SchoolUsers_ClassTeacherId",
                         column: x => x.ClassTeacherId,
-                        principalTable: "Teachers",
+                        principalTable: "SchoolUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StudentsToGrades",
+                columns: table => new
+                {
+                    StudentId = table.Column<string>(nullable: false),
+                    GradeId = table.Column<string>(nullable: false),
+                    SubjectId = table.Column<string>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentsToGrades", x => new { x.StudentId, x.GradeId, x.SubjectId });
+                    table.ForeignKey(
+                        name: "FK_StudentsToGrades_Grades_GradeId",
+                        column: x => x.GradeId,
+                        principalTable: "Grades",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentsToGrades_SchoolUsers_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "SchoolUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentsToGrades_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -312,9 +340,9 @@ namespace SchoolBook.DataAccessLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TeachersToSubjects_Teachers_TeacherId",
+                        name: "FK_TeachersToSubjects_SchoolUsers_TeacherId",
                         column: x => x.TeacherId,
-                        principalTable: "Teachers",
+                        principalTable: "SchoolUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -340,111 +368,6 @@ namespace SchoolBook.DataAccessLayer.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ClassesToSubjects_Subjects_SubjectId",
-                        column: x => x.SubjectId,
-                        principalTable: "Subjects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Students",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    SecondName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Pin = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    Town = table.Column<string>(nullable: true),
-                    StartYear = table.Column<int>(nullable: false),
-                    SchoolId = table.Column<string>(nullable: true),
-                    ClassId = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true),
-                    ParentId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Students", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Students_Classes_ClassId",
-                        column: x => x.ClassId,
-                        principalTable: "Classes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Students_Parents_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "Parents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Students_Schools_SchoolId",
-                        column: x => x.SchoolId,
-                        principalTable: "Schools",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Students_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Absences",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false),
-                    StudentId = table.Column<string>(nullable: true),
-                    SubjectId = table.Column<string>(nullable: true),
-                    IsFullAbsence = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Absences", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Absences_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Absences_Subjects_SubjectId",
-                        column: x => x.SubjectId,
-                        principalTable: "Subjects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StudentsToGrades",
-                columns: table => new
-                {
-                    StudentId = table.Column<string>(nullable: false),
-                    GradeId = table.Column<string>(nullable: false),
-                    SubjectId = table.Column<string>(nullable: false),
-                    DateCreated = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StudentsToGrades", x => new { x.StudentId, x.GradeId, x.SubjectId });
-                    table.ForeignKey(
-                        name: "FK_StudentsToGrades_Grades_GradeId",
-                        column: x => x.GradeId,
-                        principalTable: "Grades",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StudentsToGrades_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StudentsToGrades_Subjects_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
                         principalColumn: "Id",
@@ -509,39 +432,29 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Parents_UserId",
-                table: "Parents",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Principals_SchoolId",
-                table: "Principals",
+                name: "IX_SchoolUsers_SchoolId",
+                table: "SchoolUsers",
                 column: "SchoolId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Principals_UserId",
-                table: "Principals",
+                name: "IX_SchoolUsers_UserId",
+                table: "SchoolUsers",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_ClassId",
-                table: "Students",
+                name: "IX_SchoolUsers_ClassId",
+                table: "SchoolUsers",
                 column: "ClassId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_ParentId",
-                table: "Students",
+                name: "IX_SchoolUsers_ParentId",
+                table: "SchoolUsers",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_SchoolId",
-                table: "Students",
-                column: "SchoolId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_UserId",
-                table: "Students",
-                column: "UserId");
+                name: "IX_SchoolUsers_Student_SchoolId",
+                table: "SchoolUsers",
+                column: "Student_SchoolId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentsToGrades_GradeId",
@@ -554,18 +467,25 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Teachers_UserId",
-                table: "Teachers",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TeachersToSubjects_TeacherId",
                 table: "TeachersToSubjects",
                 column: "TeacherId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_SchoolUsers_Classes_ClassId",
+                table: "SchoolUsers",
+                column: "ClassId",
+                principalTable: "Classes",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Classes_SchoolUsers_ClassTeacherId",
+                table: "Classes");
+
             migrationBuilder.DropTable(
                 name: "Absences");
 
@@ -588,9 +508,6 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 name: "ClassesToSubjects");
 
             migrationBuilder.DropTable(
-                name: "Principals");
-
-            migrationBuilder.DropTable(
                 name: "StudentsToGrades");
 
             migrationBuilder.DropTable(
@@ -603,25 +520,19 @@ namespace SchoolBook.DataAccessLayer.Migrations
                 name: "Grades");
 
             migrationBuilder.DropTable(
-                name: "Students");
-
-            migrationBuilder.DropTable(
                 name: "Subjects");
 
             migrationBuilder.DropTable(
-                name: "Classes");
-
-            migrationBuilder.DropTable(
-                name: "Parents");
+                name: "SchoolUsers");
 
             migrationBuilder.DropTable(
                 name: "Schools");
 
             migrationBuilder.DropTable(
-                name: "Teachers");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Classes");
         }
     }
 }

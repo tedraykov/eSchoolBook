@@ -1,11 +1,11 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SchoolBook.DataAccessLayer;
-using AutoMapper;
-using SchoolBook.BusinessLogicLayer.DTOs;
+using SchoolBook.DataAccessLayer.Interfaces;
 
 namespace SchoolBook
 {
@@ -25,7 +25,7 @@ namespace SchoolBook
                 {
                     cfg.UseNpgsql(Configuration.GetConnectionString("SchoolBookConnectionString"));
                 });
-
+            services.AddScoped<IRepositories, Repositories>();
             services.AddAutoMapper(typeof(Startup));
             services.AddTransient<SchoolBookSeeder>();
             services.AddControllers();

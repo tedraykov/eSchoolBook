@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 
 namespace SchoolBook.DataAccessLayer.Entities
 {

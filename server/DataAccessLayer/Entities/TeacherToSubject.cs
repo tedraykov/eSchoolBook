@@ -1,3 +1,5 @@
+using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
+
 namespace SchoolBook.DataAccessLayer.Entities
 {
     public class TeacherToSubject
