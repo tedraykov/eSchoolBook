@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.DataAccessLayer.Interfaces;
 
@@ -50,5 +51,10 @@ namespace SchoolBook.DataAccessLayer
         public IGeneralRepository<Teacher> Teachers => this.GetRepository<Teacher>();
         
         public IGeneralRepository<User> Users => this.GetRepository<User>();
+        
+        public Task<int> SaveChanges()
+        {
+            return this._context.SaveChangesAsync();
+        }
     }
 }

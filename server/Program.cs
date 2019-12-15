@@ -13,18 +13,7 @@ namespace SchoolBook
         {
             var webHost = CreateHostBuilder(args).Build();
 
-            RunSeeding(webHost);
-
             webHost.Run();
-        }
-
-        private static void RunSeeding(IHost host)
-        {
-            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
-
-            using var scope = scopeFactory.CreateScope();
-            var seeder = scope.ServiceProvider.GetService<SchoolBookSeeder>();
-            seeder.Seed();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
