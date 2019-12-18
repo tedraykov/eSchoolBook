@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 
 namespace SchoolBook.DataAccessLayer.Entities
 {
     public class Class
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         public int StartYear { get; set; }

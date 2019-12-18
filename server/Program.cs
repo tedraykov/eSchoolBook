@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SchoolBook.DataAccessLayer;
+using SchoolBook.DataAccessLayer.Interfaces;
 
 namespace SchoolBook
 {
@@ -11,22 +13,38 @@ namespace SchoolBook
     {
         public static void Main(string[] args)
         {
-            var webHost = CreateHostBuilder(args).Build();
+            IWebHost webHost = CreateHostBuilder(args).Build();
+            /*app.UseHttpsRedirection();*/
+            InitialDbSeed(webHost);
 
             webHost.Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        private static void InitialDbSeed(IWebHost webHost)
+        {
+            var scopeFactory = webHost.Services
+                .GetService<IServiceScopeFactory>();
+
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var seeder = scope.ServiceProvider
+                    .GetService<ISeeder>();
+                seeder.Seed();
+            }
+        }
+
+        public static IWebHostBuilder CreateHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
                     logging.AddConsole();
                 })
                 .ConfigureAppConfiguration(SetupConfiguration)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .UseStartup<Startup>();
 
-        private static void SetupConfiguration(HostBuilderContext ctx, IConfigurationBuilder builder)
+        private static void SetupConfiguration(WebHostBuilderContext ctx,
+            IConfigurationBuilder builder)
         {
             builder.Sources.Clear();
 

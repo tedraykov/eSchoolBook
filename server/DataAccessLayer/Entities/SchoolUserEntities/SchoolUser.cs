@@ -1,9 +1,11 @@
-﻿using SchoolBook.BusinessLogicLayer.DTOs.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 
 namespace SchoolBook.DataAccessLayer.Entities.SchoolUserEntities
 {
     public class SchoolUser
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         public string FirstName { get; set; }

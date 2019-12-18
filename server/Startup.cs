@@ -48,12 +48,11 @@ namespace SchoolBook
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<SchoolBookContext>();
 
-            services.AddTransient<SchoolBookSeeder>();
-
             services.AddScoped<IRepositories, Repositories>();
 
-            services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<ISeeder, DatabaseInitializer>();
 
+            services.AddTransient<IAccountService, AccountService>();
 
             var jwtSettingsSection = Configuration.GetSection("JwtSettings");
             var key = Encoding.UTF8.GetBytes(jwtSettingsSection["Secret"]);
@@ -83,15 +82,6 @@ namespace SchoolBook
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            /*app.UseHttpsRedirection();*/
-            using (var serviceScope = app.ApplicationServices
-                .GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                new DatabaseInitializer()
-                    .Seed(serviceScope.ServiceProvider, this.Configuration)
-                    .Wait();
-            }
-
             app.UseRouting();
 
             app.UseAuthentication();

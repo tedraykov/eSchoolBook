@@ -9,7 +9,7 @@ using SchoolBook.DataAccessLayer.Interfaces;
 
 namespace SchoolBook.API.Controllers
 {
-    [Route("api/user")]
+    [Route("api/users")]
     [ApiController]
     [Produces("application/json")]
     public class SchoolUserController : Controller

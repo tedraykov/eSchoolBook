@@ -6,6 +6,7 @@ namespace SchoolBook.DataAccessLayer.Entities
 {
     public class Subject
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         public string Name { get; set; }
