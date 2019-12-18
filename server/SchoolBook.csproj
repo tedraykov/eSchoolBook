@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <Folder Include="API\Controllers" />
+      <Folder Include="DataAccessLayer\Migrations" />
     </ItemGroup>
 
     <ItemGroup>

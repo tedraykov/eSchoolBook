@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
@@ -18,20 +20,21 @@ using SchoolBook.Helpers;
 
 namespace SchoolBook.BusinessLogicLayer.Services
 {
-    public class UserService : BaseService, IUserService
+    public class AccountService : BaseService, IAccountService
     {
         private readonly SignInManager<User> _signInManager;
         private readonly JwtSettings _jwtSettings;
         
-        public UserService(
+        public AccountService(
             SignInManager<User> signInManager,
-            JwtSettings jwtSettings,
+            IOptions<JwtSettings> jwtSettings,
             IRepositories repositories, 
-            UserManager<User> userManager, 
-            IMapper mapper) : base(repositories, userManager, mapper)
+            UserManager<User> userManager,
+            ILogger<BaseService> logger,
+            IMapper mapper) : base(repositories, userManager, logger, mapper)
         {
             this._signInManager = signInManager;
-            this._jwtSettings = jwtSettings;
+            this._jwtSettings = jwtSettings.Value;
         }
 
         public async Task<LoginViewModel> LogIn(LoginInputModel loginInputModel)
@@ -63,10 +66,13 @@ namespace SchoolBook.BusinessLogicLayer.Services
         public async Task<RegisterViewModel> Register(RegisterInputModel registerInputModel)
         {
             var user = this.Mapper.Map<RegisterInputModel, User>(registerInputModel);
-//            var role = this.Repositories
-
+            user.UserName = user.Email;
+                
             await this.UserManager.CreateAsync(user);
-//            await this.UserManager.AddToRoleAsync(user, Enum.GetName())
+//            if (registerInputModel.RoleName == "Teacher")
+//            {
+//                await this.UserManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), RoleTypes.Teacher));
+//            }
 
             return this.Mapper.Map<User,RegisterViewModel>(user);
         }
@@ -74,6 +80,24 @@ namespace SchoolBook.BusinessLogicLayer.Services
         public async Task Logout()
         {
             await this._signInManager.SignOutAsync();
+        }
+        
+        public async Task SeedAdmin(RegisterInputModel model)
+        {
+            if (this.Repositories.Users.Query().Count(au => au.Email == model.Email) == 0)
+            {
+                try
+                {
+                    var user = this.Mapper.Map<RegisterInputModel, User>(model);
+                    user.UserName = "Admin";
+                    await this.UserManager.CreateAsync(user, model.Password);
+                    await this.UserManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), RoleTypes.SuperAdmin));
+                }
+                catch (Exception e)
+                {
+                    this.Logger.LogWarning(e, "Error: Seed Admin User Failed: " + e.Message);
+                }
+            }
         }
 
         private async Task<string> GenerateJwt(User user)
@@ -86,7 +110,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Name, user.Id),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim("isAdmin", isUserAdmin.ToString(), ClaimValueTypes.Boolean),
                     new Claim(ClaimTypes.Role, user.Role.ToString()),

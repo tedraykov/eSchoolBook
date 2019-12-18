@@ -1,4 +1,5 @@
-﻿using SchoolBook.DataAccessLayer.Entities;
+﻿using System.Threading.Tasks;
+using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 
 namespace SchoolBook.DataAccessLayer.Interfaces
@@ -24,7 +25,9 @@ namespace SchoolBook.DataAccessLayer.Interfaces
         IGeneralRepository<Teacher> Teachers { get; }
         
         IGeneralRepository<User> Users { get; }
-        
+
         IGeneralRepository<SchoolUser> SchoolUsers { get; }
+
+        Task<int> SaveChanges();
     }
 }
