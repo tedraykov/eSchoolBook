@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace SchoolBook.DataAccessLayer.Interfaces
 {
-    public interface IDatabaseInitializer
+    public interface ISeeder
     {
-        Task Seed(IServiceProvider provider);
+        void Seed();
     }
 }

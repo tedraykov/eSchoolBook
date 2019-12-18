@@ -13,52 +13,94 @@ using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.DataAccessLayer.Entities;
+using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 using SchoolBook.DataAccessLayer.Interfaces;
 
 namespace SchoolBook.DataAccessLayer
 {
-    public class DatabaseInitializer
+    public class DatabaseInitializer : ISeeder
     {
-        public async Task Seed(IServiceProvider provider, IConfiguration configuration)
+        private readonly SchoolBookContext _ctx;
+        private readonly IWebHostEnvironment _webHost;
+        private readonly ILogger<DatabaseInitializer> _logger;
+        private readonly IRepositories _repositories;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IAccountService _accountService;
+        private readonly IConfiguration _configuration;
+
+        public DatabaseInitializer(
+            SchoolBookContext ctx,
+            IWebHostEnvironment webHost,
+            ILogger<DatabaseInitializer> logger,
+            IRepositories repositories,
+            RoleManager<IdentityRole> roleManager,
+            IAccountService accountService,
+            IConfiguration configuration
+            )
         {
-            var logger = provider.GetService<ILogger<IDatabaseInitializer>>();
-            var repositories = provider.GetService<IRepositories>();
-            var webHost = provider.GetService<IWebHostEnvironment>();
-            var context = provider.GetService<SchoolBookContext>();
-
-            await this.SeedRoles(provider.GetService<RoleManager<IdentityRole>>(), logger);
-
-            await this.SeedUserAdmin(provider.GetService<IAccountService>(), configuration, logger);
-
-            await this.SeedGrades(webHost, logger, repositories, context);
-            
-            await repositories.SaveChanges();
+            _ctx = ctx;
+            _webHost = webHost;
+            _logger = logger;
+            _repositories = repositories;
+            _roleManager = roleManager;
+            _accountService = accountService;
+            _configuration = configuration;
         }
 
-        private async Task SeedRoles(RoleManager<IdentityRole> roleManager, ILogger<IDatabaseInitializer> logger)
+        public void Seed()
         {
-            logger.LogInformation("Start Seeding Roles...");
-            
+            SeedRoles().Wait();
+            SeedUserAdmin().Wait();
+            SeedGrades();
+            SeedSchool();
+            SeedClass();
+            SeedSchoolUsers();
+            _repositories.SaveChanges();
+        }
+
+        private void SeedSchoolUsers()
+        {
+            var student = new Student
+            {
+                FirstName = "Sladi",
+                SecondName = "Sladkov",
+                LastName = "Sladkov",
+                Pin = "0510043827",
+                Address = "Някъде от София",
+                Town = "София",
+                StartYear = 2018,
+                School = _ctx.Schools.FirstOrDefault(),
+                Class = _ctx.Classes.FirstOrDefault()
+            };
+
+            _ctx.Students.Add(student);
+            _ctx.SaveChanges();
+        }
+
+        private async Task SeedRoles()
+        {
+            _logger.LogInformation("Start Seeding Roles...");
+
             var roleNames = Enum.GetNames(typeof(RoleTypes));
 
             foreach (var roleName in roleNames)
             {
-                var roleExist = await roleManager.RoleExistsAsync(roleName);
+                var roleExist = await _roleManager.RoleExistsAsync(roleName);
 
                 if (!roleExist)
                 {
-                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                    await _roleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
-            logger.LogInformation("End Seeding Roles...");
-        }
-        
-        private async Task SeedUserAdmin(IAccountService accountService, IConfiguration configuration, ILogger<IDatabaseInitializer> logger)
-        {
-            
-            logger.LogInformation("Start Seeding Admin...");
 
-            var userSettingsSection = configuration.GetSection("UserSettings");
+            _logger.LogInformation("End Seeding Roles...");
+        }
+
+        private async Task SeedUserAdmin()
+        {
+            _logger.LogInformation("Start Seeding Admin...");
+
+            var userSettingsSection = _configuration.GetSection("UserSettings");
 
             var adminModel = new RegisterInputModel
             {
@@ -69,27 +111,67 @@ namespace SchoolBook.DataAccessLayer
                 Password = userSettingsSection["Password"]
             };
 
-            await accountService.SeedAdmin(adminModel);
-            logger.LogInformation("End Seeding Admin...");
+            await _accountService.SeedAdmin(adminModel);
+            _logger.LogInformation("End Seeding Admin...");
         }
-        private async Task SeedGrades(IWebHostEnvironment webHost, ILogger<IDatabaseInitializer> logger, 
-            IRepositories repositories, SchoolBookContext context)
+
+        private void SeedGrades()
         {
-            if(context.Grades.Any()){ return; }
-            
-            logger.LogInformation("Grades definition filepath ");
-            
-            var filepath = Path.Combine(webHost.ContentRootPath,
+            if (_ctx.Grades.FirstOrDefault() != null)
+            {
+                return;
+            }
+
+            _logger.LogInformation("Grades definition filepath ");
+
+            var filepath = Path.Combine(_webHost.ContentRootPath,
                 "DataAccessLayer/grades-bg.json");
             var gradesJson = File.ReadAllText(filepath);
 
-            var grades = JsonConvert.DeserializeObject<ICollection<Grade>>(gradesJson);
-            
+            var grades =
+                JsonConvert.DeserializeObject<ICollection<Grade>>(gradesJson);
+
             foreach (var grade in grades)
             {
-                await repositories.Grades.Create(grade);
+                _repositories.Grades.Create(grade);
             }
-            logger.LogInformation("End Seeding Grades...");
+
+            _logger.LogInformation("End Seeding Grades...");
         }
+
+        private void SeedSchool()
+        {
+            if (_ctx.Schools.FirstOrDefault() != null)
+            {
+                return;
+            }
+
+            var defaultSchool = new School
+            {
+                Name = "Test School",
+                Number = 0,
+                Address = "Somewhere in Sofia"
+            };
+            _ctx.Schools.Add(defaultSchool);
+            _ctx.SaveChanges();
+        }
+
+        private void SeedClass()
+        {
+            if (_ctx.Classes.FirstOrDefault() != null)
+            {
+                return;
+            }
+
+            var defaultClass = new Class
+            {
+                StartYear = 2019,
+                Grade = 1,
+                GradeLetter = 'A',
+            };
+            _ctx.Classes.Add(defaultClass);
+            _ctx.SaveChanges();
+        }
+
     }
 }

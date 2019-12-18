@@ -5,13 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 using SchoolBook.DataAccessLayer;
 
-namespace SchoolBook.DataAccessLayer.Migrations
+namespace SchoolBook.Migrations
 {
     [DbContext(typeof(SchoolBookContext))]
-    [Migration("20191128091606_ManyToMany")]
-    partial class ManyToMany
+    [Migration("20191215180241_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -241,77 +242,6 @@ namespace SchoolBook.DataAccessLayer.Migrations
                     b.ToTable("Grades");
                 });
 
-            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Parent", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Pin")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SecondName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Town")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Parents");
-                });
-
-            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Principal", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Pin")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SchoolId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SecondName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Town")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SchoolId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Principals");
-                });
-
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.School", b =>
                 {
                     b.Property<string>("Id")
@@ -331,15 +261,12 @@ namespace SchoolBook.DataAccessLayer.Migrations
                     b.ToTable("Schools");
                 });
 
-            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Student", b =>
+            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.SchoolUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ClassId")
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
@@ -348,20 +275,14 @@ namespace SchoolBook.DataAccessLayer.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
-                    b.Property<string>("ParentId")
-                        .HasColumnType("text");
-
                     b.Property<string>("Pin")
                         .HasColumnType("text");
 
-                    b.Property<string>("SchoolId")
-                        .HasColumnType("text");
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SecondName")
                         .HasColumnType("text");
-
-                    b.Property<int>("StartYear")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Town")
                         .HasColumnType("text");
@@ -371,15 +292,11 @@ namespace SchoolBook.DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClassId");
-
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("SchoolId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("Students");
+                    b.ToTable("SchoolUsers");
+
+                    b.HasDiscriminator<int>("Role").HasValue(6);
                 });
 
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.StudentToGrade", b =>
@@ -422,39 +339,6 @@ namespace SchoolBook.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
-                });
-
-            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Teacher", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Pin")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SecondName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Town")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.TeacherToSubject", b =>
@@ -539,6 +423,58 @@ namespace SchoolBook.DataAccessLayer.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Parent", b =>
+                {
+                    b.HasBaseType("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.SchoolUser");
+
+                    b.HasDiscriminator().HasValue(3);
+                });
+
+            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Principal", b =>
+                {
+                    b.HasBaseType("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.SchoolUser");
+
+                    b.Property<string>("SchoolId")
+                        .HasColumnType("text");
+
+                    b.HasIndex("SchoolId");
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Student", b =>
+                {
+                    b.HasBaseType("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.SchoolUser");
+
+                    b.Property<string>("ClassId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ParentId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SchoolId")
+                        .HasColumnName("Student_SchoolId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("StartYear")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("SchoolId");
+
+                    b.HasDiscriminator().HasValue(0);
+                });
+
+            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Teacher", b =>
+                {
+                    b.HasBaseType("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.SchoolUser");
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -592,7 +528,7 @@ namespace SchoolBook.DataAccessLayer.Migrations
 
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Absence", b =>
                 {
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.Student", "Student")
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Student", "Student")
                         .WithMany("Absences")
                         .HasForeignKey("StudentId");
 
@@ -603,7 +539,7 @@ namespace SchoolBook.DataAccessLayer.Migrations
 
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Class", b =>
                 {
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.Teacher", "ClassTeacher")
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Teacher", "ClassTeacher")
                         .WithMany()
                         .HasForeignKey("ClassTeacherId");
                 });
@@ -623,38 +559,8 @@ namespace SchoolBook.DataAccessLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Parent", b =>
+            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.SchoolUser", b =>
                 {
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Principal", b =>
-                {
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.School", "School")
-                        .WithMany()
-                        .HasForeignKey("SchoolId");
-
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Student", b =>
-                {
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.Class", "Class")
-                        .WithMany()
-                        .HasForeignKey("ClassId");
-
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.Parent", null)
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId");
-
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.School", "School")
-                        .WithMany()
-                        .HasForeignKey("SchoolId");
-
                     b.HasOne("SchoolBook.DataAccessLayer.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -668,7 +574,7 @@ namespace SchoolBook.DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.Student", "Student")
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Student", "Student")
                         .WithMany("Grades")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -681,13 +587,6 @@ namespace SchoolBook.DataAccessLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Teacher", b =>
-                {
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.TeacherToSubject", b =>
                 {
                     b.HasOne("SchoolBook.DataAccessLayer.Entities.Subject", "Subject")
@@ -696,11 +595,33 @@ namespace SchoolBook.DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.Teacher", "Teacher")
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Teacher", "Teacher")
                         .WithMany("Subjects")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Principal", b =>
+                {
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId");
+                });
+
+            modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Student", b =>
+                {
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId");
+
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Parent", null)
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId");
                 });
 #pragma warning restore 612, 618
         }

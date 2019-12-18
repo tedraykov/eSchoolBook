@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 
-namespace SchoolBook.DataAccessLayer.Entities
+namespace SchoolBook.DataAccessLayer.Entities.SchoolUserEntities
 {
-    public class Parent
+    public class SchoolUser
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         public string FirstName { get; set; }
@@ -17,9 +19,9 @@ namespace SchoolBook.DataAccessLayer.Entities
         public string Address { get; set; }
 
         public string Town { get; set; }
-
-        public ICollection<Student> Children { get; set; }
-
+        
         public User User { get; set; }
+
+        public RoleTypes Role { get; set; }
     }
 }
