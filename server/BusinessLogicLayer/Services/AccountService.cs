@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -50,7 +51,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
 
             var result = this._signInManager.CheckPasswordSignInAsync(user, loginInputModel.Password, false);
 
-            if (!result.IsCompletedSuccessfully)
+            if (!result.Result.Succeeded)
             {
                 throw new UnauthorizedAccessException("Invalid user credentials.");
             }
@@ -68,9 +69,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
             var user = this.Mapper.Map<RegisterInputModel, User>(registerInputModel);
             if (this.UserManager.Users.SingleOrDefault(u => u.Email == registerInputModel.Email) != null)
             {
-                //TODO Throw an exception after implementing Exception Handling Middleware
-                Logger.LogError("User with this email already exists.");
-                return null;
+                throw new DuplicateNameException("Email already exists in database");
             }
             
             var roles = Enum.GetValues(typeof(RoleTypes));
@@ -84,7 +83,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
                 }
             }
                 
-            await this.UserManager.CreateAsync(user);
+            await this.UserManager.CreateAsync(user, registerInputModel.Password);
             await this.UserManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), role));
 
             return this.Mapper.Map<User,RegisterViewModel>(user);

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -33,6 +34,12 @@ namespace SchoolBook.API.Controllers
         public async Task<LoginViewModel> Login ([FromBody] LoginInputModel model)
         {
             return await this.AccountService.LogIn(model);
+        }
+        
+        [HttpPost("logout")]
+        public async Task Logout ()
+        {
+            await this.AccountService.Logout();
         }
     }
 }

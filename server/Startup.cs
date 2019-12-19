@@ -9,11 +9,13 @@ using SchoolBook.DataAccessLayer.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.BusinessLogicLayer.Services;
 using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.Helpers;
+using SchoolBook.Helpers.Exceptions;
 
 namespace SchoolBook
 {
@@ -43,6 +45,9 @@ namespace SchoolBook
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers();
+            services.AddControllersWithViews(options =>
+                options.Filters.Add(typeof(CustomExceptionFilter)));
+
 
             //configure DI for services
             services.AddIdentity<User, IdentityRole>()
@@ -82,6 +87,15 @@ namespace SchoolBook
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseExceptionHandler("/error-local-dev");
+            }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
+            
             app.UseRouting();
 
             app.UseAuthentication();
