@@ -45,6 +45,11 @@ namespace SchoolBook.DataAccessLayer
              Table per hierarchy configuration for school users
              TPC not supported by EF Core. SMH 
             */
+
+            builder.Entity<SchoolUser>()
+                .Property(s => s.Role)
+                .HasConversion<string>();
+
             builder.Entity<SchoolUser>()
                 .HasDiscriminator(o => o.Role)
                 .HasValue<SchoolUser>(RoleTypes.NotUser)

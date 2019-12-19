@@ -208,7 +208,7 @@ namespace SchoolBook.Migrations
                     Town = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
                     Role = table.Column<int>(nullable: false),
-                    SchoolId = table.Column<string>(nullable: true),
+                    SchoolId = table.Column<string>(nullable: false),
                     StartYear = table.Column<int>(nullable: true),
                     Student_SchoolId = table.Column<string>(nullable: true),
                     ClassId = table.Column<string>(nullable: true),

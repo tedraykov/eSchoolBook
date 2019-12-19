@@ -11,7 +11,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
         public MappingProfile()
         {
             CreateMap<SchoolUser, UserViewModel>()
-                .ForMember(o => o.Role, ex => ex.MapFrom(o => o.Role));
+                .ForMember(o => o.Role, ex => ex.MapFrom(o => o.Role))
+                .ForMember(o => o.FullName, ex => ex.MapFrom(o => GetFullName(o)));
 
             CreateMap<RegisterInputModel, User>()
                 .ForMember(o => o.UserName, ex => ex.MapFrom(o => o.Email));
@@ -21,6 +22,18 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
 
             CreateMap<Class, ClassViewModel>();
             CreateMap<ClassInputModel, Class>();
+        }
+
+        private static string GetFullName(SchoolUser user)
+        {
+            var fullName = user.FirstName;
+            if (user.SecondName != null)
+            {
+                fullName += ' ' + user.SecondName;
+            }
+
+            fullName += ' ' + user.LastName;
+            return fullName;
         }
     }
 }

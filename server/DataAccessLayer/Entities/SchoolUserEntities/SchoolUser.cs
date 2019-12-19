@@ -19,7 +19,9 @@ namespace SchoolBook.DataAccessLayer.Entities.SchoolUserEntities
         public string Address { get; set; }
 
         public string Town { get; set; }
-        
+
+        public School School { get; set; }
+
         public User User { get; set; }
 
         public RoleTypes Role { get; set; }
