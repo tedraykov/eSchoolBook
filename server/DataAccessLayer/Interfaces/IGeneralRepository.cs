@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SchoolBook.DataAccessLayer.Interfaces
@@ -7,14 +8,16 @@ namespace SchoolBook.DataAccessLayer.Interfaces
     {
         IQueryable<TEntity> Query();
  
-        Task<TEntity> GetById(object id);
+        TEntity GetById(object id);
+        
+        List<TEntity> GetWithoutTracking();
  
-        Task Create(TEntity entity);
+        void Create(TEntity entity);
  
         void Update(TEntity entity);
  
         void Delete(TEntity entity);
         
-        Task<int> SaveChanges();
+        int SaveChanges();
     }
 }
