@@ -5,6 +5,6 @@ namespace SchoolBook.DataAccessLayer.Entities
 {
     public class User : IdentityUser
     {
-        public RoleTypes Role { get; set; }
+        public string RoleName { get; set; }
     }
 }
