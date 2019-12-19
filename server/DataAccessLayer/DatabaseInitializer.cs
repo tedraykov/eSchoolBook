@@ -36,7 +36,7 @@ namespace SchoolBook.DataAccessLayer
             RoleManager<IdentityRole> roleManager,
             IAccountService accountService,
             IConfiguration configuration
-            )
+        )
         {
             _ctx = ctx;
             _webHost = webHost;
@@ -60,20 +60,71 @@ namespace SchoolBook.DataAccessLayer
 
         private void SeedSchoolUsers()
         {
-            var student = new Student
+            _logger.LogDebug("Start Seeding Student...");
+            if (_ctx.Students.FirstOrDefault() == null)
             {
-                FirstName = "Sladi",
-                SecondName = "Sladkov",
-                LastName = "Sladkov",
-                Pin = "0510043827",
-                Address = "Някъде от София",
-                Town = "София",
-                StartYear = 2018,
-                School = _ctx.Schools.FirstOrDefault(),
-                Class = _ctx.Classes.FirstOrDefault()
-            };
+                var student = new Student
+                {
+                    FirstName = "Sladi",
+                    SecondName = "Sladkov",
+                    LastName = "Sladkov",
+                    Pin = "0510043827",
+                    Address = "Някъде от София",
+                    Town = "София",
+                    StartYear = 2018,
+                    School = _ctx.Schools.FirstOrDefault(),
+                    Class = _ctx.Classes.FirstOrDefault()
+                };
 
-            _ctx.Students.Add(student);
+                _ctx.Students.Add(student);
+            }
+
+            _logger.LogDebug("Student Seeded");
+
+
+            _logger.LogDebug("Start Seeding Teacher...");
+            if (_ctx.Teachers.FirstOrDefault() == null)
+            {
+                var teacher = new Teacher
+                {
+                    FirstName = "Dimitar",
+                    SecondName = "Gospodinov",
+                    LastName = "Prepodavatelov",
+                    Pin = "124304932",
+                    Address = "Shishman 52",
+                    Town = "Sofia",
+                    School = _ctx.Schools.FirstOrDefault()
+                };
+
+                _ctx.Teachers.Add(teacher);
+
+                var someClass = _ctx.Classes.FirstOrDefault();
+
+                if (someClass != null) someClass.ClassTeacher = teacher;
+            }
+
+            _logger.LogDebug("Teacher Seeded");
+
+            _logger.LogDebug("Start Seeding Parent...");
+            if (_ctx.Parents.FirstOrDefault() == null)
+            {
+                var parent = new Parent
+                {
+                    FirstName = "Bashatata",
+                    SecondName = "Na",
+                    LastName = "Sladi",
+                    Pin = "412412e2d324",
+                    Address = "Някъде от София",
+                    Town = "София",
+                    School = _ctx.Schools.FirstOrDefault()
+                };
+                parent.Children?.Add(_ctx.Students.FirstOrDefault());
+
+                _ctx.Parents.Add(parent);
+            }
+
+            _logger.LogDebug("Parent Seeded");
+
             _ctx.SaveChanges();
         }
 
@@ -172,6 +223,5 @@ namespace SchoolBook.DataAccessLayer
             _ctx.Classes.Add(defaultClass);
             _ctx.SaveChanges();
         }
-
     }
 }
