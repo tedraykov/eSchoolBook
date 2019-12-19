@@ -9,6 +9,7 @@
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.1" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.1" />
@@ -16,6 +17,7 @@
 
     <ItemGroup>
       <Folder Include="API\Controllers" />
+      <Folder Include="BusinessLogicLayer\DTOs\Models" />
       <Folder Include="DataAccessLayer\Migrations" />
     </ItemGroup>
 

@@ -1,6 +1,4 @@
-﻿using SchoolBook.BusinessLogicLayer.DTOs.Enums;
-
-namespace SchoolBook.BusinessLogicLayer.DTOs.InputModels
+﻿namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels
 {
     public class UserViewModel
     {

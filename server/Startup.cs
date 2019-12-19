@@ -9,8 +9,10 @@ using SchoolBook.DataAccessLayer.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.BusinessLogicLayer.Services;
 using SchoolBook.DataAccessLayer.Entities;
@@ -32,7 +34,11 @@ namespace SchoolBook
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddNewtonsoftJson(x =>
+                    x.SerializerSettings.ReferenceLoopHandling =
+                        ReferenceLoopHandling.Ignore);
 
             services.AddAutoMapper(typeof(Startup));
 
@@ -95,12 +101,10 @@ namespace SchoolBook
             {
                 app.UseExceptionHandler("/error");
             }
-            
-            app.UseRouting();
 
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
