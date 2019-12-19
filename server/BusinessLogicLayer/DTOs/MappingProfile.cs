@@ -18,6 +18,9 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
             
             CreateMap<User, RegisterViewModel>()
                 .ForMember(o => o.Id, ex => ex.MapFrom(o => o.Id));
+
+            CreateMap<Class, ClassViewModel>();
+            CreateMap<ClassInputModel, Class>();
         }
     }
 }
