@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -40,7 +41,6 @@ namespace SchoolBook.BusinessLogicLayer.Services
         public async Task<LoginViewModel> LogIn(LoginInputModel loginInputModel)
         {
             var user = this.UserManager.Users
-                .Include(u => u.Role)
                 .SingleOrDefault(u => u.Email == loginInputModel.Email);
 
             if (user is null)
@@ -66,13 +66,26 @@ namespace SchoolBook.BusinessLogicLayer.Services
         public async Task<RegisterViewModel> Register(RegisterInputModel registerInputModel)
         {
             var user = this.Mapper.Map<RegisterInputModel, User>(registerInputModel);
-            user.UserName = user.Email;
+            if (this.UserManager.Users.SingleOrDefault(u => u.Email == registerInputModel.Email) != null)
+            {
+                //TODO Throw an exception after implementing Exception Handling Middleware
+                Logger.LogError("User with this email already exists.");
+                return null;
+            }
+            
+            var roles = Enum.GetValues(typeof(RoleTypes));
+            var role = roles.GetValue(0);
+            
+            foreach (var r in roles)
+            {
+                if (r.ToString() == user.RoleName)
+                {
+                    role = r;
+                }
+            }
                 
             await this.UserManager.CreateAsync(user);
-//            if (registerInputModel.RoleName == "Teacher")
-//            {
-//                await this.UserManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), RoleTypes.Teacher));
-//            }
+            await this.UserManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), role));
 
             return this.Mapper.Map<User,RegisterViewModel>(user);
         }
@@ -90,6 +103,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
                 {
                     var user = this.Mapper.Map<RegisterInputModel, User>(model);
                     user.UserName = "Admin";
+                    user.RoleName = Enum.GetName(typeof(RoleTypes), RoleTypes.SuperAdmin);
                     await this.UserManager.CreateAsync(user, model.Password);
                     await this.UserManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), RoleTypes.SuperAdmin));
                 }
@@ -103,21 +117,19 @@ namespace SchoolBook.BusinessLogicLayer.Services
         private async Task<string> GenerateJwt(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(this._jwtSettings.Secret);
-            var isUserAdmin = await this.UserManager.IsInRoleAsync(user, RoleTypes.SuperAdmin.ToString());
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+            var isUserAdmin = await UserManager.IsInRoleAsync(user, RoleTypes.SuperAdmin.ToString());
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Id),
+                Subject = new ClaimsIdentity(new Claim[]{
+                    new Claim(ClaimTypes.NameIdentifier,user.Id),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim("isAdmin", isUserAdmin.ToString(), ClaimValueTypes.Boolean),
-                    new Claim(ClaimTypes.Role, user.Role.ToString()),
+                    new Claim(ClaimTypes.Role, user.RoleName),
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             
             var token = tokenHandler.CreateToken(tokenDescriptor);

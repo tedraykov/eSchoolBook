@@ -22,12 +22,6 @@ namespace SchoolBook.API.Controllers
         {
             this.AccountService = authService;
         }
-        [HttpGet()]
-        public OkObjectResult test([FromBody] string model)
-        {
-            return Ok(model);
-        }
-        
         
         [HttpPost("register")]
         public async Task<RegisterViewModel> Register([FromBody] RegisterInputModel model)

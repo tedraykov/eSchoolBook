@@ -4,6 +4,6 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels
 {
     public class RegisterViewModel
     {
-        public Task<string> Id { get; set; }
+        public string Id { get; set; }
     }
 }
