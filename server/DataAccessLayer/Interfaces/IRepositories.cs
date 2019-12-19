@@ -28,6 +28,6 @@ namespace SchoolBook.DataAccessLayer.Interfaces
 
         IGeneralRepository<SchoolUser> SchoolUsers { get; }
 
-        Task<int> SaveChanges();
+        int SaveChanges();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SchoolBook.DataAccessLayer.Interfaces;
@@ -22,19 +23,26 @@ namespace SchoolBook.DataAccessLayer
             return this._dbSet;
         }
 
-        public async Task<TEntity> GetById(object id)
+        public TEntity GetById(object id)
         {
-            return await this._dbSet.FindAsync(id);
+            return this._dbSet.Find(id);
+        }
+        
+        public List<TEntity> GetWithoutTracking()
+        {
+            return this._dbSet.AsNoTracking().ToList();
         }
 
-        public async Task Create(TEntity entity)
+        public void Create(TEntity entity)
         {
-            await this._dbSet.AddAsync(entity);
+            this._dbSet.Add(entity);
+            this.SaveChanges();
         }
 
         public void Update(TEntity entity)
         {
             this._dbSet.Update(entity);
+            this.SaveChanges();
         }
 
         public void Delete(TEntity entity)
@@ -42,9 +50,9 @@ namespace SchoolBook.DataAccessLayer
             this._dbSet.Remove(entity);
         }
         
-        public Task<int> SaveChanges()
+        public int SaveChanges()
         {
-            return this._context.SaveChangesAsync();
+            return this._context.SaveChanges();
         }
     }
 }

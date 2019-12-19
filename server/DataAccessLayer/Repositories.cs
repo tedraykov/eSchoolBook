@@ -55,9 +55,9 @@ namespace SchoolBook.DataAccessLayer
 
         public IGeneralRepository<SchoolUser> SchoolUsers => this.GetRepository<SchoolUser>();
 
-        public Task<int> SaveChanges()
+        public int SaveChanges()
         {
-            return this._context.SaveChangesAsync();
+            return this._context.SaveChanges();
         }
     }
 }
