@@ -8,5 +8,6 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels
         public string Pin { get; set; }
         public string Address { get; set; }
         public string Town { get; set; }
+        public string SchoolId { get; set; }
     }
 }

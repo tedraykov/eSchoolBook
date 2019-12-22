@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
-using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
-using SchoolBook.DataAccessLayer.Interfaces;
+using SchoolBook.BusinessLogicLayer.Interfaces;
 
 namespace SchoolBook.API.Controllers
 {
@@ -16,13 +13,11 @@ namespace SchoolBook.API.Controllers
     [Produces("application/json")]
     public class SchoolUserController : Controller
     {
-        private readonly IRepositories _repositories;
-        private readonly IMapper _mapper;
+        private readonly ISchoolUserService _schoolUserService;
 
-        public SchoolUserController(IRepositories repositories, IMapper mapper)
+        public SchoolUserController(ISchoolUserService schoolUserService)
         {
-            _repositories = repositories;
-            _mapper = mapper;
+            _schoolUserService = schoolUserService;
         }
 
         [HttpGet]
@@ -30,10 +25,8 @@ namespace SchoolBook.API.Controllers
         {
             try
             {
-                var users = _repositories.SchoolUsers.Query();
-                return Ok(_mapper
-                    .Map<IEnumerable<SchoolUser>, IEnumerable<UserViewModel>>(
-                        users));
+                var schoolUsers = _schoolUserService.GetAllSchoolUsers();
+                return Ok(schoolUsers);
             }
             catch (Exception e)
             {
@@ -46,13 +39,40 @@ namespace SchoolBook.API.Controllers
         {
             try
             {
-                var user = _repositories.SchoolUsers.Query()
-                    .SingleOrDefault(x => x.Id == id);
-                return Ok(_mapper.Map<SchoolUser, SchoolUserModel>(user));
+                var schoolUser = _schoolUserService.GetSchoolUserBaseModel(id);
+                return schoolUser;
             }
             catch (Exception e)
             {
                 return NotFound("User not found");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult<string> Create([FromBody]AddSchoolUserInputModel userModel)
+        {
+            try
+            {
+                var userId = _schoolUserService.AddSchoolUser(userModel);
+                return Created($"/api/users/{userId}", userId);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Could not create user");
+            }
+        }
+
+        [HttpPut("{Id}")]
+        public ActionResult Update([FromBody] SchoolUserModel userModel)
+        {
+            try
+            {
+                _schoolUserService.UpdateBaseSchoolUser(userModel);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Could not update user");
             }
         }
     }
