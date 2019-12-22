@@ -31,7 +31,7 @@ namespace SchoolBook.API.Controllers
             return this.ClassService.GetAll();
         }
         
-        [HttpGet("by-grade/{grade}")]
+        [HttpGet("grade/{grade}")]
         public List<ClassViewModel> GetAllByGrade([FromRoute] int grade)
         {
             return this.ClassService.GetAllByGrade(grade);
@@ -43,7 +43,7 @@ namespace SchoolBook.API.Controllers
             return this.ClassService.GetOne(id);
         }
         
-        [HttpPost("add")]
+        [HttpPost()]
         public void AddClass([FromBody] ClassInputModel inputModel)
         {
             this.ClassService.AddClass(inputModel);
@@ -55,7 +55,7 @@ namespace SchoolBook.API.Controllers
             this.ClassService.AddClassTeacher(id, inputModel);
         }
         
-        [HttpPut("edit/{id}")]
+        [HttpPut("{id}")]
         public ClassViewModel EditClass([FromRoute] string id, [FromBody] ClassInputModel inputModel)
         {
             return this.ClassService.EditClass(id, inputModel);

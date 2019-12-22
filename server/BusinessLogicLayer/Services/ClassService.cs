@@ -28,7 +28,6 @@ namespace SchoolBook.BusinessLogicLayer.Services
             IMapper mapper
             ) : base(repositories, userManager, logger, mapper)
         {
-            
         }
 
         public List<ClassViewModel> GetAll()

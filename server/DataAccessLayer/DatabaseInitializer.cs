@@ -118,7 +118,9 @@ namespace SchoolBook.DataAccessLayer
                     Town = "София",
                     School = _ctx.Schools.FirstOrDefault()
                 };
-                parent.Children?.Add(_ctx.Students.FirstOrDefault());
+                
+                var student = _ctx.Students.FirstOrDefault();
+                parent.Children?.Add(student);
 
                 _ctx.Parents.Add(parent);
             }

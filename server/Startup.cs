@@ -65,6 +65,7 @@ namespace SchoolBook
 
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IClassService, ClassService>();
+            services.AddTransient<ISubjectService, SubjectService>();
 
             var jwtSettingsSection = Configuration.GetSection("JwtSettings");
             var key = Encoding.UTF8.GetBytes(jwtSettingsSection["Secret"]);
