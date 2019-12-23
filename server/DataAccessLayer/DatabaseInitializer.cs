@@ -77,6 +77,7 @@ namespace SchoolBook.DataAccessLayer
                 };
 
                 _ctx.Students.Add(student);
+                _ctx.SaveChanges();
             }
 
             _logger.LogDebug("Student Seeded");
@@ -118,9 +119,14 @@ namespace SchoolBook.DataAccessLayer
                     Town = "София",
                     School = _ctx.Schools.FirstOrDefault()
                 };
-                parent.Children?.Add(_ctx.Students.FirstOrDefault());
-
-                _ctx.Parents.Add(parent);
+                
+                var student = _ctx.Students.FirstOrDefault();
+                if (parent.Children != null)
+                {
+                    parent.Children.Add(student);
+                    _logger.LogInformation(parent.ToString());
+                    _ctx.Parents.Add(parent);
+                }
             }
 
             _logger.LogDebug("Parent Seeded");
