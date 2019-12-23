@@ -17,7 +17,13 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
 
         void AddClass(ClassInputModel inputModel);
         
-        void AddClassTeacher(string id, TeacherInputModel teacherModel);
+        void AddClassTeacher(string classId, string teacherId);
+        
+        void AddSubject(string classId, ClassToSubjectInputModel inputModel);
+        
+        void EditSubject(string classId, ClassToSubjectInputModel inputModel);
+        
+        void RemoveSubject(string classId, string subjectId);
 
         ClassViewModel EditClass(string id, ClassInputModel inputModel);
     }

@@ -43,6 +43,9 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                 .ForMember( o => o.LastName, ex => 
                     ex.MapFrom(o => o.Teacher.LastName));
 //            CreateMap<TeacherToSubject, Subject>();
+
+            CreateMap<ClassToSubjectInputModel, ClassToSubject>();
+            CreateMap<ClassToSubject, ClassToSubjectViewModel>();
         }
 
         private static string GetFullName(SchoolUser user)

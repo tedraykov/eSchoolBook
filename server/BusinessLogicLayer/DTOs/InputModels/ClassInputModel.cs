@@ -13,7 +13,6 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.InputModels
         public int Grade { get; set; }
         
         [Required]
-        [StringLength(1)]
         public char GradeLetter { get; set; }
     }
 }
