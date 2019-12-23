@@ -22,8 +22,6 @@ namespace SchoolBook.DataAccessLayer.Entities.SchoolUserEntities
 
         public School School { get; set; }
 
-        [ForeignKey("School")] public string SchoolId { get; set; }
-
         public User User { get; set; }
 
         public RoleTypes Role { get; set; }

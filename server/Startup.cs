@@ -14,7 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SchoolBook.BusinessLogicLayer.Interfaces;
+using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 using SchoolBook.BusinessLogicLayer.Services;
+using SchoolBook.BusinessLogicLayer.Services.SchoolUserServices;
 using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.Helpers;
 using SchoolBook.Helpers.Exceptions;
@@ -67,6 +69,7 @@ namespace SchoolBook
             services.AddTransient<IClassService, ClassService>();
             services.AddTransient<ISubjectService, SubjectService>();
             services.AddTransient<ISchoolUserService, SchoolUserService>();
+            services.AddTransient<IStudentService, StudentService>();
 
             var jwtSettingsSection = Configuration.GetSection("JwtSettings");
             var key = Encoding.UTF8.GetBytes(jwtSettingsSection["Secret"]);

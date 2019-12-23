@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
-using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;

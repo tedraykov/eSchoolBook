@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
+using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
-using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 
 namespace SchoolBook.API.Controllers
