@@ -8,8 +8,10 @@ namespace SchoolBook.DataAccessLayer.Entities.SchoolUserEntities
 
         public Class Class { get; set; }
 
-        public ICollection<StudentToGrade> Grades { get; set; }
+        public ICollection<StudentToGrade> Grades { get; set; } =
+            new List<StudentToGrade>();
 
-        public ICollection<Absence> Absences { get; set; }
+        public ICollection<Absence> Absences { get; set; } =
+            new List<Absence>();
     }
 }

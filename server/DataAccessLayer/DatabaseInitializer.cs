@@ -77,6 +77,7 @@ namespace SchoolBook.DataAccessLayer
                 };
 
                 _ctx.Students.Add(student);
+                _ctx.SaveChanges();
             }
 
             _logger.LogDebug("Student Seeded");
@@ -120,9 +121,12 @@ namespace SchoolBook.DataAccessLayer
                 };
                 
                 var student = _ctx.Students.FirstOrDefault();
-                parent.Children?.Add(student);
-
-                _ctx.Parents.Add(parent);
+                if (parent.Children != null)
+                {
+                    parent.Children.Add(student);
+                    _logger.LogInformation(parent.ToString());
+                    _ctx.Parents.Add(parent);
+                }
             }
 
             _logger.LogDebug("Parent Seeded");

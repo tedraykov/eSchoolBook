@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
-using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 
 namespace SchoolBook.BusinessLogicLayer.Interfaces
 {
