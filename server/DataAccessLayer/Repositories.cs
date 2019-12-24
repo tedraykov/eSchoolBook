@@ -54,6 +54,9 @@ namespace SchoolBook.DataAccessLayer
         public IGeneralRepository<User> Users => this.GetRepository<User>();
 
         public IGeneralRepository<SchoolUser> SchoolUsers => this.GetRepository<SchoolUser>();
+        
+        public IGeneralRepository<ClassToSubject> ClassToSubject => this.GetRepository<ClassToSubject>();
+
 
         public int SaveChanges()
         {

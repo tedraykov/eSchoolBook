@@ -49,11 +49,30 @@ namespace SchoolBook.API.Controllers
             this.ClassService.AddClass(inputModel);
         }
         
-        [HttpPut("{id}/add-teacher")]
-        public void AddClassTeacher([FromRoute] string id, [FromBody] TeacherInputModel inputModel)
+        [HttpPut("teacher/{classId}")]
+        public void AddClassTeacher([FromRoute] string classId, [FromBody]string teacherId)
         {
-            this.ClassService.AddClassTeacher(id, inputModel);
+            this.ClassService.AddClassTeacher(classId, teacherId);
         }
+        
+        [HttpPost("add-subject/{classId}")]
+        public void AddSubjectToClass([FromRoute] string classId, [FromBody]ClassToSubjectInputModel inputModel)
+        {
+            this.ClassService.AddSubject(classId, inputModel);
+        }
+        
+        [HttpPut("edit-subject/{classId}")]
+        public void EditSubjectInClass([FromRoute] string classId, [FromBody]ClassToSubjectInputModel inputModel)
+        {
+            this.ClassService.EditSubject(classId, inputModel);
+            }
+        
+        [HttpDelete("remove-subject/{classId}")]
+        public void RemoveSubjectFromClass([FromRoute] string classId, [FromBody]string subjectId)
+        {
+            this.ClassService.RemoveSubject(classId, subjectId);
+        }
+
         
         [HttpPut("{id}")]
         public ClassViewModel EditClass([FromRoute] string id, [FromBody] ClassInputModel inputModel)

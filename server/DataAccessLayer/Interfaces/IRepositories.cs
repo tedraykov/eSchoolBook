@@ -27,6 +27,8 @@ namespace SchoolBook.DataAccessLayer.Interfaces
         IGeneralRepository<User> Users { get; }
 
         IGeneralRepository<SchoolUser> SchoolUsers { get; }
+        
+        IGeneralRepository<ClassToSubject> ClassToSubject { get; }
 
         int SaveChanges();
     }

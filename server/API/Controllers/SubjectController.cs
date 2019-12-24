@@ -59,13 +59,13 @@ namespace SchoolBook.API.Controllers
             return  SubjectService.EditSubject(id, inputModel);
         }
         
-        [HttpPost("teacher-to/{subjectId}")]
+        [HttpPost("teacher/{subjectId}")]
         public void AddTeacherToSubject([FromRoute] string subjectId, [FromBody] string teacherId)
         {
             SubjectService.AddTeacherToSubject(subjectId, teacherId);
         }
         
-        [HttpDelete("teacher-from/{subjectId}")]
+        [HttpDelete("teacher/{subjectId}")]
         public void RemoveTeacherFromSubject([FromRoute] string subjectId, [FromBody] string teacherId)
         {
             SubjectService.RemoveTeacherFromSubject(subjectId, teacherId);

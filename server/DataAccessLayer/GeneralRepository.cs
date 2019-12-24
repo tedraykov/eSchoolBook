@@ -38,11 +38,21 @@ namespace SchoolBook.DataAccessLayer
             this._dbSet.Add(entity);
             this.SaveChanges();
         }
+        
+        public void CreateWithoutSaving(TEntity entity)
+        {
+            this._dbSet.Add(entity);
+        }
 
         public void Update(TEntity entity)
         {
             this._dbSet.Update(entity);
             this.SaveChanges();
+        }
+        
+        public void UpdateWithoutSaving(TEntity entity)
+        {
+            this._dbSet.Update(entity);
         }
 
         public void Delete(TEntity entity)

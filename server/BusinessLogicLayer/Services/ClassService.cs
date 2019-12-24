@@ -87,19 +87,101 @@ namespace SchoolBook.BusinessLogicLayer.Services
             this.Repositories.Classes.Create(entityClass);
         }
 
-        public  void AddClassTeacher(string id, TeacherInputModel teacherModel)
+        public  void AddClassTeacher(string classId, string teacherId)
         {
-            var dbClass = this.Repositories.Classes.GetById(id);
+            var dbClass = this.Repositories.Classes.GetById(classId);
             
             if (dbClass is null)
             {
                 throw new TargetException("Class not found");
             }
+
+            var teacher = Repositories.Teachers.GetById(teacherId);
             
-            var teacher = Mapper.Map<TeacherInputModel, Teacher>(teacherModel);
+            if (teacher is null)
+            {
+                throw new TargetException("Teacher not found");
+            }
+            
             dbClass.ClassTeacher = teacher;
 
             this.Repositories.Classes.Update(dbClass);
+        }
+
+        public void AddSubject(string classId, ClassToSubjectInputModel inputModel)
+        {
+            var dbClass = this.Repositories.Classes.Query()
+                .Include(c => c.Subjects)
+                .FirstOrDefault(c => c.Id == classId);
+            
+            if (dbClass is null)
+            {
+                throw new TargetException("Class not found");
+            }
+
+            var subject = Repositories.Subjects.GetById(inputModel.SubjectId);
+
+            if (subject is null)
+            {
+                throw new TargetException("Subject not found");
+            }
+            
+            dbClass.Subjects.Add(new ClassToSubject
+            {
+                Class = dbClass,
+                ClassId = classId,
+                Subject = subject,
+                SubjectId = subject.Id,
+                EndTime = inputModel.EndTime,
+                StartTime = inputModel.StartTime,
+                WeekDay = inputModel.WeekDay
+                
+            });
+
+            Repositories.Classes.SaveChanges();
+        }
+
+        public void EditSubject(string classId, ClassToSubjectInputModel inputModel)
+        {
+            var subject = Repositories.ClassToSubject.Query()
+                .Include(cs => cs.Class)
+                .Include(cs => cs.Subject)
+                .AsNoTracking()
+                .ProjectTo<ClassToSubjectViewModel>(this.Mapper.ConfigurationProvider)
+                .FirstOrDefault(cs => cs.ClassId == classId);
+            
+            if (subject is null)
+            {
+                throw new TargetException("Data not found");
+            }
+
+            var newData = Mapper.Map<ClassToSubjectInputModel, ClassToSubject>(inputModel);
+            newData.ClassId = classId;
+            
+            Repositories.ClassToSubject.Update(newData);
+        }
+
+        public void RemoveSubject(string classId, string subjectId)
+        {
+            var dbClass = this.Repositories.Classes.Query()
+                .Include(c => c.Subjects)
+                .FirstOrDefault(c => c.Id == classId);
+            
+            if (dbClass is null)
+            {
+                throw new TargetException("Class not found");
+            }
+
+            var subject = dbClass.Subjects.FirstOrDefault(s => s.SubjectId == subjectId);
+
+            if (subject is null)
+            {
+                throw new TargetException("Subject not found");
+            }
+
+            dbClass.Subjects.Remove(subject);
+            Repositories.Classes.SaveChanges();
+
         }
 
         public ClassViewModel EditClass(string id, ClassInputModel inputModel)

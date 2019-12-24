@@ -15,8 +15,8 @@ namespace SchoolBook.DataAccessLayer.Entities
 
         public int GradeYear { get; set; }
 
-        public ICollection<ClassToSubject> Classes { get; set; }
+        public ICollection<ClassToSubject> Classes { get; set; } = new List<ClassToSubject>();
 
-        public ICollection<TeacherToSubject> Teachers { get; set; }
+        public ICollection<TeacherToSubject> Teachers { get; set; } = new List<TeacherToSubject>();
     }
 }
