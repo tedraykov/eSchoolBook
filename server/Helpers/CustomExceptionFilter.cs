@@ -17,6 +17,7 @@ namespace SchoolBook.Helpers.Exceptions
             context.Result = new JsonResult(new
             {
                 error = new[] { context.Exception.Message },
+                inner_exception = context.Exception.InnerException,
                 stackTrace = context.Exception.StackTrace
             });
         }
