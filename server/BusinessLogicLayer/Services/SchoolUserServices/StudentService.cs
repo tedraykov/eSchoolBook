@@ -25,7 +25,7 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
             IRepositories repositories,
             UserManager<User> userManager,
             ILogger<BaseService> logger,
-            IMapper mapper) : base(repositories, userManager, logger, mapper)
+            IMapper mapper) : base(repositories, logger, mapper)
         {
             _repositories = repositories;
             _userManager = userManager;

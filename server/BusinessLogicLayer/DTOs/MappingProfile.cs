@@ -4,6 +4,7 @@ using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 
@@ -52,10 +53,12 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                     ex.MapFrom(o => o.Teacher.SecondName))
                 .ForMember(o => o.LastName, ex =>
                     ex.MapFrom(o => o.Teacher.LastName));
-//            CreateMap<TeacherToSubject, Subject>();
 
             CreateMap<ClassToSubjectInputModel, ClassToSubject>();
             CreateMap<ClassToSubject, ClassToSubjectViewModel>();
+
+            CreateMap<SchoolInputModel, School>();
+            CreateMap<School, SchoolViewModel>();
         }
 
         private static string GetFullName(SchoolUser user)

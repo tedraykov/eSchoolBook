@@ -24,6 +24,8 @@ namespace SchoolBook.BusinessLogicLayer.Services
 {
     public class AccountService : BaseService, IAccountService
     {
+
+        private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly JwtSettings _jwtSettings;
         
@@ -33,15 +35,16 @@ namespace SchoolBook.BusinessLogicLayer.Services
             IRepositories repositories, 
             UserManager<User> userManager,
             ILogger<BaseService> logger,
-            IMapper mapper) : base(repositories, userManager, logger, mapper)
+            IMapper mapper) : base(repositories, logger, mapper)
         {
+            this._userManager = userManager;
             this._signInManager = signInManager;
             this._jwtSettings = jwtSettings.Value;
         }
 
         public async Task<LoginViewModel> LogIn(LoginInputModel loginInputModel)
         {
-            var user = this.UserManager.Users
+            var user = this._userManager.Users
                 .SingleOrDefault(u => u.Email == loginInputModel.Email);
 
             if (user is null)
@@ -67,7 +70,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
         public async Task<RegisterViewModel> Register(RegisterInputModel registerInputModel)
         {
             var user = this.Mapper.Map<RegisterInputModel, User>(registerInputModel);
-            if (this.UserManager.Users.SingleOrDefault(u => u.Email == registerInputModel.Email) != null)
+            if (this._userManager.Users.SingleOrDefault(u => u.Email == registerInputModel.Email) != null)
             {
                 throw new DuplicateNameException("Email already exists in database");
             }
@@ -83,8 +86,8 @@ namespace SchoolBook.BusinessLogicLayer.Services
                 }
             }
                 
-            await this.UserManager.CreateAsync(user, registerInputModel.Password);
-            await this.UserManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), role));
+            await this._userManager.CreateAsync(user, registerInputModel.Password);
+            await this._userManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), role));
 
             return this.Mapper.Map<User,RegisterViewModel>(user);
         }
@@ -103,8 +106,8 @@ namespace SchoolBook.BusinessLogicLayer.Services
                     var user = this.Mapper.Map<RegisterInputModel, User>(model);
                     user.UserName = "Admin";
                     user.RoleName = Enum.GetName(typeof(RoleTypes), RoleTypes.SuperAdmin);
-                    await this.UserManager.CreateAsync(user, model.Password);
-                    await this.UserManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), RoleTypes.SuperAdmin));
+                    await this._userManager.CreateAsync(user, model.Password);
+                    await this._userManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), RoleTypes.SuperAdmin));
                 }
                 catch (Exception e)
                 {
@@ -117,7 +120,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-            var isUserAdmin = await UserManager.IsInRoleAsync(user, RoleTypes.SuperAdmin.ToString());
+            var isUserAdmin = await _userManager.IsInRoleAsync(user, RoleTypes.SuperAdmin.ToString());
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
