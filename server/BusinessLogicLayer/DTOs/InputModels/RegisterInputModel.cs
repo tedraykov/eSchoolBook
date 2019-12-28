@@ -12,15 +12,6 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.InputModels
         public string Password { get; set; }
 
         [Required]
-        public string FirstName { get; set; }
-
-        [Required]
-        public string SecondName { get; set; }
-
-        [Required]
-        public string LastName { get; set; }
-
-        [Required]
         public string RoleName { get; set; }
     }
 }

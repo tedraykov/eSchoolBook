@@ -162,9 +162,6 @@ namespace SchoolBook.DataAccessLayer
             var adminModel = new RegisterInputModel
             {
                 Email = userSettingsSection["Email"],
-                FirstName = userSettingsSection["FirstName"],
-                SecondName = userSettingsSection["SecondName"],
-                LastName = userSettingsSection["LastName"],
                 Password = userSettingsSection["Password"]
             };
 

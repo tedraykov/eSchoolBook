@@ -17,6 +17,7 @@ using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.DataAccessLayer.Entities;
+using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 using SchoolBook.DataAccessLayer.Interfaces;
 using SchoolBook.Helpers;
 
@@ -67,29 +68,34 @@ namespace SchoolBook.BusinessLogicLayer.Services
             return loginViewModel;
         }
 
-        public async Task<RegisterViewModel> Register(RegisterInputModel registerInputModel)
+        public async Task<User> Register(FullRegisterInputModel inputModel)
         {
-            var user = this.Mapper.Map<RegisterInputModel, User>(registerInputModel);
-            if (this._userManager.Users.SingleOrDefault(u => u.Email == registerInputModel.Email) != null)
+            var email = GenerateEmail(inputModel.FirstName, inputModel.LastName);
+            
+            var user = new User
             {
-                throw new DuplicateNameException("Email already exists in database");
-            }
+                Id = Guid.NewGuid().ToString(),
+                Email = email,
+                UserName = email
+            };
+            user.UserName = user.Email;
             
             var roles = Enum.GetValues(typeof(RoleTypes));
             var role = roles.GetValue(0);
             
             foreach (var r in roles)
             {
-                if (r.ToString() == user.RoleName)
+                if (role.ToString() == inputModel.RoleName) break;
+                if (r.ToString() == inputModel.RoleName)
                 {
                     role = r;
                 }
             }
                 
-            await this._userManager.CreateAsync(user, registerInputModel.Password);
+            await this._userManager.CreateAsync(user, inputModel.Pin);
             await this._userManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), role));
 
-            return this.Mapper.Map<User,RegisterViewModel>(user);
+            return user;
         }
 
         public async Task Logout()
@@ -104,7 +110,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
                 try
                 {
                     var user = this.Mapper.Map<RegisterInputModel, User>(model);
-                    user.UserName = "Admin";
+                    user.UserName = user.Email;
                     user.RoleName = Enum.GetName(typeof(RoleTypes), RoleTypes.SuperAdmin);
                     await this._userManager.CreateAsync(user, model.Password);
                     await this._userManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), RoleTypes.SuperAdmin));
@@ -121,12 +127,15 @@ namespace SchoolBook.BusinessLogicLayer.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
             var isUserAdmin = await _userManager.IsInRoleAsync(user, RoleTypes.SuperAdmin.ToString());
+            var userSchoolId = Repositories.SchoolUsers.Query()
+                                 .AsNoTracking()
+                                 .FirstOrDefault(su => su.User.Id == user.Id)?.School.Id ?? "no id";
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]{
                     new Claim(ClaimTypes.NameIdentifier,user.Id),
-                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim("schoolId", userSchoolId, ClaimValueTypes.String),
                     new Claim("isAdmin", isUserAdmin.ToString(), ClaimValueTypes.Boolean),
                     new Claim(ClaimTypes.Role, user.RoleName),
                 }),
@@ -137,6 +146,20 @@ namespace SchoolBook.BusinessLogicLayer.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        private string GenerateEmail(string firstName, string lastName)
+        {
+            var emailPrefix = firstName.Substring(0,1).ToLower() + lastName.ToLower();
+            var counter = Repositories.Users.Query().AsNoTracking().Count(u => u.Email.Contains(emailPrefix));
+
+            if (counter >= 1)
+            {
+                emailPrefix = emailPrefix + counter;
+            }
+
+            return emailPrefix + "@eschoolbook.bg";
+
         }
     }
 }
