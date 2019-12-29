@@ -3,8 +3,8 @@
       <app-header>
       </app-header>
    </nb-layout-header>
-   <nb-sidebar>
-      <app-sidebar>
+   <nb-sidebar [state]="sidebarState">
+      <app-sidebar (sidebarStateChanged)="onSidebarStateChanged()">
       </app-sidebar>
    </nb-sidebar>
    <nb-layout-column>

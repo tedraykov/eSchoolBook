@@ -4,11 +4,11 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbSidebarModule, NbThemeModule } from '@nebular/theme';
+import { NbMenuModule, NbSidebarModule, NbThemeModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { LayoutModule } from "./layout/layout.module";
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
+import { reducers, metaReducers } from './shared/reducers';
 import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
@@ -22,17 +22,19 @@ import { HttpClientModule } from "@angular/common/http";
       HttpClientModule,
       NbThemeModule.forRoot({name: 'default'}),
       NbSidebarModule.forRoot(),
+      NbMenuModule.forRoot(),
       LayoutModule,
       NbEvaIconsModule,
       StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true
-      }
-    })
+         metaReducers,
+         runtimeChecks: {
+            strictStateImmutability: true,
+            strictActionImmutability: true
+         }
+      })
    ],
    providers: [],
+   exports: [],
    bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
    NbActionsModule,
-   NbLayoutModule,
+   NbLayoutModule, NbMenuModule,
    NbSidebarModule
 } from "@nebular/theme";
 import { LayoutComponent } from './layout.component';
@@ -22,7 +22,8 @@ import { RouterModule } from "@angular/router";
       NbLayoutModule,
       NbSidebarModule,
       RouterModule,
-      NbActionsModule
+      NbActionsModule,
+      NbMenuModule
    ]
 })
 export class LayoutModule {

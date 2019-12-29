@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { SchoolUserRoles } from "../common/enums/SchoolUserRoles";
+import { SchoolUserRoles } from "../enums/SchoolUserRoles";
 
 export interface UserModel {
    schoolUserId: string;
