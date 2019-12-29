@@ -13,7 +13,7 @@
          <ng-container matColumnDef="grade">
             <th mat-header-cell *matHeaderCellDef>Grade</th>
             <td mat-cell
-                *matCellDef="let subject">{{subject.grade + ' ' + subject.gradeLetter}}</td>
+                *matCellDef="let subject">{{subject.grade + '' + subject.gradeLetter.toUpperCase()}}</td>
          </ng-container>
 
          <!-- Subject weekday column -->
@@ -36,7 +36,7 @@
                   <button nbButton status="info" size="small"
                           [routerLink]="subject.id">Details
                   </button>
-                  <button nbButton status="primary" size="small">Add note
+                  <button nbButton status="basic" size="small">Add note
                   </button>
                </div>
             </td>

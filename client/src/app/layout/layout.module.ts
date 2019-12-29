@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
    NbActionsModule,
-   NbLayoutModule, NbMenuModule,
+   NbLayoutModule,
+   NbMenuModule,
    NbSidebarModule
 } from "@nebular/theme";
 import { LayoutComponent } from './layout.component';
@@ -10,6 +11,7 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ContentComponent } from './content/content.component';
 import { RouterModule } from "@angular/router";
+import { AppSettingsModule } from "../shared/app-settings-ui/app-settings.module";
 
 
 @NgModule({
@@ -23,7 +25,8 @@ import { RouterModule } from "@angular/router";
       NbSidebarModule,
       RouterModule,
       NbActionsModule,
-      NbMenuModule
+      NbMenuModule,
+      AppSettingsModule
    ]
 })
 export class LayoutModule {
