@@ -56,20 +56,27 @@ namespace SchoolBook
             services.AddControllersWithViews(options =>
                 options.Filters.Add(typeof(CustomExceptionFilter)));
 
-
-            //configure DI for services
+            //Configure IdentityUser
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<SchoolBookContext>();
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            });
 
             services.AddScoped<IRepositories, Repositories>();
 
             services.AddTransient<ISeeder, DatabaseInitializer>();
 
+            //configure DI for services
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IClassService, ClassService>();
             services.AddTransient<ISubjectService, SubjectService>();
             services.AddTransient<ISchoolUserService, SchoolUserService>();
             services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<ISchoolService, SchoolService>();
 
             var jwtSettingsSection = Configuration.GetSection("JwtSettings");
             var key = Encoding.UTF8.GetBytes(jwtSettingsSection["Secret"]);

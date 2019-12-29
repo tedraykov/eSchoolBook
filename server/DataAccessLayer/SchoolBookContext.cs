@@ -92,6 +92,18 @@ namespace SchoolBook.DataAccessLayer
                 .HasOne(tts => tts.Subject)
                 .WithMany(subject => subject.Teachers)
                 .HasForeignKey(tts => tts.SubjectId);
+            
+            /* Unique constraints configuration */
+            builder.Entity<Subject>()
+                .HasIndex(s => s.Signature)
+                .IsUnique();
+
+            builder.Entity<SchoolUser>()
+                .HasAlternateKey(su => su.Pin);
+
+            builder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
         }
     }
 }

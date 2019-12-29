@@ -1,11 +1,19 @@
+using System.Collections.Generic;
+using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
+
 namespace SchoolBook.BusinessLogicLayer.Interfaces
 {
     public interface ISchoolService
     {
-        object GetAll();
+        ICollection<SchoolViewModel> GetAll();
 
-        void AddDirector();
+        SchoolViewModel GetOneById(string schoolId);
 
-        object UpdateSchool();
+        void AddSchool(SchoolInputModel inputModel);
+
+        void EditSchool(string schoolId, SchoolInputModel inputModel);
+
+        void DeleteSchool(string schoolId);
     }
 }

@@ -9,7 +9,7 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
     {
         Task<LoginViewModel> LogIn(LoginInputModel loginInputModel);
         
-        Task<RegisterViewModel> Register(RegisterInputModel registerInputModel);
+        Task<User> Register(FullRegisterInputModel inputModel);
         
         Task SeedAdmin(RegisterInputModel model);
 

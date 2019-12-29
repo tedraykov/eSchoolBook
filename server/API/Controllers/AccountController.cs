@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 using SchoolBook.BusinessLogicLayer.Interfaces;
+using SchoolBook.DataAccessLayer.Entities;
 
 namespace SchoolBook.API.Controllers
 {
@@ -24,11 +25,12 @@ namespace SchoolBook.API.Controllers
             this.AccountService = authService;
         }
         
-        [HttpPost("register")]
-        public async Task<RegisterViewModel> Register([FromBody] RegisterInputModel model)
-        {
-            return await this.AccountService.Register(model);
-        }
+//      This endpoint won't be called but is kept for testing purposes (e.g. requests with Postman)   
+//        [HttpPost("register")]
+//        public async Task<User> Register([FromBody] FullRegisterInputModel inputModel)
+//        {
+//            return await this.AccountService.Register(inputModel);
+//        }
         
         [HttpPost("login")]
         public async Task<LoginViewModel> Login ([FromBody] LoginInputModel model)

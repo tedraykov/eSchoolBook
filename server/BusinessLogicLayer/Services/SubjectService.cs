@@ -18,10 +18,9 @@ namespace SchoolBook.BusinessLogicLayer.Services
     public class SubjectService : BaseService, ISubjectService
     {
         public SubjectService(
-            IRepositories repositories, 
-            UserManager<User> userManager, 
+            IRepositories repositories,
             ILogger<BaseService> logger, 
-            IMapper mapper) : base(repositories, userManager, logger, mapper)
+            IMapper mapper) : base(repositories, logger, mapper)
         {
         }
 

@@ -22,11 +22,10 @@ namespace SchoolBook.BusinessLogicLayer.Services
     public class ClassService : BaseService, IClassService
     {
         public ClassService(
-            IRepositories repositories, 
-            UserManager<User> userManager,
+            IRepositories repositories,
             ILogger<BaseService> logger,
             IMapper mapper
-            ) : base(repositories, userManager, logger, mapper)
+            ) : base(repositories, logger, mapper)
         {
         }
 
