@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SchoolBook.BusinessLogicLayer.DTOs.InputModels
 {
@@ -13,5 +14,14 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.InputModels
         [Required]
         [Range(1,12)]
         public int GradeYear { get; set; }
+        
+        [Required]
+        public string WeekDay { get; set; }
+        
+        [Required]
+        public TimeSpan StartTime { get; set; }
+        
+        [Required]
+        public TimeSpan EndTime { get; set; }
     }
 }
