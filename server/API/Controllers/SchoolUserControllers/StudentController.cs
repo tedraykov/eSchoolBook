@@ -1,14 +1,16 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers;
+using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
+using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
+using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 
 namespace SchoolBook.API.Controllers.SchoolUserControllers
 {
-    [Route("api/students")]
+    [Route("students")]
     [ApiController]
     [Produces("application/json")]
     public class StudentController : BaseController
