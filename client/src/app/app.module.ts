@@ -13,8 +13,9 @@ import {
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { LayoutModule } from "./layout/layout.module";
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './shared/reducers';
+import { metaReducers, reducers } from './shared/reducers';
 import { HttpClientModule } from "@angular/common/http";
+import { NbAuthModule, NbPasswordAuthStrategy } from "@nebular/auth";
 
 @NgModule({
    declarations: [
@@ -29,6 +30,19 @@ import { HttpClientModule } from "@angular/common/http";
       NbSidebarModule.forRoot(),
       NbMenuModule.forRoot(),
       NbDialogModule.forRoot(),
+      NbAuthModule.forRoot({
+         strategies: [
+            NbPasswordAuthStrategy.setup({
+               name: 'email',
+               baseEndpoint: 'http://localhost:5000',
+               login: {
+                  endpoint: '/account/login',
+                  method: 'post'
+               }
+            })
+         ],
+         forms: {}
+      }),
       LayoutModule,
       NbEvaIconsModule,
       StoreModule.forRoot(reducers, {
