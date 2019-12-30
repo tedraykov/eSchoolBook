@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserModel, UserService } from "../user.service";
-import { TreeNode } from "../../common/tree-grid/tree-node";
+import { UserModel, UserService } from "../../shared/services/user.service";
+import { TreeNode } from "../../shared/tree-grid/tree-node";
 import { map } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
