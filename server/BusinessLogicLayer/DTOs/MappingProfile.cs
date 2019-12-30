@@ -24,14 +24,25 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                 .ForMember(o => o.SchoolUserId,
                     ex => ex.MapFrom(o => o.Id));
 
-            CreateMap<StudentInputModel, Student>();
-            CreateMap<Student, StudentInputModel>()
-                .ForMember(o => o.ClassId, ex => ex.MapFrom(o => o.Class.Id));
+            CreateMap<StudentModel, Student>();
+            CreateMap<Student, StudentModel>()
+                .ForMember(o => o.ClassId, ex => ex.MapFrom(o => o.Class.Id))
+                .ForMember(o => o.UserId, ex => ex.MapFrom(o => o.User.Id));
+            CreateMap<StudentEditInputModel, Student>();
+            CreateMap<Student, StudentViewModel>()
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.ClassId,
+                    ex => ex.MapFrom(o => o.Class.Id));
+
 
             /* ------------------- Authentication Mapping ------------------- */
             CreateMap<RegisterInputModel, User>()
                 .ForMember(o => o.UserName,
                     ex => ex.MapFrom(o => o.Email));
+            
 
             CreateMap<User, RegisterViewModel>()
                 .ForMember(o => o.Id,
@@ -39,6 +50,14 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
 
             CreateMap<Class, ClassViewModel>();
             CreateMap<ClassInputModel, Class>();
+            CreateMap<ClassToSubject, Class>()
+                .ForMember(o => o.Id, ex => ex.MapFrom(o => o.Class.Id))
+                .ForMember(o => o.Grade, ex => ex.MapFrom(o => o.Class.Grade))
+                .ForMember(o => o.GradeLetter, ex => ex.MapFrom(o => o.Class.GradeLetter))
+                .ForMember(o => o.ClassTeacher, ex => ex.MapFrom(o => o.Class.ClassTeacher))
+                .ForMember(o => o.StartYear, ex => ex.MapFrom(o => o.Class.StartYear))
+                .ForMember(o => o.Subjects, ex => ex.MapFrom(o => o.Class.Subjects));
+            ;
 
             CreateMap<Subject, SubjectViewModel>()
                 .ForMember(o => o.Teachers, ex =>
