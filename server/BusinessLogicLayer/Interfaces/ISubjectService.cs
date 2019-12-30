@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
+using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 
 namespace SchoolBook.BusinessLogicLayer.Interfaces
 {
@@ -11,6 +13,8 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
         List<SubjectViewModel> GetAllByGradeYear(int grade);
         
         List<SubjectOnlyViewModel> GetAllByTeacherId(string teacherId);
+        
+        List<StudentViewModel> GetStudentsAttending(string subjectId);
         
         SubjectViewModel GetOneById (string id);
 

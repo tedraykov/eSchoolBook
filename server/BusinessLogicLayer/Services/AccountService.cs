@@ -76,10 +76,10 @@ namespace SchoolBook.BusinessLogicLayer.Services
             {
                 Id = Guid.NewGuid().ToString(),
                 Email = email,
-                UserName = email
+                UserName = email,
+                RoleName = inputModel.RoleName
             };
-            user.UserName = user.Email;
-            
+
             var roles = Enum.GetValues(typeof(RoleTypes));
             var role = roles.GetValue(0);
             
@@ -92,8 +92,8 @@ namespace SchoolBook.BusinessLogicLayer.Services
                 }
             }
                 
-            await this._userManager.CreateAsync(user, inputModel.Pin);
-            await this._userManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), role));
+            await _userManager.CreateAsync(user, inputModel.Pin);
+            await _userManager.AddToRoleAsync(user, Enum.GetName(typeof(RoleTypes), role));
 
             return user;
         }

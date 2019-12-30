@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
@@ -78,6 +79,29 @@ namespace SchoolBook.BusinessLogicLayer.Services
             }
 
             return subjects;
+        }
+
+        public List<StudentViewModel> GetStudentsAttending(string subjectId)
+        {
+            var data = Repositories.ClassToSubject.Query()
+                .Include(c => c.Class)
+                .AsNoTracking()
+                .Where(c => c.SubjectId == subjectId)
+                .ProjectTo<Class>(Mapper.ConfigurationProvider)
+                .ToList();
+            
+            var students = new List<StudentViewModel>();
+            foreach (var c in data)
+            {
+                var s = Repositories.Students.Query()
+                    .Where(st => st.Class.Id == c.Id)
+                    .AsNoTracking()
+                    .ProjectTo<StudentViewModel>(Mapper.ConfigurationProvider);
+                
+                students.InsertRange(students.Count, s);
+            }
+
+            return students;
         }
 
         public SubjectViewModel GetOneById(string id)
