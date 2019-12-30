@@ -1,4 +1,6 @@
-﻿namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels
+﻿using System;
+
+namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels
 {
     public class SubjectOnlyViewModel
     {
@@ -9,5 +11,11 @@
         public string Signature { get; set; }
 
         public int GradeYear { get; set; }
+        
+        public string WeekDay { get; set; }
+        
+        public TimeSpan StartTime { get; set; }
+        
+        public TimeSpan EndTime { get; set; }
     }
 }
