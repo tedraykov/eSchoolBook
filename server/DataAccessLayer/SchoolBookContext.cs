@@ -71,8 +71,7 @@ namespace SchoolBook.DataAccessLayer
                 .HasForeignKey(cts => cts.SubjectId);
 
             builder.Entity<StudentToGrade>()
-                .HasKey(
-                    stg => new {stg.StudentId, stg.GradeId, stg.SubjectId});
+                .HasKey(stg => stg.Id);
             builder.Entity<StudentToGrade>()
                 .HasOne(stg => stg.Student)
                 .WithMany(student => student.Grades)
