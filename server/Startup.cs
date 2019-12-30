@@ -42,8 +42,6 @@ namespace SchoolBook
                     x.SerializerSettings.ReferenceLoopHandling =
                         ReferenceLoopHandling.Ignore);
 
-            services.AddAutoMapper(typeof(Startup));
-
             services.AddDbContext<SchoolBookContext>(cfg =>
             {
                 cfg.UseNpgsql(

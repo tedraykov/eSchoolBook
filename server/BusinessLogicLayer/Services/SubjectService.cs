@@ -59,6 +59,27 @@ namespace SchoolBook.BusinessLogicLayer.Services
             return subjects;
         }
 
+        public List<SubjectOnlyViewModel> GetAllByTeacherId(string teacherId)
+        {
+            var teacher = this.Repositories.Teachers.Query()
+                .Include(t => t.Subjects)
+                .ThenInclude(s => s.Subject)
+                .SingleOrDefault(t => t.Id == teacherId);
+            
+            if (teacher is null || !teacher.Subjects.Any())
+            {
+                throw new TargetException("Couldn't find any data for subjects by this teacher.");
+            }
+            
+            var subjects = new List<SubjectOnlyViewModel>();
+            foreach (var subject in teacher.Subjects)
+            {
+                subjects.Add(Mapper.Map<Subject, SubjectOnlyViewModel>(subject.Subject));
+            }
+
+            return subjects;
+        }
+
         public SubjectViewModel GetOneById(string id)
         {
             var subject = this.Repositories.Subjects.Query()

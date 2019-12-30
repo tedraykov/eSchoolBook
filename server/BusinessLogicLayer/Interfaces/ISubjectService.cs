@@ -10,6 +10,8 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
         
         List<SubjectViewModel> GetAllByGradeYear(int grade);
         
+        List<SubjectOnlyViewModel> GetAllByTeacherId(string teacherId);
+        
         SubjectViewModel GetOneById (string id);
 
         SubjectViewModel GetOneBySignature(string signature);

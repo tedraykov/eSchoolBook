@@ -2,6 +2,7 @@ using System.Linq;
 using AutoMapper;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers;
+using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
@@ -43,6 +44,7 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                 .ForMember(o => o.Teachers, ex =>
                     ex.UseDestinationValue());
             CreateMap<SubjectInputModel, Subject>();
+            CreateMap<Subject, SubjectOnlyViewModel>();
 
             CreateMap<TeacherToSubject, MinimalSchoolUserModel>()
                 .ForMember(o => o.Id, ex =>

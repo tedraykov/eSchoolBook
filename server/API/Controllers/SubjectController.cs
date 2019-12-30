@@ -35,6 +35,12 @@ namespace SchoolBook.API.Controllers
             return SubjectService.GetAllByGradeYear(year);
         }
         
+        [HttpGet("teacher/{teacherId}")]
+        public List<SubjectOnlyViewModel> GetAllByGradeYear([FromRoute] string teacherId)
+        {
+            return SubjectService.GetAllByTeacherId(teacherId);
+        }
+        
         [HttpGet("id/{id}")]
         public SubjectViewModel GetById([FromRoute] string id)
         {
