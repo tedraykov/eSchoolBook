@@ -10,7 +10,7 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels
 
         public string Signature { get; set; }
 
-        public int GradeYear { get; set; }
+        public string Grade { get; set; }
         
         public string WeekDay { get; set; }
         

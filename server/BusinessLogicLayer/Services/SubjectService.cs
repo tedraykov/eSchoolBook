@@ -62,23 +62,20 @@ namespace SchoolBook.BusinessLogicLayer.Services
 
         public List<SubjectOnlyViewModel> GetAllByTeacherId(string teacherId)
         {
-            var teacher = this.Repositories.Teachers.Query()
-                .Include(t => t.Subjects)
-                .ThenInclude(s => s.Subject)
-                .SingleOrDefault(t => t.Id == teacherId);
+            var classToSubjects = this.Repositories.ClassToSubject.Query()
+                .Include(cts => cts.Class)
+                .Include(cts => cts.Subject)
+                .Include(cts => cts.Teacher)
+                .Where(cts => cts.Teacher.Id == teacherId)
+                .ProjectTo<SubjectOnlyViewModel>(Mapper.ConfigurationProvider)
+                .ToList();
             
-            if (teacher is null || !teacher.Subjects.Any())
-            {
-                throw new TargetException("Couldn't find any data for subjects by this teacher.");
-            }
-            
-            var subjects = new List<SubjectOnlyViewModel>();
-            foreach (var subject in teacher.Subjects)
-            {
-                subjects.Add(Mapper.Map<Subject, SubjectOnlyViewModel>(subject.Subject));
-            }
+//            if (classToSubjects is null)
+//            {
+//                throw new TargetException("Couldn't find any data for subjects by this teacher.");
+//            }    
 
-            return subjects;
+            return classToSubjects;
         }
 
         public List<StudentViewModel> GetStudentsAttending(string subjectId)
