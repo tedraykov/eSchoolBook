@@ -18,8 +18,9 @@ export class SubjectListComponent implements OnInit {
    }
 
    ngOnInit() {
-      this.dataForTable = this.teacherService.getSubjects$().pipe(
-            map(subjects => new MatTableDataSource<Subject>(subjects))
+      const teacherId = 'mocked teacher id';
+      this.dataForTable = this.teacherService.getSubjectsFromCurriculum$(teacherId).pipe(
+            map((subjects: Subject[]) => new MatTableDataSource<Subject>(subjects))
       );
    }
 }

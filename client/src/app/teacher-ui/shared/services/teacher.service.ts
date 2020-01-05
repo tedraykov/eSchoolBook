@@ -6,12 +6,15 @@ import { subjects } from "./mocked-subjects";
 
 @Injectable()
 export class TeacherService {
+   private readonly serverUrl = "http://localhost:5000";
 
-   constructor(http: HttpClient) {
+   constructor(private http: HttpClient) {
    }
 
-   public getSubjects$(): Observable<Subject[]> {
+   public getSubjectsFromCurriculum$(teacherId: string): Observable<Subject[]> {
       //TODO implement get request for all subjects that teacher teaches
+
+      // return this.http.get<Subject[]>(this.serverUrl + '/subject/teacher/' + teacherId);
 
       // Mocked implementation
       return of(subjects);
