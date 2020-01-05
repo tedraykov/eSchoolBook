@@ -59,6 +59,8 @@ namespace SchoolBook.DataAccessLayer
 
         public IGeneralRepository<StudentToGrade> StudentsToGrades => this.GetRepository<StudentToGrade>();
         
+        public IGeneralRepository<TeacherToSubject> TeacherToSubject => this.GetRepository<TeacherToSubject>();
+        
         public int SaveChanges()
         {
             return this._context.SaveChanges();

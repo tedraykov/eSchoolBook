@@ -117,22 +117,6 @@ namespace SchoolBook.BusinessLogicLayer.Services
             return subject;
         }
 
-        public SubjectViewModel GetOneBySignature(string signature)
-        {
-            var subject = this.Repositories.Subjects.Query()
-                .Include(s => s.Classes)
-                .Include(s => s.Teachers)
-                .ProjectTo<SubjectViewModel>(this.Mapper.ConfigurationProvider)
-                .FirstOrDefault(s => s.Signature == signature);
-            
-            if (subject is null)
-            {
-                throw new TargetException("Subject not found");
-            }
-            
-            return subject;
-        }
-
         public void AddSubject(SubjectInputModel inputModel)
         {
             var subject = Mapper.Map<SubjectInputModel, Subject>(inputModel);

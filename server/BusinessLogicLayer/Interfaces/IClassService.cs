@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
-using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 
 namespace SchoolBook.BusinessLogicLayer.Interfaces

@@ -7,6 +7,7 @@ namespace SchoolBook.DataAccessLayer.Entities
     {
 
         public string Id { get; set; }
+        
         public string ClassId { get; set; }
         
         public Class Class { get; set; }
