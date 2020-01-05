@@ -1,16 +1,14 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
-using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
-using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
+using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 
 namespace SchoolBook.API.Controllers.SchoolUserControllers
 {
-    [Route("students")]
+    [Route("api/students")]
     [ApiController]
     [Produces("application/json")]
     public class StudentController : BaseController
@@ -27,87 +25,30 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "SuperAdmin")]
-        public IEnumerable<StudentModel> GetAll()
+        public ActionResult<IEnumerable<StudentInputModel>> Get()
         {
-            return _studentService.GetAllStudents();
-        }
-        
-        [HttpGet("school/{schoolId}")]
-        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
-        public IEnumerable<StudentModel> GetAllBySchool([FromRoute] string schoolId)
-        {
-            return _studentService.GetAllStudentsFromSchool(schoolId);
-        }
-        
-        [HttpGet("class/{classId}")]
-        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal, Teacher")]
-        public IEnumerable<StudentModel> GetAllByClass([FromRoute] string classId)
-        {
-            return _studentService.GetAllStudentsFromClass(classId);
-        }
-
-        [HttpGet("{id}")]
-        public StudentModel GetById(string id)
-        {
-            return _studentService.GetStudent(id);
+            return Ok(_studentService.GetAllStudents());
         }
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin, SchoolAdmin")]
-        public void Create([FromBody] StudentModel studentModel)
+        public ActionResult Create([FromBody] StudentInputModel studentModel)
         {
-            _studentService.AddStudent(studentModel);
-        }
-        
-        [HttpPost("grade/{studentId}")]
-        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal, Teacher")]
-        public void GradeStudent([FromRoute] string studentId, [FromBody] GradeInputModel gradeModel)
-        {
-            _studentService.GradeStudent(studentId, gradeModel);
-        }
-        
-        [HttpPut("grade/{gradeId}")]
-        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal, Teacher")]
-        public void EditStudentGrade([FromRoute] string gradeId, [FromBody] string newGradeId)
-        {
-            _studentService.EditGrade(gradeId, newGradeId);
-        }
-        
-        [HttpDelete("grade/{gradeId}")]
-        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
-        public void DeleteStudentGrade([FromRoute] string gradeId)
-        {
-            _studentService.RemoveGrade(gradeId);
+            try
+            {
+                var studentId = _studentService.AddStudent(studentModel);
+                return Created($"/api/users/{studentId}", studentId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
-        [HttpPost("absence/{studentId}")]
-        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal, Teacher")]
-        public void AddAbsence([FromRoute] string studentId, [FromBody] AbsenceInputModel absenceModel)
+        [HttpGet("{id}")]
+        public ActionResult<StudentInputModel> GetById(string id)
         {
-            _studentService.AddAbsenceToStudent(studentId, absenceModel);
-        }
-        
-        [HttpPut("absence/{studentId}")]
-        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal, Teacher")]
-        //TODO authorize by JWT claims
-        public void ExcuseAbsence([FromRoute] string studentId, [FromBody] string absenceId)
-        {
-            _studentService.ExcuseStudentAbsence(studentId, absenceId);
-        }
-        
-        [HttpPut("{studentId}")]
-        [Authorize(Roles = "SuperAdmin, SchoolAdmin")]
-        public void Update([FromRoute] string studentId, [FromBody] StudentEditInputModel editModel)
-        {
-            _studentService.UpdateStudent(studentId, editModel);
-        }
-        
-        [HttpDelete("{studentId}")]
-        [Authorize(Roles = "SuperAdmin, SchoolAdmin")]
-        public void Delete([FromRoute] string studentId)
-        {
-            _studentService.RemoveStudent(studentId);
+            return _studentService.GetStudent(id);
         }
     }
 }

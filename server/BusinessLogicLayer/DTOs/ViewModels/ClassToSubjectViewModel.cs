@@ -4,11 +4,9 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels
 {
     public class ClassToSubjectViewModel
     {
-        public string Id { get; set; }
+        public string ClassId { get; set; }
         
-        public string Grade { get; set; }
-        
-        public string SubjectName { get; set; }
+        public string SubjectId { get; set; }
         
         public string WeekDay { get; set; }
 

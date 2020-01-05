@@ -1,16 +1,12 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Reflection;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
-using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
-using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
-using SchoolBook.BusinessLogicLayer.Interfaces;
+using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
@@ -20,79 +16,35 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
 {
     public class StudentService : BaseService, IStudentService
     {
-        private readonly IAccountService _accountService ;
+        private readonly IRepositories _repositories;
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<BaseService> _logger;
+        private readonly IMapper _mapper;
+
         public StudentService(
-            IAccountService accountService,
             IRepositories repositories,
+            UserManager<User> userManager,
             ILogger<BaseService> logger,
             IMapper mapper) : base(repositories, logger, mapper)
         {
-            _accountService = accountService;
+            _repositories = repositories;
+            _userManager = userManager;
+            _logger = logger;
+            _mapper = mapper;
         }
 
-        public IEnumerable<StudentModel> GetAllStudents()
+        public string AddStudent(StudentInputModel studentModel)
         {
-            var students = Repositories.Students.Query()
-                .Include(o => o.School)
-                .Include(o => o.Class)
-                .Include(o => o.User)
-                .ProjectTo<StudentModel>(Mapper.ConfigurationProvider);
-
-            return students;
-        }
-
-        public IEnumerable<StudentModel> GetAllStudentsFromSchool(string schoolId)
-        {
-            var students = Repositories.Students.Query()
-                .Include(o => o.School)
-                .Include(o => o.Class)
-                .Include(o => o.User)
-                .Where(s => s.School.Id == schoolId)
-                .ProjectTo<StudentModel>(Mapper.ConfigurationProvider);
-
-            return students;
-        }
-
-        public IEnumerable<StudentModel> GetAllStudentsFromClass(string classId)
-        {
-            var students = Repositories.Students.Query()
-                .Include(o => o.School)
-                .Include(o => o.Class)
-                .Include(o => o.User)
-                .Where(s => s.Class.Id == classId)
-                .ProjectTo<StudentModel>(Mapper.ConfigurationProvider);
-
-            return students;
-        }
-
-        public StudentModel GetStudent(string id)
-        {
-            var student = Repositories.Students.Query()
-                .Include(o => o.School)
-                .Include(o => o.Class)
-                .Include(o => o.User)
-                .SingleOrDefault(o => o.Id == id);
-            return Mapper.Map<Student, StudentModel>(student);
-        }
-
-        public void AddStudent(StudentModel studentModel)
-        {
-            if (Repositories.SchoolUsers.Query().Any(su => su.Pin == studentModel.Pin) ||
-                Repositories.SchoolUsers.Query().Any(su => su.User.Id == studentModel.UserId))
-            {
-                throw new DuplicateNameException("User already exists");
-            }
-
-            var student = Mapper.Map<StudentModel, Student>(studentModel);
-            var studentSchool = Repositories.Schools.GetById(studentModel.SchoolId);
-            
+            var student = _mapper.Map<StudentInputModel, Student>(studentModel);
+            var studentSchool =
+                _repositories.Schools.GetById(studentModel.SchoolId);
             if (studentSchool == null)
             {
                 throw new TargetException("School does not exist");
             }
 
-            var studentClass = Repositories.Classes.GetById(studentModel.ClassId);
-            
+            var studentClass =
+                _repositories.Classes.GetById(studentModel.ClassId);
             if (studentClass == null)
             {
                 throw new TargetException("Class does not exist");
@@ -100,148 +52,40 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
 
             student.Class = studentClass;
             student.School = studentSchool;
-            student.User = Repositories.Users.GetById(studentModel.UserId);
-            student.Id = student.User.Id;
-            
-            Repositories.Students.Create(student);
+            _repositories.Students.Create(student);
+            return student.Id;
         }
 
-        public void UpdateStudent(string studentId, StudentEditInputModel editModel)
+        public void UpdateStudent(string studentId, StudentInputModel studentModel)
         {
-            var student = Repositories.Students.Query()
-                .AsNoTracking()
-                .SingleOrDefault(s => s.Id == studentId);
+            var student = _repositories.Students.GetById(studentId);
             if (student == null)
             {
                 throw new TargetException("Student does not exist");
             }
 
-            var newData = Mapper.Map<StudentEditInputModel, Student>(editModel);
-            newData.Id = studentId;
-            newData.StartYear = student.StartYear;
-            
-            Repositories.Students.Update(newData);
+            _mapper.Map(studentModel, student);
+            _repositories.Students.SaveChanges();
         }
 
-        public void GradeStudent(string studentId, GradeInputModel gradeModel)
-         {
-             var student = Repositories.Students.GetById(studentId);
- 
-             var grade = Repositories.Grades.GetWithoutTracking()
-                 .SingleOrDefault(g => g.Id == gradeModel.GradeId);
-             
-             var subject = Repositories.Subjects.GetWithoutTracking()
-                 .SingleOrDefault(s => s.Id == gradeModel.SubjectId);
- 
-             var newGrade = new StudentToGrade
-             {
-                 DateCreated = DateTime.Now,
-                 DateModified = DateTime.Now,
-                 GradeId = gradeModel.GradeId,
-                 Grade = grade,
-                 SubjectId = gradeModel.SubjectId,
-                 Subject = subject,
-                 StudentId = studentId,
-                 Student = student
-             };
-             student.Grades.Add(newGrade);
- 
-             Repositories.Students.SaveChanges();
-         }
-
-        public void EditGrade(string gradeId, string newGradeId)
+        public StudentInputModel GetStudent(string id)
         {
-            var grade = Repositories.StudentsToGrades.Query()
-                .Include(stg => stg.Grade)
-                .SingleOrDefault(stg => stg.Id == gradeId);
-
-            if (grade is null)
-            {
-                throw new TargetException("Grade not found");
-            }
-
-            grade.GradeId = newGradeId;
-            grade.DateModified = DateTime.Now;
-
-            Repositories.StudentsToGrades.SaveChanges();
+            var student = _repositories.Students.Query()
+                .Include(o => o.School)
+                .Include(o => o.Class)
+                .SingleOrDefault(o => o.Id == id);
+            return _mapper.Map<Student, StudentInputModel>(student);
         }
 
-        public void RemoveGrade(string gradeId)
+        public IEnumerable<StudentInputModel> GetAllStudents()
         {
-            var grade = Repositories.StudentsToGrades.GetById(gradeId);
-            
-            Repositories.StudentsToGrades.Delete(grade);
-            Repositories.StudentsToGrades.SaveChanges();
-        }
-
-        public void AddAbsenceToStudent(string studentId, AbsenceInputModel absenceModel)
-        {
-            var student = Repositories.Students.Query()
-                .SingleOrDefault(s => s.Id == studentId);
-
-            if (student is null)
-            {
-                throw  new TargetException("Student not found");
-            }
-            
-            var subject = Repositories.Subjects.GetWithoutTracking()
-                .SingleOrDefault(s => s.Id == absenceModel.SubjectId);
-            var absence = new Absence
-            {
-                DateCreated = DateTime.Now,
-                DateModified = DateTime.Now,
-                Student = student,
-                Subject = subject,
-                IsFullAbsence = absenceModel.IsFullAbsence,
-                IsExcused = false
-            };
-            
-            student.Absences.Add(absence);
-
-            Repositories.Students.SaveChanges();
-        }
-
-        public void ExcuseStudentAbsence(string studentId, string absenceId)
-        {
-            var student = Repositories.Students.Query()
-                .Include(s => s.Absences)
-                .SingleOrDefault(s => s.Id == studentId);
-            
-            if (student is null)
-            {
-                throw  new TargetException("Student not found");
-            }
-            
-            var absence = student.Absences.SingleOrDefault(a => a.Id == absenceId);
-            
-            if (absence is null)
-            {
-                throw  new TargetException("Student absence not found");
-            }
-
-            if (!absence.IsFullAbsence)
-            {
-                throw new ArgumentException("Cannot excuse absences that aren't full.");
-            }
-
-            absence.IsExcused = true;
-            absence.DateModified = DateTime.Now;
-
-            Repositories.Students.SaveChanges();
-
-        }
-
-        public void RemoveStudent(string studentId)
-        {
-            var student = Repositories.Students.GetById(studentId);
-
-            if (student is null)
-            {
-                throw new TargetException("Student not found.");
-            }
-            
-            Repositories.Students.Delete(student);
-            Repositories.Students.SaveChanges();
+            var students = _repositories.Students.Query()
+                .Include(o => o.School)
+                .Include(o => o.Class)
+                .Take(10);
+            return _mapper
+                .Map<IEnumerable<Student>, IEnumerable<StudentInputModel>>(
+                    students);
         }
     }
 }

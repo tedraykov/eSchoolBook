@@ -75,7 +75,6 @@ namespace SchoolBook
             services.AddTransient<ISchoolUserService, SchoolUserService>();
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ISchoolService, SchoolService>();
-            services.AddTransient<ICurriculumService, CurriculumService>();
 
             var jwtSettingsSection = Configuration.GetSection("JwtSettings");
             var key = Encoding.UTF8.GetBytes(jwtSettingsSection["Secret"]);

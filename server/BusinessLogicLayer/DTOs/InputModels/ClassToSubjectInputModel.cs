@@ -9,9 +9,6 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.InputModels
         public string SubjectId { get; set; }
         
         [Required]
-        public string TeacherId { get; set; }
-        
-        [Required]
         public string WeekDay { get; set; }
 
         [Required]

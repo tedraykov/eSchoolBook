@@ -1,5 +1,7 @@
+using System.Linq;
 using AutoMapper;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
+using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
@@ -22,25 +24,14 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                 .ForMember(o => o.SchoolUserId,
                     ex => ex.MapFrom(o => o.Id));
 
-            CreateMap<StudentModel, Student>();
-            CreateMap<Student, StudentModel>()
-                .ForMember(o => o.ClassId, ex => ex.MapFrom(o => o.Class.Id))
-                .ForMember(o => o.UserId, ex => ex.MapFrom(o => o.User.Id));
-            CreateMap<StudentEditInputModel, Student>();
-            CreateMap<Student, StudentViewModel>()
-                .ForMember(o => o.FullName,
-                    ex => ex.MapFrom(o => GetFullName(o)))
-                .ForMember(o => o.SchoolUserId,
-                    ex => ex.MapFrom(o => o.Id))
-                .ForMember(o => o.ClassId,
-                    ex => ex.MapFrom(o => o.Class.Id));
-
+            CreateMap<StudentInputModel, Student>();
+            CreateMap<Student, StudentInputModel>()
+                .ForMember(o => o.ClassId, ex => ex.MapFrom(o => o.Class.Id));
 
             /* ------------------- Authentication Mapping ------------------- */
             CreateMap<RegisterInputModel, User>()
                 .ForMember(o => o.UserName,
                     ex => ex.MapFrom(o => o.Email));
-            
 
             CreateMap<User, RegisterViewModel>()
                 .ForMember(o => o.Id,
@@ -48,16 +39,6 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
 
             CreateMap<Class, ClassViewModel>();
             CreateMap<ClassInputModel, Class>();
-
-            CreateMap<ClassToSubject, Class>()
-                .ForMember(o => o.Id, ex => ex.MapFrom(o => o.Class.Id))
-                .ForMember(o => o.Grade, ex => ex.MapFrom(o => o.Class.Grade))
-                .ForMember(o => o.GradeLetter, ex => ex.MapFrom(o => o.Class.GradeLetter))
-                .ForMember(o => o.ClassTeacher, ex => ex.MapFrom(o => o.Class.ClassTeacher))
-                .ForMember(o => o.StartYear, ex => ex.MapFrom(o => o.Class.StartYear))
-                .ForMember(o => o.Subjects, ex => ex.MapFrom(o => o.Class.Subjects));
-            
-            CreateMap<ClassToSubject, SubjectOnlyViewModel>();
 
             CreateMap<Subject, SubjectViewModel>()
                 .ForMember(o => o.Teachers, ex =>
@@ -75,14 +56,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                 .ForMember(o => o.LastName, ex =>
                     ex.MapFrom(o => o.Teacher.LastName));
 
-            CreateMap<ClassToSubjectInputModel, ClassToSubject>()
-                .ForMember(o => o.Teacher, ex =>
-                    ex.UseDestinationValue());
-            CreateMap<ClassToSubject, ClassToSubjectViewModel>()
-                .ForMember(o => o.Grade, ex => 
-                    ex.MapFrom(o => o.Class.Grade.ToString() + o.Class.GradeLetter))
-                .ForMember( o => o.SubjectName, ex => 
-                    ex.MapFrom(o => o.Subject.Name));
+            CreateMap<ClassToSubjectInputModel, ClassToSubject>();
+            CreateMap<ClassToSubject, ClassToSubjectViewModel>();
 
             CreateMap<SchoolInputModel, School>();
             CreateMap<School, SchoolViewModel>();

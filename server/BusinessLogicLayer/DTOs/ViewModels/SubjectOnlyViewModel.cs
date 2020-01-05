@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels
+﻿namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels
 {
     public class SubjectOnlyViewModel
     {
@@ -8,6 +6,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels
 
         public string Name { get; set; }
 
-        public string Grade { get; set; }
+        public string Signature { get; set; }
+
+        public int GradeYear { get; set; }
     }
 }

@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
+using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.DataAccessLayer.Entities;
+using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 using SchoolBook.DataAccessLayer.Interfaces;
 
 namespace SchoolBook.BusinessLogicLayer.Services
@@ -116,30 +119,18 @@ namespace SchoolBook.BusinessLogicLayer.Services
             }
 
             var subject = Repositories.Subjects.GetById(inputModel.SubjectId);
+
             if (subject is null)
             {
                 throw new TargetException("Subject not found");
             }
-
-            var teacher = Repositories.TeacherToSubject.Query()
-                .Include(tts => tts.Teacher)
-                .Include(tts => tts.Subject)
-                .Where(tts => tts.SubjectId == inputModel.SubjectId)
-                .FirstOrDefault(tts => tts.TeacherId == inputModel.TeacherId);
-            
-            if (teacher is null)
-            {
-                throw new TargetException("Teacher not found");
-            }
             
             dbClass.Subjects.Add(new ClassToSubject
             {
-                Id = Guid.NewGuid().ToString(),
                 Class = dbClass,
                 ClassId = classId,
                 Subject = subject,
                 SubjectId = subject.Id,
-                Teacher = teacher.Teacher,
                 EndTime = inputModel.EndTime,
                 StartTime = inputModel.StartTime,
                 WeekDay = inputModel.WeekDay
@@ -152,33 +143,19 @@ namespace SchoolBook.BusinessLogicLayer.Services
         public void EditSubject(string classId, ClassToSubjectInputModel inputModel)
         {
             var subject = Repositories.ClassToSubject.Query()
+                .Include(cs => cs.Class)
                 .Include(cs => cs.Subject)
-                .Include(cs => cs.Teacher)
                 .AsNoTracking()
-                .Where(cs => cs.ClassId == classId)
-                .FirstOrDefault(cs => cs.SubjectId == inputModel.SubjectId);
+                .ProjectTo<ClassToSubjectViewModel>(this.Mapper.ConfigurationProvider)
+                .FirstOrDefault(cs => cs.ClassId == classId);
             
             if (subject is null)
             {
                 throw new TargetException("Data not found");
             }
 
-            var teacher = Repositories.TeacherToSubject.Query()
-                .Include(tts => tts.Teacher)
-                .Include(tts => tts.Subject)
-                .Where(tts => tts.SubjectId == inputModel.SubjectId)
-                .FirstOrDefault(tts => tts.TeacherId == inputModel.TeacherId);
-            
-            if (teacher is null)
-            {
-                throw new TargetException("Teacher not found");
-            }
-
             var newData = Mapper.Map<ClassToSubjectInputModel, ClassToSubject>(inputModel);
-            newData.Id = subject.Id;
             newData.ClassId = classId;
-            newData.SubjectId = subject.SubjectId;
-            newData.Teacher = teacher.Teacher;
             
             Repositories.ClassToSubject.Update(newData);
         }

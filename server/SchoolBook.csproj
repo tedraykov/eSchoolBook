@@ -16,6 +16,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="BusinessLogicLayer\DTOs\Models" />
+      <Folder Include="BusinessLogicLayer\DTOs\ViewModels\SchoolUsers" />
       <Folder Include="DataAccessLayer\Migrations" />
     </ItemGroup>
 
