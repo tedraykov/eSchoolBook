@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NbAuthComponent, NbLoginComponent, } from '@nebular/auth';
 import { LayoutComponent } from "./layout/layout.component";
+import { AuthGuard } from "./auth/guards/auth.guard";
 
 const routes: Routes = [
    {
-      path: '', pathMatch: 'full', component: LayoutComponent,
+      path: 'app', component: LayoutComponent, canActivate: [AuthGuard],
       children: [
          {
             path: 'users',
@@ -17,20 +17,7 @@ const routes: Routes = [
          }
       ]
    },
-   {
-      path: 'auth',
-      component: NbAuthComponent,
-      children: [
-         {
-            path: '',
-            component: NbLoginComponent,
-         },
-         {
-            path: 'login',
-            component: NbLoginComponent,
-         }
-      ],
-   },
+   {path: '', pathMatch: 'full', redirectTo: 'app'}
 ];
 
 @NgModule({

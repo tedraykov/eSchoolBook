@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { SchoolUserRoles } from "../enums/school-user-roles";
+import { Roles } from "../enums/school-user-roles";
 
 export interface UserModel {
    schoolUserId: string;
    fullName: string;
-   role: SchoolUserRoles;
+   role: Roles;
 }
 
 @Injectable({

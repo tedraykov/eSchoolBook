@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NbDialogService } from "@nebular/theme";
-import { SettingsComponent } from "../../shared/app-settings-ui/settings.component";
+import { SettingsComponent } from "../../shared/components/app-settings/settings.component";
 
 @Component({
   selector: 'app-header',

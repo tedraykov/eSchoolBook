@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NbDialogRef, NbThemeService } from "@nebular/theme";
-import { ThemeEnums } from "../enums/theme-enums";
 
 @Component({
    selector: 'app-settings',

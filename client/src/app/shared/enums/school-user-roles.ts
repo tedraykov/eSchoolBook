@@ -1,6 +1,7 @@
-export enum SchoolUserRoles {
+export enum Roles {
    Teacher,
    Student,
    Principal,
-   Parent
+   Parent,
+   SuperAdmin
 }

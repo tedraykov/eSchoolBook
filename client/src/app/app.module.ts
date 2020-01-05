@@ -13,9 +13,10 @@ import {
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { LayoutModule } from "./layout/layout.module";
 import { StoreModule } from '@ngrx/store';
-import { metaReducers, reducers } from './shared/reducers';
 import { HttpClientModule } from "@angular/common/http";
 import { NbAuthModule, NbPasswordAuthStrategy } from "@nebular/auth";
+import { AuthModule } from "./auth/auth.module";
+import { EffectsModule } from "@ngrx/effects";
 
 @NgModule({
    declarations: [
@@ -43,15 +44,17 @@ import { NbAuthModule, NbPasswordAuthStrategy } from "@nebular/auth";
          ],
          forms: {}
       }),
-      LayoutModule,
       NbEvaIconsModule,
-      StoreModule.forRoot(reducers, {
-         metaReducers,
+      AuthModule,
+      LayoutModule,
+      StoreModule.forRoot({}, {
          runtimeChecks: {
             strictStateImmutability: true,
             strictActionImmutability: true
          }
-      })
+      }),
+      EffectsModule.forRoot([]),
+
    ],
    providers: [],
    exports: [],

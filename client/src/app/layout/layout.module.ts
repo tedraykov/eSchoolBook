@@ -4,14 +4,15 @@ import {
    NbActionsModule,
    NbLayoutModule,
    NbMenuModule,
-   NbSidebarModule
+   NbSidebarModule, NbUserModule
 } from "@nebular/theme";
 import { LayoutComponent } from './layout.component';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ContentComponent } from './content/content.component';
 import { RouterModule } from "@angular/router";
-import { AppSettingsModule } from "../shared/app-settings-ui/app-settings.module";
+import { AppSettingsModule } from "../shared/components/app-settings/app-settings.module";
+import { UserAvatarModule } from "../shared/components/user-avatar/user-avatar.module";
 
 
 @NgModule({
@@ -26,7 +27,9 @@ import { AppSettingsModule } from "../shared/app-settings-ui/app-settings.module
       RouterModule,
       NbActionsModule,
       NbMenuModule,
-      AppSettingsModule
+      AppSettingsModule,
+      NbUserModule,
+      UserAvatarModule
    ]
 })
 export class LayoutModule {
