@@ -54,12 +54,6 @@ namespace SchoolBook.API.Controllers
             return SubjectService.GetOneById(id);
         }
         
-        [HttpGet("sign/{sign}")]
-        public SubjectViewModel GetBySignature([FromRoute] string sign)
-        {
-            return SubjectService.GetOneBySignature(sign);
-        }
-        
         [HttpPost]
         public void AddSubject([FromBody] SubjectInputModel inputModel)
         {

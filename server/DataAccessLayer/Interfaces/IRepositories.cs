@@ -31,6 +31,8 @@ namespace SchoolBook.DataAccessLayer.Interfaces
         IGeneralRepository<ClassToSubject> ClassToSubject { get; }
         
         IGeneralRepository<StudentToGrade> StudentsToGrades { get; }
+        
+        IGeneralRepository<TeacherToSubject> TeacherToSubject { get; }
 
         int SaveChanges();
     }

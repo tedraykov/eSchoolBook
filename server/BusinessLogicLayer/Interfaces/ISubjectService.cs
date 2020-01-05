@@ -18,8 +18,6 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
         
         SubjectViewModel GetOneById (string id);
 
-        SubjectViewModel GetOneBySignature(string signature);
-
         void AddSubject(SubjectInputModel inputModel);
 
         SubjectViewModel EditSubject(string id, SubjectInputModel inputModel);
