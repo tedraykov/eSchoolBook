@@ -14,6 +14,10 @@ const routes: Routes = [
          {
             path: 'teacher',
             loadChildren: () => import('./teacher-ui/teacher-ui.module').then(m => m.TeacherUiModule)
+         },
+         {
+            path: 'student',
+            loadChildren: () => import('./student-ui/student-ui.module').then(m => m.StudentUiModule)
          }
       ]
    },
