@@ -15,6 +15,8 @@ namespace SchoolBook.BusinessLogicLayer.Services
 {
     public class CurriculumService : BaseService, ICurriculumService
     {
+        private ICurriculumService _curriculumServiceImplementation;
+
         public CurriculumService(
             IRepositories repositories, 
             ILogger<BaseService> logger, 
@@ -22,14 +24,14 @@ namespace SchoolBook.BusinessLogicLayer.Services
         {
         }
 
-        public List<ClassToSubjectViewModel> GetTeacherActiveSubjects(string teacherId)
+        public List<T_ClassToSubjectViewModel> GetTeacherActiveSubjects(string teacherId)
         {
             var classToSubjects = this.Repositories.ClassToSubject.Query()
                 .Include(cts => cts.Class)
                 .Include(cts => cts.Subject)
                 .Include(cts => cts.Teacher)
                 .Where(cts => cts.Teacher.Id == teacherId)
-                .ProjectTo<ClassToSubjectViewModel>(Mapper.ConfigurationProvider)
+                .ProjectTo<T_ClassToSubjectViewModel>(Mapper.ConfigurationProvider)
                 .ToList();
             
             if (classToSubjects is null)
@@ -57,6 +59,27 @@ namespace SchoolBook.BusinessLogicLayer.Services
             }
 
             return students;
+        }
+
+        public List<S_ClassToSubjectViewModel> GetStudentWeeklyCurriculum(string studentId)
+        {
+            var student = this.Repositories.Students.Query()
+                .Include(s => s.Class)
+                .FirstOrDefault(s => s.Id == studentId);
+
+            var curriculum = this.Repositories.ClassToSubject.Query()
+                .Include(cts => cts.Subject)
+                .Include(cts => cts.Teacher)
+                .Where(cts => cts.ClassId == student.Class.Id)
+                .ProjectTo<S_ClassToSubjectViewModel>(Mapper.ConfigurationProvider)
+                .ToList();
+            
+            if (student is null || !curriculum.Any() || curriculum is null)
+            {
+                throw new TargetException("Couldn't find any data for student's curriculum");
+            }
+
+            return curriculum;
         }
     }
 }
