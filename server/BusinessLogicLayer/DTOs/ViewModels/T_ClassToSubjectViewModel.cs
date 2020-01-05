@@ -2,7 +2,7 @@
 
 namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels
 {
-    public class ClassToSubjectViewModel
+    public class T_ClassToSubjectViewModel
     {
         public string Id { get; set; }
         

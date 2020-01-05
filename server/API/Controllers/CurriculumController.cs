@@ -26,7 +26,7 @@ namespace SchoolBook.API.Controllers
         
         [HttpGet("teacher-subjects/{teacherId}")]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal, Teacher")]
-        public List<ClassToSubjectViewModel> GetTeacherActiveSubjects([FromRoute] string teacherId)
+        public List<T_ClassToSubjectViewModel> GetTeacherActiveSubjects([FromRoute] string teacherId)
         {
             return this.CurriculumService.GetTeacherActiveSubjects(teacherId);
         }
@@ -37,6 +37,13 @@ namespace SchoolBook.API.Controllers
         public List<StudentViewModel> GetStudentsInClassAttendingSubject([FromRoute] string classCurriculumId)
         {
             return this.CurriculumService.GetStudentsInClassAttendingSubject(classCurriculumId);
+        }
+        
+        [HttpGet("student/{studentId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal, Teacher, Student, Parent")]
+        public List<S_ClassToSubjectViewModel> GetStudentWeeklyCurriculum([FromRoute] string studentId)
+        {
+            return this.CurriculumService.GetStudentWeeklyCurriculum(studentId);
         }
     }
 }

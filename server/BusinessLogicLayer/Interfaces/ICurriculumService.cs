@@ -6,8 +6,10 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
 {
     public interface ICurriculumService
     {
-        List<ClassToSubjectViewModel> GetTeacherActiveSubjects(string teacherId);
+        List<T_ClassToSubjectViewModel> GetTeacherActiveSubjects(string teacherId);
 
         List<StudentViewModel> GetStudentsInClassAttendingSubject(string classCurriculumId);
+
+        List<S_ClassToSubjectViewModel> GetStudentWeeklyCurriculum(string studentId);
     }
 }
