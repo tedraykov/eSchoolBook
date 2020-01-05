@@ -1,6 +1,8 @@
 using AutoMapper;
+using Microsoft.VisualBasic.CompilerServices;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
+using SchoolBook.BusinessLogicLayer.DTOs.Models;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
@@ -78,9 +80,16 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
             CreateMap<ClassToSubjectInputModel, ClassToSubject>()
                 .ForMember(o => o.Teacher, ex =>
                     ex.UseDestinationValue());
-            CreateMap<ClassToSubject, ClassToSubjectViewModel>()
+            CreateMap<ClassToSubject, T_ClassToSubjectViewModel>()
                 .ForMember(o => o.Grade, ex => 
                     ex.MapFrom(o => o.Class.Grade.ToString() + o.Class.GradeLetter))
+                .ForMember( o => o.SubjectName, ex => 
+                    ex.MapFrom(o => o.Subject.Name));
+            CreateMap<ClassToSubject, S_ClassToSubjectViewModel>()
+                .ForMember(o => o.TeacherName, ex => 
+                    ex.MapFrom(o => o.Teacher.FirstName.ToString() + " " + 
+                                    o.Teacher.SecondName.Substring(0,1) + ". " + 
+                                    o.Teacher.LastName))
                 .ForMember( o => o.SubjectName, ex => 
                     ex.MapFrom(o => o.Subject.Name));
 
