@@ -60,7 +60,7 @@ namespace SchoolBook.DataAccessLayer
             
             /* Many to many relationships configuration */
             builder.Entity<ClassToSubject>()
-                .HasKey(cts => new {cts.ClassId, cts.SubjectId});
+                .HasKey(cts => cts.Id);
             builder.Entity<ClassToSubject>()
                 .HasOne(cts => cts.Class)
                 .WithMany(book => book.Subjects)
@@ -71,8 +71,7 @@ namespace SchoolBook.DataAccessLayer
                 .HasForeignKey(cts => cts.SubjectId);
 
             builder.Entity<StudentToGrade>()
-                .HasKey(
-                    stg => new {stg.StudentId, stg.GradeId, stg.SubjectId});
+                .HasKey(stg => stg.Id);
             builder.Entity<StudentToGrade>()
                 .HasOne(stg => stg.Student)
                 .WithMany(student => student.Grades)
@@ -94,10 +93,6 @@ namespace SchoolBook.DataAccessLayer
                 .HasForeignKey(tts => tts.SubjectId);
             
             /* Unique constraints configuration */
-            builder.Entity<Subject>()
-                .HasIndex(s => s.Signature)
-                .IsUnique();
-
             builder.Entity<SchoolUser>()
                 .HasAlternateKey(su => su.Pin);
 

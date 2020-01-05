@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 
 namespace SchoolBook.API.Controllers
@@ -36,9 +37,15 @@ namespace SchoolBook.API.Controllers
         }
         
         [HttpGet("teacher/{teacherId}")]
-        public List<SubjectOnlyViewModel> GetAllByGradeYear([FromRoute] string teacherId)
+        public List<SubjectOnlyViewModel> GetAllByTeacherId([FromRoute] string teacherId)
         {
             return SubjectService.GetAllByTeacherId(teacherId);
+        }
+        
+        [HttpGet("students/{subjectId}")]
+        public List<StudentViewModel> StudentsAttending(string subjectId)
+        {
+            return SubjectService.GetStudentsAttending(subjectId);
         }
         
         [HttpGet("id/{id}")]
@@ -47,13 +54,7 @@ namespace SchoolBook.API.Controllers
             return SubjectService.GetOneById(id);
         }
         
-        [HttpGet("sign/{sign}")]
-        public SubjectViewModel GetBySignature([FromRoute] string sign)
-        {
-            return SubjectService.GetOneBySignature(sign);
-        }
-        
-        [HttpPost()]
+        [HttpPost]
         public void AddSubject([FromBody] SubjectInputModel inputModel)
         {
             SubjectService.AddSubject(inputModel);

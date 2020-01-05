@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
@@ -61,23 +62,43 @@ namespace SchoolBook.BusinessLogicLayer.Services
 
         public List<SubjectOnlyViewModel> GetAllByTeacherId(string teacherId)
         {
-            var teacher = this.Repositories.Teachers.Query()
-                .Include(t => t.Subjects)
-                .ThenInclude(s => s.Subject)
-                .SingleOrDefault(t => t.Id == teacherId);
+            var classToSubjects = this.Repositories.ClassToSubject.Query()
+                .Include(cts => cts.Class)
+                .Include(cts => cts.Subject)
+                .Include(cts => cts.Teacher)
+                .Where(cts => cts.Teacher.Id == teacherId)
+                .ProjectTo<SubjectOnlyViewModel>(Mapper.ConfigurationProvider)
+                .ToList();
             
-            if (teacher is null || !teacher.Subjects.Any())
-            {
-                throw new TargetException("Couldn't find any data for subjects by this teacher.");
-            }
+//            if (classToSubjects is null)
+//            {
+//                throw new TargetException("Couldn't find any data for subjects by this teacher.");
+//            }    
+
+            return classToSubjects;
+        }
+
+        public List<StudentViewModel> GetStudentsAttending(string subjectId)
+        {
+            var data = Repositories.ClassToSubject.Query()
+                .Include(c => c.Class)
+                .AsNoTracking()
+                .Where(c => c.SubjectId == subjectId)
+                .ProjectTo<Class>(Mapper.ConfigurationProvider)
+                .ToList();
             
-            var subjects = new List<SubjectOnlyViewModel>();
-            foreach (var subject in teacher.Subjects)
+            var students = new List<StudentViewModel>();
+            foreach (var c in data)
             {
-                subjects.Add(Mapper.Map<Subject, SubjectOnlyViewModel>(subject.Subject));
+                var s = Repositories.Students.Query()
+                    .Where(st => st.Class.Id == c.Id)
+                    .AsNoTracking()
+                    .ProjectTo<StudentViewModel>(Mapper.ConfigurationProvider);
+                
+                students.InsertRange(students.Count, s);
             }
 
-            return subjects;
+            return students;
         }
 
         public SubjectViewModel GetOneById(string id)
@@ -87,22 +108,6 @@ namespace SchoolBook.BusinessLogicLayer.Services
                 .Include(s => s.Teachers)
                 .ProjectTo<SubjectViewModel>(this.Mapper.ConfigurationProvider)
                 .FirstOrDefault(s => s.Id == id);
-            
-            if (subject is null)
-            {
-                throw new TargetException("Subject not found");
-            }
-            
-            return subject;
-        }
-
-        public SubjectViewModel GetOneBySignature(string signature)
-        {
-            var subject = this.Repositories.Subjects.Query()
-                .Include(s => s.Classes)
-                .Include(s => s.Teachers)
-                .ProjectTo<SubjectViewModel>(this.Mapper.ConfigurationProvider)
-                .FirstOrDefault(s => s.Signature == signature);
             
             if (subject is null)
             {
