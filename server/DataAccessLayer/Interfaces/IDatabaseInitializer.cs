@@ -5,6 +5,6 @@ namespace SchoolBook.DataAccessLayer.Interfaces
 {
     public interface ISeeder
     {
-        void Seed();
+        Task Seed();
     }
 }

@@ -47,18 +47,18 @@ namespace SchoolBook.DataAccessLayer
             _configuration = configuration;
         }
 
-        public void Seed()
+        public async Task Seed()
         {
-            SeedRoles().Wait();
-            SeedUserAdmin().Wait();
+            await SeedRoles();
+            await SeedUserAdmin();
             SeedGrades();
             SeedSchool();
             SeedClass();
-            SeedSchoolUsers();
+            await SeedSchoolUsers();
             _repositories.SaveChanges();
         }
 
-        private void SeedSchoolUsers()
+        private async Task SeedSchoolUsers()
         {
             _logger.LogDebug("Start Seeding Student...");
             if (_ctx.Students.FirstOrDefault() == null)
@@ -75,9 +75,14 @@ namespace SchoolBook.DataAccessLayer
                     School = _ctx.Schools.FirstOrDefault(),
                     Class = _ctx.Classes.FirstOrDefault()
                 };
-
-                _ctx.Students.Add(student);
-                _ctx.SaveChanges();
+                var account = await CreateAspUser(student);
+                if (account != null)
+                {
+                    student.User = account;
+                    student.Id = account.Id;
+                    _ctx.Students.Add(student);
+                    await _ctx.SaveChangesAsync();
+                }
             }
 
             _logger.LogDebug("Student Seeded");
@@ -97,11 +102,17 @@ namespace SchoolBook.DataAccessLayer
                     School = _ctx.Schools.FirstOrDefault()
                 };
 
-                _ctx.Teachers.Add(teacher);
 
+                var account = await CreateAspUser(teacher);
                 var someClass = _ctx.Classes.FirstOrDefault();
 
-                if (someClass != null) someClass.ClassTeacher = teacher;
+                if (someClass != null && account != null)
+                {
+                    someClass.ClassTeacher = teacher;
+                    teacher.User = account;
+                    teacher.Id = account.Id;
+                    _ctx.Teachers.Add(teacher);
+                }
             }
 
             _logger.LogDebug("Teacher Seeded");
@@ -119,10 +130,12 @@ namespace SchoolBook.DataAccessLayer
                     Town = "София",
                     School = _ctx.Schools.FirstOrDefault()
                 };
-                
+
                 var student = _ctx.Students.FirstOrDefault();
-                if (parent.Children != null)
+                var account = await CreateAspUser(parent);
+                if (parent.Children != null && account != null)
                 {
+                    parent.User = account;
                     parent.Children.Add(student);
                     _logger.LogInformation(parent.ToString());
                     _ctx.Parents.Add(parent);
@@ -225,6 +238,18 @@ namespace SchoolBook.DataAccessLayer
             };
             _ctx.Classes.Add(defaultClass);
             _ctx.SaveChanges();
+        }
+
+        private async Task<User> CreateAspUser(SchoolUser schoolUser)
+        {
+            var accountRegister = new FullRegisterInputModel
+            {
+                Pin = schoolUser.Pin,
+                FirstName = schoolUser.FirstName,
+                LastName = schoolUser.LastName,
+                RoleName = schoolUser.Role.ToString()
+            };
+            return await _accountService.Register(accountRegister);
         }
     }
 }
