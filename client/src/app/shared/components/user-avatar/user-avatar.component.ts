@@ -1,13 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from "@ngrx/store";
 import { Subscription } from "rxjs";
-import { AuthState, getAuthState } from "../../../auth/state";
-import { tap } from "rxjs/operators";
-
-interface AvatarUserModel {
-   name: string,
-   title: string
-}
+import { AuthState, avatarUser } from "../../../auth/state";
+import { AvatarUserModel } from "./avatar-user.model";
 
 @Component({
    selector: 'app-user-avatar',
@@ -22,10 +17,8 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
    }
 
    ngOnInit() {
-      this.sub = this.store.select(getAuthState).pipe(
-            tap(x => console.log(x))
-      ).subscribe(
-      );
+      this.sub = this.store.select(avatarUser)
+            .subscribe(avatarUser => this.user = avatarUser);
    }
 
    ngOnDestroy(): void {

@@ -1,5 +1,6 @@
 import { Roles } from "../../shared/enums/school-user-roles";
-import { createFeatureSelector } from "@ngrx/store";
+import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { AvatarUserModel } from "../../shared/components/user-avatar/avatar-user.model";
 
 export interface AuthState {
    role: Roles;
@@ -9,4 +10,8 @@ export interface AuthState {
 }
 
 export const getAuthState = createFeatureSelector('auth');
+
+export const avatarUser = createSelector(getAuthState, (state: AuthState) => {
+   return <AvatarUserModel>{name: 'Not implemented yet', role: state.role}
+});
 

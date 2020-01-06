@@ -2,9 +2,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SchoolBook.DataAccessLayer;
 using SchoolBook.DataAccessLayer.Interfaces;
 
 namespace SchoolBook
@@ -29,7 +27,7 @@ namespace SchoolBook
             {
                 var seeder = scope.ServiceProvider
                     .GetService<ISeeder>();
-                seeder.Seed();
+                seeder.Seed().Wait();
             }
         }
 

@@ -6,6 +6,9 @@ import { AuthUserModel } from "../model/auth.user.model";
 import { map } from "rxjs/operators";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JwtPayloadModel } from "../model/jwt.payload.model";
+import { AuthState } from "../state";
+import { Roles } from "../../shared/enums/school-user-roles";
+import { initialState } from "../state/auth.reducer";
 
 @Injectable()
 export class AuthService {
@@ -16,27 +19,52 @@ export class AuthService {
          private http: HttpClient) {
    }
 
+   private static jwtToModel(token: string): AuthUserModel {
+      const decoded = AuthService.getTokenPayload(token);
+      return {
+         token,
+         role: decoded.role,
+         nameId: decoded.nameid,
+         isAdmin: decoded.isAdmin
+      };
+   }
+
+   private static getTokenPayload(token: string): JwtPayloadModel {
+      const helper = new JwtHelperService();
+      try {
+         return helper.decodeToken(token);
+      } catch (e) {
+         throw new Error('Token is corrupted');
+      }
+   }
+
    getToken(): string {
       return localStorage.getItem('token');
    }
 
-   login(user: LoginModel): Observable<AuthUserModel> {
-      return this.http.post<any>(this.baseUrl + this.loginEndpoint, user)
-            .pipe(map(AuthService.jwtToModel));
+   hasTokenExpired(token: string): boolean {
+      console.log(token);
+      const payload = AuthService.getTokenPayload(token);
+      return Date.now() < payload.exp;
    }
 
-   private static jwtToModel(jwt: { accessToken: string }): AuthUserModel {
-      const helper = new JwtHelperService();
-      try {
-         const decoded: JwtPayloadModel = helper.decodeToken(jwt.accessToken);
-         return {
-            token: jwt.accessToken,
-            role: decoded.role,
-            nameId: decoded.nameid,
-            isAdmin: decoded.isAdmin
-         };
-      } catch (e) {
-         throw e;
+   login(user: LoginModel): Observable<AuthUserModel> {
+      return this.http.post<any>(this.baseUrl + this.loginEndpoint, user).pipe(
+            map((jwt: { accessToken: string }) => jwt.accessToken),
+            map(AuthService.jwtToModel));
+   }
+
+   getAuthState(): AuthState {
+      const token = this.getToken();
+      if (token && !this.hasTokenExpired(token)) {
+         const payload = AuthService.getTokenPayload(token);
+         return <AuthState>{
+            isAuthenticated: true,
+            role: Roles[payload.role],
+            token: token,
+            userId: payload.nameid
+         }
       }
+      return initialState;
    }
 }

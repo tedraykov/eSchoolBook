@@ -47,7 +47,9 @@
       Log In
    </button>
 </form>
-
-<!--<section class="another-action" aria-label="Register">-->
-<!--  Don't have an account? <a class="text-link" routerLink="../register">Register</a>-->
-<!--</section>-->
+<div class="btn-group">
+   <button nbButton (click)="loginAs(0)">Login as Super Admin</button>
+   <button nbButton (click)="loginAs(1)">Login as Student</button>
+   <button nbButton (click)="loginAs(2)">Login as Teacher</button>
+   <button nbButton (click)="loginAs(3)">Login as Parent</button>
+</div>
