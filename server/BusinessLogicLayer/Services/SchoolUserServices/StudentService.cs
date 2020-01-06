@@ -132,6 +132,9 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
              
              var subject = Repositories.Subjects.GetWithoutTracking()
                  .SingleOrDefault(s => s.Id == gradeModel.SubjectId);
+             
+             var teacher = Repositories.Teachers.GetWithoutTracking()
+                 .SingleOrDefault(t => t.Id == gradeModel.TeacherId);
  
              var newGrade = new StudentToGrade
              {
@@ -142,7 +145,8 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
                  SubjectId = gradeModel.SubjectId,
                  Subject = subject,
                  StudentId = studentId,
-                 Student = student
+                 Student = student,
+                 Teacher = teacher
              };
              student.Grades.Add(newGrade);
  
@@ -186,6 +190,9 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
             
             var subject = Repositories.Subjects.GetWithoutTracking()
                 .SingleOrDefault(s => s.Id == absenceModel.SubjectId);
+            var teacher = Repositories.Teachers.GetWithoutTracking()
+                .SingleOrDefault(t => t.Id == absenceModel.TeacherId);
+            
             var absence = new Absence
             {
                 DateCreated = DateTime.Now,
@@ -193,7 +200,8 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
                 Student = student,
                 Subject = subject,
                 IsFullAbsence = absenceModel.IsFullAbsence,
-                IsExcused = false
+                IsExcused = false,
+                Teacher = teacher
             };
             
             student.Absences.Add(absence);

@@ -174,11 +174,16 @@ namespace SchoolBook.Migrations
                     b.Property<string>("SubjectId")
                         .HasColumnType("text");
 
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId");
 
                     b.HasIndex("SubjectId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Absences");
                 });
@@ -348,6 +353,9 @@ namespace SchoolBook.Migrations
                     b.Property<string>("SubjectId")
                         .HasColumnType("text");
 
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GradeId");
@@ -355,6 +363,8 @@ namespace SchoolBook.Migrations
                     b.HasIndex("StudentId");
 
                     b.HasIndex("SubjectId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("StudentsToGrades");
                 });
@@ -562,6 +572,10 @@ namespace SchoolBook.Migrations
                     b.HasOne("SchoolBook.DataAccessLayer.Entities.Subject", "Subject")
                         .WithMany()
                         .HasForeignKey("SubjectId");
+
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
                 });
 
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.Class", b =>
@@ -610,6 +624,10 @@ namespace SchoolBook.Migrations
                     b.HasOne("SchoolBook.DataAccessLayer.Entities.Subject", "Subject")
                         .WithMany()
                         .HasForeignKey("SubjectId");
+
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
                 });
 
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.TeacherToSubject", b =>

@@ -13,6 +13,8 @@ namespace SchoolBook.DataAccessLayer.Entities
         public Student Student { get; set; }
 
         public Subject Subject { get; set; }
+        
+        public Teacher Teacher { get; set; }
 
         public bool IsFullAbsence { get; set; }
 
