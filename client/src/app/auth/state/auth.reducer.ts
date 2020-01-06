@@ -25,7 +25,10 @@ export function reducer(state = initialState, action: AuthActions): AuthState {
             isAuthenticated: true
          };
       case AuthActionTypes.InitializeStateComplete:
-         return action.payload
+         return action.payload;
+      case AuthActionTypes.Logout:
+         return initialState;
+      default:
+         return state;
    }
-   return;
 }

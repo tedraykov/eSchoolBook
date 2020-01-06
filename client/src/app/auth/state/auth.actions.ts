@@ -8,7 +8,8 @@ export enum AuthActionTypes {
    InitializeStateComplete = '[Auth] Initialize State Complete',
    Login = '[Auth] Login',
    LoginSuccess = '[Auth] Login Success',
-   LoginFailed = '[Auth] Login Failed'
+   LoginFailed = '[Auth] Login Failed',
+   Logout = '[Auth] Logout'
 }
 
 export class Login implements Action {
@@ -33,6 +34,10 @@ export class LoginFailed implements Action {
    }
 }
 
+export class Logout implements Action {
+   readonly type = AuthActionTypes.Logout;
+}
+
 export class InitializeState implements Action {
    readonly type = AuthActionTypes.InitializeState;
 
@@ -47,4 +52,8 @@ export class InitializeStateComplete implements Action {
    }
 }
 
-export type AuthActions = LoginSuccess | LoginFailed | InitializeStateComplete;
+export type AuthActions =
+      LoginSuccess
+      | LoginFailed
+      | InitializeStateComplete
+      | Logout;

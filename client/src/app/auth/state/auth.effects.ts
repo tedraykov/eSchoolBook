@@ -48,6 +48,17 @@ export class AuthEffects {
             return new InitializeStateComplete(x);
          })
    );
+
+   @Effect({dispatch: false})
+   Logout = this.actions$.pipe(
+         ofType(AuthActionTypes.Logout),
+         tap(() => {
+                  localStorage.removeItem('token');
+                  this.router.navigate(['auth']).then();
+               }
+         )
+   );
+
    constructor(private actions$: Actions, private authService: AuthService, private router: Router) {
    }
 }

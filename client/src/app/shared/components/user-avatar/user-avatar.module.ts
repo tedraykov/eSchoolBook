@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { UserAvatarComponent } from "./user-avatar.component";
-import { NbUserModule } from "@nebular/theme";
+import { NbContextMenuModule, NbUserModule } from "@nebular/theme";
 import { CommonModule } from "@angular/common";
 
 @NgModule({
    declarations: [UserAvatarComponent],
    imports: [
       NbUserModule,
-      CommonModule
+      CommonModule,
+      NbContextMenuModule
    ],
    entryComponents: [UserAvatarComponent],
    exports: [UserAvatarComponent]
