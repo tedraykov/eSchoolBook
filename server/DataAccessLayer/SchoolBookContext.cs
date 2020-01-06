@@ -94,7 +94,8 @@ namespace SchoolBook.DataAccessLayer
             
             /* Unique constraints configuration */
             builder.Entity<SchoolUser>()
-                .HasAlternateKey(su => su.Pin);
+                .HasIndex(su => su.Pin)
+                .IsUnique();
 
             builder.Entity<User>()
                 .HasIndex(u => u.Email)
