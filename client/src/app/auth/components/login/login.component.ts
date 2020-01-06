@@ -3,11 +3,12 @@ import { LoginModel } from "../../model/login.model";
 import { Store } from "@ngrx/store";
 import { Login } from "../../state/auth.actions";
 import { AuthState } from "../../state";
+import { userCredentials } from "./mocked-user-credentials";
 
 @Component({
    selector: 'app-login',
    templateUrl: 'login.html',
-   styles: []
+   styleUrls: ['login.scss']
 })
 export class LoginComponent implements OnInit {
    user: LoginModel;
@@ -21,6 +22,11 @@ export class LoginComponent implements OnInit {
    }
 
    login() {
+      this.store.dispatch(new Login(this.user));
+   }
+
+   loginAs(index: number) {
+      this.user = userCredentials[index];
       this.store.dispatch(new Login(this.user));
    }
 }
