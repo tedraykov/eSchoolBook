@@ -20,6 +20,8 @@ namespace SchoolBook.DataAccessLayer.Entities
         public string SubjectId { get; set; }
 
         public Subject Subject { get; set; }
+        
+        public Teacher Teacher { get; set; }
 
         public DateTime DateCreated { get; set; }
         

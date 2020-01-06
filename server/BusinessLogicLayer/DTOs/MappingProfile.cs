@@ -93,6 +93,14 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
 
             CreateMap<SchoolInputModel, School>();
             CreateMap<School, SchoolViewModel>();
+            
+            /* ------------------- Statistics Mapping ------------------- */
+            CreateMap<StudentToGrade, int>().ConvertUsing(o => o.Grade.ValueNum);
+            CreateMap<StudentToGrade, double>().ConvertUsing(o => o.Grade.ValueNum);
+            
+            CreateMap<Student, Class>().ConvertUsing(o => o.Class);
+            CreateMap<ClassToSubject, Subject>().ConvertUsing(o => o.Subject);
+            CreateMap<StudentToGrade, Teacher>().ConvertUsing(o => o.Teacher);
         }
 
         private static string GetFullName(SchoolUser user)
