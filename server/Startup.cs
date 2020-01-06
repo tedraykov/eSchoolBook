@@ -35,7 +35,9 @@ namespace SchoolBook
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()));
             services.AddControllers()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(x =>
@@ -108,6 +110,7 @@ namespace SchoolBook
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler("/error-local-dev");
+                app.UseCors("AllowAll");
             }
             else
             {
