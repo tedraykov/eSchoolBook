@@ -27,6 +27,6 @@ export class LoginComponent implements OnInit {
 
    loginAs(index: number) {
       this.user = userCredentials[index];
-      this.store.dispatch(new Login(this.user));
+      this.login();
    }
 }

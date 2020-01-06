@@ -1,8 +1,11 @@
 import { Action } from '@ngrx/store';
 import { LoginModel } from "../model/login.model";
 import { AuthUserModel } from "../model/auth.user.model";
+import { AuthState } from "./index";
 
 export enum AuthActionTypes {
+   InitializeState = '[Auth] Initialize State',
+   InitializeStateComplete = '[Auth] Initialize State Complete',
    Login = '[Auth] Login',
    LoginSuccess = '[Auth] Login Success',
    LoginFailed = '[Auth] Login Failed'
@@ -30,4 +33,18 @@ export class LoginFailed implements Action {
    }
 }
 
-export type AuthActions = LoginSuccess | LoginFailed;
+export class InitializeState implements Action {
+   readonly type = AuthActionTypes.InitializeState;
+
+   constructor() {
+   }
+}
+
+export class InitializeStateComplete implements Action {
+   readonly type = AuthActionTypes.InitializeStateComplete;
+
+   constructor(public payload: AuthState) {
+   }
+}
+
+export type AuthActions = LoginSuccess | LoginFailed | InitializeStateComplete;

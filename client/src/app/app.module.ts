@@ -17,6 +17,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { NbAuthModule, NbPasswordAuthStrategy } from "@nebular/auth";
 import { AuthModule } from "./auth/auth.module";
 import { EffectsModule } from "@ngrx/effects";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 @NgModule({
    declarations: [
@@ -54,7 +55,9 @@ import { EffectsModule } from "@ngrx/effects";
          }
       }),
       EffectsModule.forRoot([]),
-
+      StoreDevtoolsModule.instrument({
+         maxAge: 10
+      })
    ],
    providers: [],
    exports: [],

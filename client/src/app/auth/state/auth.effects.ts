@@ -1,5 +1,5 @@
 import {
-   AuthActionTypes,
+   AuthActionTypes, InitializeStateComplete,
    Login,
    LoginFailed,
    LoginSuccess
@@ -24,6 +24,7 @@ export class AuthEffects {
                      return new LoginSuccess(x);
                   }),
                   catchError(x => {
+                     console.error(x);
                      return of(new LoginFailed(x));
                   })
             );
@@ -39,6 +40,14 @@ export class AuthEffects {
          })
    );
 
+   @Effect()
+   InitializeState = this.actions$.pipe(
+         ofType(AuthActionTypes.InitializeState),
+         map(() => this.authService.getAuthState()),
+         map(x => {
+            return new InitializeStateComplete(x);
+         })
+   );
    constructor(private actions$: Actions, private authService: AuthService, private router: Router) {
    }
 }

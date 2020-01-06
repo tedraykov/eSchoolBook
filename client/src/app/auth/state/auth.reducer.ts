@@ -4,7 +4,7 @@ import { createSelector } from "@ngrx/store";
 import { AppState } from "../../state/app.state";
 import { AuthState } from "./index";
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
    role: null,
    userId: null,
    token: null,
@@ -23,7 +23,9 @@ export function reducer(state = initialState, action: AuthActions): AuthState {
             role: Roles[action.payload.role],
             userId: action.payload.nameId,
             isAuthenticated: true
-         }
+         };
+      case AuthActionTypes.InitializeStateComplete:
+         return action.payload
    }
    return;
 }
