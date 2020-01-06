@@ -75,7 +75,7 @@ namespace SchoolBook.DataAccessLayer
                     School = _ctx.Schools.FirstOrDefault(),
                     Class = _ctx.Classes.FirstOrDefault()
                 };
-                var account = await CreateAspUser(student);
+                var account = await CreateAspUser(student, RoleTypes.Student);
                 if (account != null)
                 {
                     student.User = account;
@@ -103,7 +103,7 @@ namespace SchoolBook.DataAccessLayer
                 };
 
 
-                var account = await CreateAspUser(teacher);
+                var account = await CreateAspUser(teacher, RoleTypes.Teacher);
                 var someClass = _ctx.Classes.FirstOrDefault();
 
                 if (someClass != null && account != null)
@@ -132,7 +132,7 @@ namespace SchoolBook.DataAccessLayer
                 };
 
                 var student = _ctx.Students.FirstOrDefault();
-                var account = await CreateAspUser(parent);
+                var account = await CreateAspUser(parent, RoleTypes.Parent);
                 if (parent.Children != null && account != null)
                 {
                     parent.User = account;
@@ -240,14 +240,14 @@ namespace SchoolBook.DataAccessLayer
             _ctx.SaveChanges();
         }
 
-        private async Task<User> CreateAspUser(SchoolUser schoolUser)
+        private async Task<User> CreateAspUser(SchoolUser schoolUser, RoleTypes role)
         {
             var accountRegister = new FullRegisterInputModel
             {
                 Pin = schoolUser.Pin,
                 FirstName = schoolUser.FirstName,
                 LastName = schoolUser.LastName,
-                RoleName = schoolUser.Role.ToString()
+                RoleName = role.ToString()
             };
             return await _accountService.Register(accountRegister);
         }

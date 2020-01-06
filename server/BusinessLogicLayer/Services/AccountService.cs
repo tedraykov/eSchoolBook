@@ -129,6 +129,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
             var isUserAdmin = await _userManager.IsInRoleAsync(user, RoleTypes.SuperAdmin.ToString());
             var userSchoolId = Repositories.SchoolUsers.Query()
                                  .AsNoTracking()
+                                 .Include(su => su.School)
                                  .FirstOrDefault(su => su.User.Id == user.Id)?.School.Id ?? "no id";
 
             var tokenDescriptor = new SecurityTokenDescriptor
