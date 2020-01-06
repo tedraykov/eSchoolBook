@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SchoolBook.BusinessLogicLayer.DTOs.Enums;
@@ -10,9 +11,10 @@ using SchoolBook.DataAccessLayer;
 namespace SchoolBook.Migrations
 {
     [DbContext(typeof(SchoolBookContext))]
-    partial class SchoolBookContextModelSnapshot : ModelSnapshot
+    [Migration("20200106184157_UpdatedAbsencesAndStudentToGradeTables")]
+    partial class UpdatedAbsencesAndStudentToGradeTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,6 +302,7 @@ namespace SchoolBook.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Pin")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Role")
@@ -320,8 +323,7 @@ namespace SchoolBook.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Pin")
-                        .IsUnique();
+                    b.HasAlternateKey("Pin");
 
                     b.HasIndex("SchoolId");
 

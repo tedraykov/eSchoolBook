@@ -2,10 +2,20 @@
 
 namespace SchoolBook.Migrations
 {
-    public partial class AddedColumnToAbsencesAndGrades : Migration
+    public partial class UpdatedAbsencesAndStudentToGradeTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "TeacherId",
+                table: "StudentsToGrades",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "TeacherId",
+                table: "Absences",
+                nullable: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_StudentsToGrades_TeacherId",
                 table: "StudentsToGrades",
@@ -49,6 +59,14 @@ namespace SchoolBook.Migrations
 
             migrationBuilder.DropIndex(
                 name: "IX_Absences_TeacherId",
+                table: "Absences");
+
+            migrationBuilder.DropColumn(
+                name: "TeacherId",
+                table: "StudentsToGrades");
+
+            migrationBuilder.DropColumn(
+                name: "TeacherId",
                 table: "Absences");
         }
     }
