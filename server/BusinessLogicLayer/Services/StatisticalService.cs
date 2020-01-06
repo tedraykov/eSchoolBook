@@ -22,7 +22,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
             IMapper mapper) : base(repositories, logger, mapper)
         {
         }
-
+        /*For Specific School*/
         public int SchoolAverageScore(string schoolId)
         {
             var students = Repositories.Students.Query()
@@ -140,5 +140,91 @@ namespace SchoolBook.BusinessLogicLayer.Services
 
             return absencesDictionary;
         }
+
+        /*For All Schools in DB*/
+        public int SchoolAverageScore()
+        {
+            var grades = Repositories.StudentsToGrades.Query()
+                .AsNoTracking()
+                .Include(stg => stg.Grade)
+                .ProjectTo<int>(Mapper.ConfigurationProvider)
+                .ToList();
+
+            return grades.Sum() / grades.Count;
+        }
+
+        public IDictionary<string, double> BestNSchools(int n)
+        {
+            var grades = Repositories.StudentsToGrades.Query()
+                .AsNoTracking()
+                .Include(stg => stg.Grade)
+                .GroupBy(stg => stg.Student.School);
+            
+//           grades.
+            return new Dictionary<string, double>();
+        }
+
+        public IDictionary<string, double> AverageSubjectScores()
+        {
+            var subjectScores = new Dictionary<string,double>();
+            
+            var subjects = Repositories.StudentsToGrades.Query()
+                .AsNoTracking()
+                .Include(stg => stg.Subject)
+                .ProjectTo<Subject>(Mapper.ConfigurationProvider)
+                .Distinct()
+                .ToList();
+
+            foreach (var s in subjects)
+            {
+                var grades = Repositories.StudentsToGrades.Query()
+                    .AsNoTracking()
+                    .Include(stg => stg.Grade)
+                    .Where(stg => stg.SubjectId == s.Id)
+                    .ProjectTo<double>(Mapper.ConfigurationProvider)
+                    .ToList();
+
+                subjectScores.Add(s.Name, grades.Sum()/grades.Count);
+            }
+
+            return subjectScores;
+        }
+
+        public IDictionary<string, double> AverageTeacherScores()
+        {
+            var teacherScores = new Dictionary<string,double>();
+            
+            var teachers = Repositories.StudentsToGrades.Query()
+                .AsNoTracking()
+                .Include(stg => stg.Teacher)
+                .OrderBy(stg => stg.Teacher.School.Id)
+                .ProjectTo<Teacher>(Mapper.ConfigurationProvider)
+                .Distinct()
+                .ToList();
+
+            foreach (var t in teachers)
+            {
+                var grades = Repositories.StudentsToGrades.Query()
+                    .AsNoTracking()
+                    .Include(stg => stg.Grade)
+                    .Where(stg => stg.Teacher.Id == t.Id)
+                    .ProjectTo<double>(Mapper.ConfigurationProvider)
+                    .ToList();
+
+                var tName = t.FirstName.ToString() + " " +
+                            t.SecondName.Substring(0, 1) + ". " +
+                            t.LastName;
+                
+                teacherScores.Add(tName, grades.Sum()/grades.Count);
+            }
+
+            return teacherScores;
+        }
+
+        public IDictionary<string, int> SchoolAbsences()
+        {
+            throw new System.NotImplementedException();
+        }
+        
     }
 }

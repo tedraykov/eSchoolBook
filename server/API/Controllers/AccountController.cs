@@ -26,11 +26,11 @@ namespace SchoolBook.API.Controllers
         }
         
 //      This endpoint won't be called but is kept for testing purposes (e.g. requests with Postman)   
-//        [HttpPost("register")]
-//        public async Task<User> Register([FromBody] FullRegisterInputModel inputModel)
-//        {
-//            return await this.AccountService.Register(inputModel);
-//        }
+        [HttpPost("register")]
+        public async Task<User> Register([FromBody] FullRegisterInputModel inputModel)
+        {
+            return await this.AccountService.Register(inputModel);
+        }
         
         [HttpPost("login")]
         public async Task<LoginViewModel> Login ([FromBody] LoginInputModel model)

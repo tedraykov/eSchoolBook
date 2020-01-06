@@ -1,13 +1,13 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/Users/teodorr/Projects/eSchoolBook/server/SchoolBook.csproj",
+    "projectUniqueName": "D:\\University\\Third Year\\schoolBook\\server\\SchoolBook.csproj",
     "projectName": "SchoolBook",
-    "projectPath": "/Users/teodorr/Projects/eSchoolBook/server/SchoolBook.csproj",
-    "outputPath": "/Users/teodorr/Projects/eSchoolBook/server/obj/",
+    "projectPath": "D:\\University\\Third Year\\schoolBook\\server\\SchoolBook.csproj",
+    "outputPath": "D:\\University\\Third Year\\schoolBook\\server\\obj\\",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
-      "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ],
     "originalTargetFrameworks": [
       "netcoreapp3.0"

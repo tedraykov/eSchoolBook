@@ -104,6 +104,15 @@ namespace SchoolBook
                         ValidateAudience = false
                     };
                 });
+            
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("SchoolId", policy =>
+                {
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

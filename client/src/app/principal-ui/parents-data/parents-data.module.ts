@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ParentsDataComponent } from './parents-data.component';
 
 @NgModule({
-    declarations: [],
+    declarations: [ParentsDataComponent],
     imports: [
        CommonModule,
        RouterModule.forChild([{path: '', component: ParentsDataComponent}])

@@ -44,6 +44,18 @@ namespace SchoolBook.API.Controllers
         {
             return StatisticalService.SchoolAbsences(schoolId);
         }
+        
+        [HttpGet("school-scores")]
+        public int GetSchoolScore()
+        {
+            return StatisticalService.SchoolAverageScore();
+        }
+        
+        [HttpGet("teachers-scores")]
+        public IDictionary<string, double> AverageTeacherScores()
+        {
+            return StatisticalService.AverageTeacherScores();
+        }
     
     }
 }

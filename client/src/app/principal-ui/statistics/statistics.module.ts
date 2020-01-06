@@ -5,7 +5,7 @@ import { StatisticsComponent } from './statistics.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
-    declarations: [],
+    declarations: [StatisticsComponent],
     imports: [
        CommonModule,
        RouterModule.forChild([{path: '', component: StatisticsComponent}]),
