@@ -132,11 +132,23 @@ namespace SchoolBook.BusinessLogicLayer.Services
                                  .Include(su => su.School)
                                  .FirstOrDefault(su => su.User.Id == user.Id)?.School.Id ?? "no id";
 
+            var names = "Admin";
+            
+            if (!isUserAdmin)
+            {
+                var schoolUser = Repositories.SchoolUsers.Query()
+                    .AsNoTracking()
+                    .Include(su => su.School)
+                    .FirstOrDefault(su => su.User.Id == user.Id);
+                names = schoolUser.FirstName + " " + schoolUser.SecondName + " "  + schoolUser.LastName;
+            }
+            
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]{
                     new Claim(ClaimTypes.NameIdentifier,user.Id),
                     new Claim("schoolId", userSchoolId, ClaimValueTypes.String),
+                    new Claim("userNames", names, ClaimValueTypes.String),
                     new Claim("isAdmin", isUserAdmin.ToString(), ClaimValueTypes.Boolean),
                     new Claim(ClaimTypes.Role, user.RoleName),
                 }),
