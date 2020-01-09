@@ -6,6 +6,7 @@ using System.Reflection;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
@@ -129,13 +130,22 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
  
              var grade = Repositories.Grades.GetWithoutTracking()
                  .SingleOrDefault(g => g.Id == gradeModel.GradeId);
+
+             var ts = Repositories.TeacherToSubject.Query()
+                 .AsNoTracking()
+                 .Include(tts => tts.Teacher)
+                 .Include(tts => tts.Subject)
+                 .SingleOrDefault(tts => tts.TeacherId == gradeModel.TeacherId
+                                         && tts.SubjectId == gradeModel.SubjectId);
+             
+             if( ts is null ) throw  new TargetException("Invalid input data");
              
              var subject = Repositories.Subjects.GetWithoutTracking()
                  .SingleOrDefault(s => s.Id == gradeModel.SubjectId);
              
              var teacher = Repositories.Teachers.GetWithoutTracking()
                  .SingleOrDefault(t => t.Id == gradeModel.TeacherId);
- 
+
              var newGrade = new StudentToGrade
              {
                  DateCreated = DateTime.Now,

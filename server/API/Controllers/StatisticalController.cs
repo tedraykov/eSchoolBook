@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ namespace SchoolBook.API.Controllers
         }
 
         [HttpGet("school-score/{schoolId}")]
-        public int GetSchoolScore([FromRoute]string schoolId)
+        public double GetSchoolScore([FromRoute]string schoolId)
         {
             return StatisticalService.SchoolAverageScore(schoolId);
         }
@@ -45,7 +46,8 @@ namespace SchoolBook.API.Controllers
             return StatisticalService.SchoolAbsences(schoolId);
         }
         
-        [HttpGet("school-scores")]
+        /*All schools statistics (Admin panel)*/
+        [HttpGet("scores")]
         public int GetSchoolScore()
         {
             return StatisticalService.SchoolAverageScore();
@@ -56,6 +58,23 @@ namespace SchoolBook.API.Controllers
         {
             return StatisticalService.AverageTeacherScores();
         }
+        
+        [HttpGet("subjects-scores")]
+        public IDictionary<string, double> AverageSubjectScores()
+        {
+            return StatisticalService.AverageSubjectScores();
+        }
     
+        [HttpGet("best/{n}")]
+        public ICollection GetBestSchools(int n)
+        {
+            return StatisticalService.BestNSchools(n);
+        }
+        
+        [HttpGet("absences")]
+        public IDictionary<string, IDictionary<string, int>> SchoolAbsences()
+        {
+            return StatisticalService.SchoolAbsences();
+        }
     }
 }

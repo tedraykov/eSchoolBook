@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,29 +24,33 @@ namespace SchoolBook.BusinessLogicLayer.Services
         {
         }
         /*For Specific School*/
-        public int SchoolAverageScore(string schoolId)
+        public double SchoolAverageScore(string schoolId)
         {
             var students = Repositories.Students.Query()
                 .Include(s => s.School)
                 .Where(s => s.School.Id == schoolId)
                 .ToList();
             
-            var grades = new List<int>();
+            var grades = new List<double>();
 
             foreach (var student in students)
             {
                 var g = Repositories.StudentsToGrades.Query()
                     .Include(stg => stg.Grade)
                     .Where(stg => stg.StudentId == student.Id)
-                    .ProjectTo<int>(Mapper.ConfigurationProvider)
+                    .ProjectTo<double>(Mapper.ConfigurationProvider)
                     .ToList();
 
                 grades.AddRange(g);
             }
 
-            var gradesSum = grades.Sum();
+            if (grades.Count <= 0)
+            {
+                throw new ArithmeticException("No grades registered for this school");
+            }
+            var gradesAvg = grades.Sum() / grades.Count;
 
-            return gradesSum / grades.Count;
+            return gradesAvg ;
         }
 
         public IDictionary<string, double> AverageSubjectScores(string schoolId)
@@ -153,15 +158,20 @@ namespace SchoolBook.BusinessLogicLayer.Services
             return grades.Sum() / grades.Count;
         }
 
-        public IDictionary<string, double> BestNSchools(int n)
+        public ICollection BestNSchools(int n)
         {
-            var grades = Repositories.StudentsToGrades.Query()
-                .AsNoTracking()
-                .Include(stg => stg.Grade)
-                .GroupBy(stg => stg.Student.School);
+            var schools = Repositories.Schools.Query()
+                .ToList();
             
-//           grades.
-            return new Dictionary<string, double>();
+            var schoolsAvg = new Dictionary<string, double>();
+
+            foreach (var s in schools)
+            {
+                var avg = SchoolAverageScore(s.Id);
+                schoolsAvg.Add(s.Name, avg);
+            }
+            
+            return schoolsAvg.OrderBy(key => key.Value).ToList().GetRange(0,n);
         }
 
         public IDictionary<string, double> AverageSubjectScores()
@@ -221,9 +231,20 @@ namespace SchoolBook.BusinessLogicLayer.Services
             return teacherScores;
         }
 
-        public IDictionary<string, int> SchoolAbsences()
+        public IDictionary<string, IDictionary<string, int>> SchoolAbsences()
         {
-            throw new System.NotImplementedException();
+            var schools = Repositories.Schools.Query()
+                .ToList();
+            
+            var schoolsAbsences = new Dictionary<string, IDictionary<string, int>>();
+
+            foreach (var s in schools)
+            {
+                var avg = SchoolAbsences(s.Id);
+                schoolsAbsences.Add(s.Name, avg);
+            }
+
+            return schoolsAbsences;
         }
         
     }
