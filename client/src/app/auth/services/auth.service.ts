@@ -25,7 +25,9 @@ export class AuthService {
          token,
          role: decoded.role,
          nameId: decoded.nameid,
-         isAdmin: decoded.isAdmin
+         isAdmin: decoded.isAdmin,
+         name: decoded.userNames,
+         schoolId: decoded.schoolId
       };
    }
 
@@ -59,10 +61,12 @@ export class AuthService {
       if (token && !this.hasTokenExpired(token)) {
          const payload = AuthService.getTokenPayload(token);
          return <AuthState>{
+            name: payload.userNames,
             isAuthenticated: true,
             role: Roles[payload.role],
             token: token,
-            userId: payload.nameid
+            userId: payload.nameid,
+            schoolId: payload.schoolId
          }
       }
       return initialState;

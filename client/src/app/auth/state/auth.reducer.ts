@@ -5,8 +5,10 @@ import { AppState } from "../../state/app.state";
 import { AuthState } from "./index";
 
 export const initialState: AuthState = {
+   name: null,
    role: null,
    userId: null,
+   schoolId: null,
    token: null,
    isAuthenticated: false
 };
@@ -22,6 +24,8 @@ export function reducer(state = initialState, action: AuthActions): AuthState {
             token: action.payload.token,
             role: Roles[action.payload.role],
             userId: action.payload.nameId,
+            name: action.payload.name,
+            schoolId: action.payload.schoolId,
             isAuthenticated: true
          };
       case AuthActionTypes.InitializeStateComplete:
