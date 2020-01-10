@@ -8,8 +8,10 @@ using SchoolBook.DataAccessLayer;
 using SchoolBook.DataAccessLayer.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -79,6 +81,8 @@ namespace SchoolBook
             services.AddTransient<ISchoolService, SchoolService>();
             services.AddTransient<ICurriculumService, CurriculumService>();
             services.AddTransient<IStatisticalService, StatisticalService>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 
             var jwtSettingsSection = Configuration.GetSection("JwtSettings");
@@ -104,15 +108,6 @@ namespace SchoolBook
                         ValidateAudience = false
                     };
                 });
-            
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("SchoolId", policy =>
-                {
-                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
-                    policy.RequireAuthenticatedUser();
-                });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
