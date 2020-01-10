@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 using SchoolBook.DataAccessLayer.Entities;
@@ -42,14 +43,15 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
             return students;
         }
 
-        public IEnumerable<StudentModel> GetAllStudentsFromSchool(string schoolId)
+        public IEnumerable<StudentTableViewModel> GetAllStudentsFromSchool(string schoolId)
         {
             var students = Repositories.Students.Query()
                 .Include(o => o.School)
                 .Include(o => o.Class)
                 .Include(o => o.User)
                 .Where(s => s.School.Id == schoolId)
-                .ProjectTo<StudentModel>(Mapper.ConfigurationProvider);
+                .ProjectTo<StudentTableViewModel>(Mapper.ConfigurationProvider)
+                .ToList();
 
             return students;
         }

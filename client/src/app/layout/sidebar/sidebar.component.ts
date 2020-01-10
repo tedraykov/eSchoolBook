@@ -26,7 +26,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
             {title: 'subjects list', link: 'teacher/subject'},
             {title: 'subject details', link: 'teacher/subject/1'}
          ]
+      },
+      {
+         title: 'Principal', link: 'principal', children: [
+            {title: 'Statistics', link: 'principal/statistics'},
+            {title: 'Students Data', link: 'principal/students'},
+            {title: 'Teachers Data', link: 'principal/teachers'}
+         ]
       }
+       
    ];
 
    constructor(private menuService: NbMenuService) {

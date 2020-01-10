@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 
 namespace SchoolBook.API.Controllers.SchoolUserControllers
@@ -35,7 +36,7 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
         
         [HttpGet("school/{schoolId}")]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
-        public IEnumerable<StudentModel> GetAllBySchool([FromRoute] string schoolId)
+        public IEnumerable<StudentTableViewModel> GetAllBySchool([FromRoute] string schoolId)
         {
             return _studentService.GetAllStudentsFromSchool(schoolId);
         }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 
 namespace SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices
 {
@@ -9,7 +10,7 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices
     {
         IEnumerable<StudentModel> GetAllStudents();
         
-        IEnumerable<StudentModel> GetAllStudentsFromSchool(string schoolId);
+        IEnumerable<StudentTableViewModel> GetAllStudentsFromSchool(string schoolId);
         
         IEnumerable<StudentModel> GetAllStudentsFromClass(string classId);
         

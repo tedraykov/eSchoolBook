@@ -34,6 +34,16 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                     ex => ex.MapFrom(o => o.Id))
                 .ForMember(o => o.ClassId,
                     ex => ex.MapFrom(o => o.Class.Id));
+            CreateMap<Student, StudentTableViewModel>()
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Grade,
+                    ex => ex.MapFrom(o => o.Class.Grade.ToString() 
+                                          + o.Class.GradeLetter.ToString()))
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address));
 
 
             /* ------------------- Authentication Mapping ------------------- */
