@@ -143,6 +143,33 @@ namespace SchoolBook.DataAccessLayer
             }
 
             _logger.LogDebug("Parent Seeded");
+            
+            _logger.LogDebug("Start Seeding Principal...");
+            if (_ctx.Principals.FirstOrDefault() == null)
+            {
+                var principal = new Principal
+                {
+                    FirstName = "Principal",
+                    SecondName = "Of",
+                    LastName = "School",
+                    Pin = "1243049888",
+                    Address = "Street 52",
+                    Town = "Sofia",
+                    School = _ctx.Schools.FirstOrDefault()
+                };
+
+
+                var account = await CreateAspUser(principal, RoleTypes.Principal);
+
+                if (account != null)
+                {
+                    principal.User = account;
+                    principal.Id = account.Id;
+                    _ctx.Principals.Add(principal);
+                }
+            }
+
+            _logger.LogDebug("Principal Seeded");
 
             _ctx.SaveChanges();
         }
