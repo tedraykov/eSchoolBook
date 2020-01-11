@@ -82,7 +82,8 @@ namespace SchoolBook
             services.AddTransient<ICurriculumService, CurriculumService>();
             services.AddTransient<IStatisticalService, StatisticalService>();
             services.AddTransient<ITeacherService, TeacherService>();
-            
+            services.AddTransient<IParentService, ParentService>();
+
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
 

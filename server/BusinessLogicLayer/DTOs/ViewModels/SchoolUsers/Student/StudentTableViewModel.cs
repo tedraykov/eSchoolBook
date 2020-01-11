@@ -9,5 +9,7 @@
         public string Grade { get; set; }
         
         public string Address { get; set; }
+        
+        public int StartYear { get; set; }
     }
 }

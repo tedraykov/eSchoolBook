@@ -1,6 +1,6 @@
-﻿export interface StudentData {
+﻿export interface ParentTableData {
     schoolUserId: string;
     fullName: string;
     address: string;
-    grade: string;
+    children: Array<string>
 }

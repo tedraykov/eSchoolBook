@@ -31,7 +31,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
          title: 'Principal', link: 'principal', children: [
             {title: 'Statistics', link: 'principal/statistics'},
             {title: 'Students Data', link: 'principal/students'},
-            {title: 'Teachers Data', link: 'principal/teachers'}
+            {title: 'Teachers Data', link: 'principal/teachers'},
+            {title: 'Parents Data', link: 'principal/parents'}
          ]
       }
        

@@ -4,6 +4,7 @@ using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Parent;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Teacher;
 using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
@@ -45,6 +46,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                                           + o.Class.GradeLetter.ToString()))
                 .ForMember(o => o.Address,
                     ex => ex.MapFrom(o => o.Town + ", " + o.Address));
+            CreateMap<Student, string>()
+                .ConvertUsing(o => GetFullName(o));
             
             CreateMap<Teacher, TeacherTableViewModel>()
                 .ForMember(o => o.SchoolUserId,
@@ -55,6 +58,16 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                     ex => ex.UseDestinationValue())
                 .ForMember(o => o.Address,
                     ex => ex.MapFrom(o => o.Town + ", " + o.Address));
+            
+            CreateMap<Parent, ParentTableViewModel>()
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address))
+                .ForMember( o => o.Children, 
+                    ex => ex.MapFrom(o => o.Children));
 
 
             /* ------------------- Authentication Mapping ------------------- */

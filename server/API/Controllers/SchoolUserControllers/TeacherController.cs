@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Teacher;
@@ -22,6 +23,7 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
         }
 
         [HttpGet("school/{schoolId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
         public IEnumerable<TeacherTableViewModel> GetAllTeachersFromSchool([FromRoute] string schoolId)
         {
             return this.TeacherService.GetAllTeachersFromSchool(schoolId);

@@ -3,6 +3,7 @@ import { AuthActions, AuthActionTypes } from "./auth.actions";
 import { createSelector } from "@ngrx/store";
 import { AppState } from "../../state/app.state";
 import { AuthState } from "./index";
+import {AvatarUserModel} from "../../shared/components/user-avatar/avatar-user.model";
 
 export const initialState: AuthState = {
    name: null,
@@ -12,9 +13,6 @@ export const initialState: AuthState = {
    token: null,
    isAuthenticated: false
 };
-
-const selectAuth = ((state: AppState) => state.auth);
-export const selectRole = createSelector(selectAuth, (state: AuthState) => state.role);
 
 export function reducer(state = initialState, action: AuthActions): AuthState {
    switch (action.type) {
@@ -36,3 +34,7 @@ export function reducer(state = initialState, action: AuthActions): AuthState {
          return state;
    }
 }
+
+const selectAuth = ((state: AppState) => state.auth);
+export const selectRole = createSelector(selectAuth, (state: AuthState) => state.role);
+export const selectSchoolId = createSelector(selectAuth, (state: AuthState) => state.schoolId);

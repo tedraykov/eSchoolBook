@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {tap} from "rxjs/operators";
 import {SchoolUsersTableData} from "../models/SchoolUsersTableData";
 import {StudentDialogData} from "../models/StudentDialogData";
+import {ParentTableData} from "../models/ParentTableData";
 
 @Injectable()
 export class PrincipalService {
@@ -25,9 +26,17 @@ export class PrincipalService {
           tap(x => console.log(x))
       );
    };
+   
    /*Get all teachers in school*/
    public getTeachersData$(schoolId: string): Observable<SchoolUsersTableData[]>{
       return this.http.get<SchoolUsersTableData[]>(`${this.serverUrl}/teachers/school/${schoolId}`).pipe(
+          tap(x => console.log(x))
+      );
+   };
+
+   /*Get all parents in school*/
+   public getParentsData$(schoolId: string): Observable<ParentTableData[]>{
+      return this.http.get<ParentTableData[]>(`${this.serverUrl}/parents/school/${schoolId}`).pipe(
           tap(x => console.log(x))
       );
    };

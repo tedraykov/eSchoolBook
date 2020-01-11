@@ -5,7 +5,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {select, Store} from "@ngrx/store";
 import {AppState} from "../../state/app.state";
 import {NbDialogService} from "@nebular/theme";
-import {selectSchoolId} from "../../auth/state";
+import {selectSchoolId} from "../../auth/state/auth.reducer";
 import {map} from "rxjs/operators";
 import {SchoolUsersTableData} from "../shared/models/SchoolUsersTableData";
 import {TeacherDialogData} from "../shared/models/TeacherDialogData";
