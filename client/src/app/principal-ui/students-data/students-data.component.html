@@ -29,7 +29,7 @@
                 <td mat-cell *matCellDef="let student">
                     <div class="btn-group">
                         <button nbButton status="info" size="small"
-                                [routerLink]="student.schoolUserId">Details
+                                (click)="openDialog(student)">Details
                         </button>
                     </div>
                 </td>

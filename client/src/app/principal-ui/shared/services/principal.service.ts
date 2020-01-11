@@ -14,14 +14,11 @@ export class PrincipalService {
    }
    /*Get all students in school*/
    public getStudentsData$(schoolId: string): Observable<SchoolUsersTableData[]>{
-      return this.http.get<SchoolUsersTableData[]>(`${this.serverUrl}/students/school/${schoolId}`).pipe(
-          tap(x => console.log(x))
-      );
+      return this.http.get<SchoolUsersTableData[]>(`${this.serverUrl}/students/school/${schoolId}`);
    };
 
    /*Get single student data*/
    public getStudentData$(studentId: string): Observable<StudentDialogData>{
-      console.log(1);
       return this.http.get<StudentDialogData>(`${this.serverUrl}/students/dialog/${studentId}`).pipe(
           tap(x => console.log(x))
       );
@@ -29,15 +26,11 @@ export class PrincipalService {
    
    /*Get all teachers in school*/
    public getTeachersData$(schoolId: string): Observable<SchoolUsersTableData[]>{
-      return this.http.get<SchoolUsersTableData[]>(`${this.serverUrl}/teachers/school/${schoolId}`).pipe(
-          tap(x => console.log(x))
-      );
+      return this.http.get<SchoolUsersTableData[]>(`${this.serverUrl}/teachers/school/${schoolId}`);
    };
 
    /*Get all parents in school*/
    public getParentsData$(schoolId: string): Observable<ParentTableData[]>{
-      return this.http.get<ParentTableData[]>(`${this.serverUrl}/parents/school/${schoolId}`).pipe(
-          tap(x => console.log(x))
-      );
+      return this.http.get<ParentTableData[]>(`${this.serverUrl}/parents/school/${schoolId}`);
    };
 }

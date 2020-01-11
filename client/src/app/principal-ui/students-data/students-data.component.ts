@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import {Observable, Subscription} from "rxjs";
+import {Component, OnInit} from '@angular/core';
+import {Observable} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
-import {StudentData} from "../shared/models/StudentData";
 import {PrincipalService} from "../shared/services/principal.service";
 import {AppState} from "../../state/app.state";
 import {select, Store} from '@ngrx/store'
-import {map} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 import {NbDialogService} from "@nebular/theme";
 import {SchoolUsersTableData} from "../shared/models/SchoolUsersTableData";
 import {StudentDialogData} from "../shared/models/StudentDialogData";
 import {selectSchoolId} from "../../auth/state/auth.reducer";
+import {StudentDialogComponent} from "./student-dialog/student-dialog.component";
 
 @Component({
    selector: 'app-students-data',
@@ -19,6 +19,7 @@ import {selectSchoolId} from "../../auth/state/auth.reducer";
 export class StudentsDataComponent implements OnInit {
    dataForTable: Observable<MatTableDataSource<SchoolUsersTableData>>;
    studentColumns: string[] = ['name', 'address', 'grade', 'actions'];
+   dataForDialog: Observable<StudentDialogData>;
    schoolId: string;
 
    constructor(
@@ -35,6 +36,14 @@ export class StudentsDataComponent implements OnInit {
       this.dataForTable = this.principalService.getStudentsData$(this.schoolId).pipe(
           map((students: SchoolUsersTableData[]) => new MatTableDataSource<SchoolUsersTableData>(students))
       );
+   }
+   
+   public openDialog(studentData: SchoolUsersTableData){
+      this.dialogService.open(StudentDialogComponent, {
+         context: {
+            data: this.principalService.getStudentData$(studentData.schoolUserId)
+         }
+      });
    }
 
 }

@@ -651,7 +651,7 @@ namespace SchoolBook.Migrations
                         .WithMany()
                         .HasForeignKey("ClassId");
 
-                    b.HasOne("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Parent", null)
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Parent", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId");
                 });

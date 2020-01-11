@@ -46,6 +46,18 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                                           + o.Class.GradeLetter.ToString()))
                 .ForMember(o => o.Address,
                     ex => ex.MapFrom(o => o.Town + ", " + o.Address));
+            CreateMap<Student, StudentDialogViewModel>()
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Grade,
+                    ex => ex.MapFrom(o => o.Class.Grade.ToString()
+                                          + o.Class.GradeLetter.ToString()))
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address))
+                .ForMember(o => o.ParentName,
+                    ex => ex.MapFrom(o => GetFullName(o.Parent)));
             CreateMap<Student, string>()
                 .ConvertUsing(o => GetFullName(o));
             

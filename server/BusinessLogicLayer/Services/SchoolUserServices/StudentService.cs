@@ -23,13 +23,16 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
     public class StudentService : BaseService, IStudentService
     {
         private readonly IAccountService _accountService ;
+        private readonly IStatisticalService _statisticalService ;
         public StudentService(
             IAccountService accountService,
+            IStatisticalService statisticalService,
             IRepositories repositories,
             ILogger<BaseService> logger,
             IMapper mapper) : base(repositories, logger, mapper)
         {
             _accountService = accountService;
+            _statisticalService = statisticalService;
         }
 
         public IEnumerable<StudentModel> GetAllStudents()
@@ -76,6 +79,22 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
                 .Include(o => o.User)
                 .SingleOrDefault(o => o.Id == id);
             return Mapper.Map<Student, StudentModel>(student);
+        }
+
+        public StudentDialogViewModel GetStudentDialogData(string id)
+        {
+                var st = Repositories.Students.Query()
+                .AsNoTracking()
+                .Include(s => s.Class)
+                .Include(s => s.Parent)
+                .FirstOrDefault(s => s.Id == id);
+
+            var student = Mapper.Map<Student, StudentDialogViewModel>(st);
+            
+            student.AvgScore = _statisticalService.StudentAverageScore(id);
+            student.Absences = _statisticalService.StudentAbsences(id);
+
+            return student;
         }
 
         public void AddStudent(StudentModel studentModel)

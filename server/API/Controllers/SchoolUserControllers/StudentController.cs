@@ -16,14 +16,12 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
     [Produces("application/json")]
     public class StudentController : BaseController
     {
-        private readonly ILogger<BaseController> _logger;
         private readonly IStudentService _studentService;
 
         public StudentController(
             ILogger<BaseController> logger,
             IStudentService studentService) : base(logger)
         {
-            _logger = logger;
             _studentService = studentService;
         }
 
@@ -53,6 +51,12 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
         {
             return _studentService.GetStudent(id);
         }
+        
+        [HttpGet("dialog/{studentId}")]
+        public StudentDialogViewModel GetForDialog(string studentId)
+        {
+            return _studentService.GetStudentDialogData(studentId);
+            }
 
         [HttpPost]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin")]

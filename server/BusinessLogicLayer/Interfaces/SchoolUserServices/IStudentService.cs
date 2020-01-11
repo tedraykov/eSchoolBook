@@ -15,6 +15,8 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices
         IEnumerable<StudentModel> GetAllStudentsFromClass(string classId);
         
         StudentModel GetStudent(string id);
+        
+        StudentDialogViewModel GetStudentDialogData(string id);
 
         void AddStudent(StudentModel studentModel);
         
