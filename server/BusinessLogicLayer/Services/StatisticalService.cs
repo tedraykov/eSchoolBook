@@ -147,7 +147,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
         }
 
         /*For All Schools in DB*/
-        public int SchoolAverageScore()
+        public double SchoolAverageScore()
         {
             var grades = Repositories.StudentsToGrades.Query()
                 .AsNoTracking()
@@ -246,6 +246,44 @@ namespace SchoolBook.BusinessLogicLayer.Services
 
             return schoolsAbsences;
         }
-        
+
+        /*For Single user*/
+        public double StudentAverageScore(string studentId)
+        {
+            var grades = Repositories.StudentsToGrades.Query()
+                .Include(stg => stg.Grade)
+                .Include(stg => stg.Subject)
+                .Where(stg => stg.StudentId == studentId)
+                .ProjectTo<double>(Mapper.ConfigurationProvider)
+                .ToList();
+            
+            if (grades.Count <= 0)
+            {
+                throw new ArithmeticException("No grades registered for this student");
+            }
+
+            return grades.Sum() / grades.Count();
+        }
+
+        public IDictionary<string, int> StudentAbsences(string studentId)
+        {
+            var absencesDictionary = new Dictionary<string,int>(3);
+
+            var absences = Repositories.Absences.Query()
+                .Include(a => a.Student)
+                .Where(a => a.Student.Id == studentId)
+                .ToList();
+            
+            if (!absences.Any())
+            {
+                throw new TargetException("No data found for school's absences");
+            }
+            
+            absencesDictionary.Add("Excused Full Absences", absences.Count(a => a.IsExcused && a.IsFullAbsence));
+            absencesDictionary.Add("Unexcused Full Absences", absences.Count(a => !a.IsExcused && a.IsFullAbsence));
+            absencesDictionary.Add("Unexcused Half Absences", absences.Count(a => !a.IsExcused && !a.IsFullAbsence));
+
+            return absencesDictionary;
+        }
     }
 }

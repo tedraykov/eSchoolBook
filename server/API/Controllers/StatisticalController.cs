@@ -48,7 +48,7 @@ namespace SchoolBook.API.Controllers
         
         /*All schools statistics (Admin panel)*/
         [HttpGet("scores")]
-        public int GetSchoolScore()
+        public double GetSchoolScore()
         {
             return StatisticalService.SchoolAverageScore();
         }

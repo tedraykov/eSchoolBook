@@ -5,7 +5,7 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
 {
     public interface IStatisticalService
     {
-        /*For Specific School*/
+        /*Statistics for specific school*/
         double SchoolAverageScore(string schoolId);
 
         IDictionary<string, double> AverageSubjectScores(string schoolId);
@@ -14,8 +14,8 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
 
         IDictionary<string, int>  SchoolAbsences(string schoolId);
         
-        /*For All Schools in DB*/
-        int SchoolAverageScore();
+        /*Statistics for all schools in DB*/
+        double SchoolAverageScore();
         
         ICollection  BestNSchools(int n);
 
@@ -24,5 +24,11 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
         IDictionary<string, double> AverageTeacherScores();
 
         IDictionary<string, IDictionary<string, int>>  SchoolAbsences();
+        
+        /*Statistics for a single user*/
+
+        double StudentAverageScore(string studentId);
+        
+       IDictionary<string, int> StudentAbsences(string studentId);
     }
 }
