@@ -49,6 +49,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
             CreateMap<Class, ClassViewModel>();
             CreateMap<ClassInputModel, Class>();
 
+            CreateMap<Class, MinimalClassViewModel>();
+
             CreateMap<ClassToSubject, Class>()
                 .ForMember(o => o.Id, ex => ex.MapFrom(o => o.Class.Id))
                 .ForMember(o => o.Grade, ex => ex.MapFrom(o => o.Class.Grade))
