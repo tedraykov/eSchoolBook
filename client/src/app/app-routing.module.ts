@@ -21,6 +21,10 @@ const routes: Routes = [
          {
             path: 'principal',
             loadChildren: () => import('./principal-ui/principal-ui.module').then(m => m.PrincipalUiModule)
+         },
+         {
+            path: 'admin',
+            loadChildren: () => import('./admin-ui/admin-ui.module').then(m => m.AdminUiModule)
          }
       ]
    },

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
@@ -75,10 +77,9 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
             return Mapper.Map<Student, StudentModel>(student);
         }
 
-        public void AddStudent(StudentModel studentModel)
+        public async Task AddStudent(StudentModel studentModel)
         {
-            if (Repositories.SchoolUsers.Query().Any(su => su.Pin == studentModel.Pin) ||
-                Repositories.SchoolUsers.Query().Any(su => su.User.Id == studentModel.UserId))
+            if (Repositories.SchoolUsers.Query().Any(su => su.Pin == studentModel.Pin))
             {
                 throw new DuplicateNameException("User already exists");
             }
@@ -100,7 +101,17 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
 
             student.Class = studentClass;
             student.School = studentSchool;
-            student.User = Repositories.Users.GetById(studentModel.UserId);
+            
+            var accountRegister = new FullRegisterInputModel
+            {
+                Pin = student.Pin,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                RoleName = RoleTypes.Student.ToString()
+            };
+            
+            var account =  await _accountService.Register(accountRegister);
+            student.User = account;
             student.Id = student.User.Id;
             
             Repositories.Students.Create(student);

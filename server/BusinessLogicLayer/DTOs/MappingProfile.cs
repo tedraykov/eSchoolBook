@@ -24,8 +24,7 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
 
             CreateMap<StudentModel, Student>();
             CreateMap<Student, StudentModel>()
-                .ForMember(o => o.ClassId, ex => ex.MapFrom(o => o.Class.Id))
-                .ForMember(o => o.UserId, ex => ex.MapFrom(o => o.User.Id));
+                .ForMember(o => o.ClassId, ex => ex.MapFrom(o => o.Class.Id));
             CreateMap<StudentEditInputModel, Student>();
             CreateMap<Student, StudentViewModel>()
                 .ForMember(o => o.FullName,

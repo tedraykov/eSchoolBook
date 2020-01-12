@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
@@ -15,7 +16,7 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices
         
         StudentModel GetStudent(string id);
 
-        void AddStudent(StudentModel studentModel);
+        Task AddStudent(StudentModel studentModel);
         
         void UpdateStudent(string studentId, StudentEditInputModel studentModel);
 

@@ -45,7 +45,6 @@ export class AuthService {
    }
 
    hasTokenExpired(token: string): boolean {
-      console.log(token);
       const payload = AuthService.getTokenPayload(token);
       return Date.now() < payload.exp;
    }
