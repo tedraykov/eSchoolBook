@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SchoolBook.BusinessLogicLayer.DTOs.Enums;
@@ -10,9 +11,10 @@ using SchoolBook.DataAccessLayer;
 namespace SchoolBook.Migrations
 {
     [DbContext(typeof(SchoolBookContext))]
-    partial class SchoolBookContextModelSnapshot : ModelSnapshot
+    [Migration("20200111170411_SchoolAddedToClass")]
+    partial class SchoolAddedToClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,12 +205,17 @@ namespace SchoolBook.Migrations
                     b.Property<char>("GradeLetter")
                         .HasColumnType("character(1)");
 
+                    b.Property<string>("SchoolId")
+                        .HasColumnType("text");
+
                     b.Property<int>("StartYear")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ClassTeacherId");
+
+                    b.HasIndex("SchoolId");
 
                     b.ToTable("Classes");
                 });
@@ -583,6 +590,10 @@ namespace SchoolBook.Migrations
                     b.HasOne("SchoolBook.DataAccessLayer.Entities.SchoolUserEntities.Teacher", "ClassTeacher")
                         .WithMany()
                         .HasForeignKey("ClassTeacherId");
+
+                    b.HasOne("SchoolBook.DataAccessLayer.Entities.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId");
                 });
 
             modelBuilder.Entity("SchoolBook.DataAccessLayer.Entities.ClassToSubject", b =>
