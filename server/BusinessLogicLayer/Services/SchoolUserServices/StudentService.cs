@@ -43,15 +43,15 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
             return students;
         }
 
-        public IEnumerable<StudentModel> GetAllStudentsFromSchool(string schoolId)
+        public IEnumerable<MinimalStudentModel> GetAllStudentsFromSchool(string schoolId)
         {
             var students = Repositories.Students.Query()
                 .Include(o => o.School)
                 .Include(o => o.Class)
                 .Include(o => o.User)
                 .Where(s => s.School.Id == schoolId)
-                .ProjectTo<StudentModel>(Mapper.ConfigurationProvider);
-
+                .ProjectTo<MinimalStudentModel>(Mapper.ConfigurationProvider);
+            
             return students;
         }
 
@@ -102,15 +102,7 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
             student.Class = studentClass;
             student.School = studentSchool;
             
-            var accountRegister = new FullRegisterInputModel
-            {
-                Pin = student.Pin,
-                FirstName = student.FirstName,
-                LastName = student.LastName,
-                RoleName = RoleTypes.Student.ToString()
-            };
-            
-            var account =  await _accountService.Register(accountRegister);
+            var account =  await _accountService.RegisterSchoolUser(student);
             student.User = account;
             student.Id = student.User.Id;
             

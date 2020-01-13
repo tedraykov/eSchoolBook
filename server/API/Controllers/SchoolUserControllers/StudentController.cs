@@ -36,7 +36,7 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
         
         [HttpGet("school/{schoolId}")]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
-        public IEnumerable<StudentModel> GetAllBySchool([FromRoute] string schoolId)
+        public IEnumerable<MinimalStudentModel> GetAllBySchool([FromRoute] string schoolId)
         {
             return _studentService.GetAllStudentsFromSchool(schoolId);
         }

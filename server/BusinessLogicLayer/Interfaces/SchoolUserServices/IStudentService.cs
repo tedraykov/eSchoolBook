@@ -10,7 +10,7 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices
     {
         IEnumerable<StudentModel> GetAllStudents();
         
-        IEnumerable<StudentModel> GetAllStudentsFromSchool(string schoolId);
+        IEnumerable<MinimalStudentModel> GetAllStudentsFromSchool(string schoolId);
         
         IEnumerable<StudentModel> GetAllStudentsFromClass(string classId);
         

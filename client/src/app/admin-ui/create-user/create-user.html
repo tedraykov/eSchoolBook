@@ -46,12 +46,25 @@
                 </button>
                 <button nbButton status="basic">Cancel</button>
             </nb-step>
-            <nb-step label="Role specific info">
+            <nb-step label="Role specific info" class="role-step">
                 <div *ngIf="baseUserComplete">
+                    <new-user-summary [schoolUser]="getUserData()"></new-user-summary>
                     <create-student
-                            *ngIf="getRole() == 'Student'"
+                            *ngIf="getRole() === 'Student'"
                             [user]="getUserData()">
                     </create-student>
+                    <create-teacher
+                            *ngIf="getRole() === 'Teacher'"
+                            [user]="getUserData()">
+                    </create-teacher>
+                    <create-principal
+                            *ngIf="getRole() === 'Principal'"
+                            [user]="getUserData()">
+                    </create-principal>
+                    <create-parent
+                            *ngIf="getRole() === 'Parent'"
+                            [user]="getUserData()">
+                    </create-parent>
                 </div>
             </nb-step>
         </nb-stepper>

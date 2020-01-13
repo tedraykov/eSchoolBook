@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from "@angular/router";
-import { TeacherService } from "./shared/services/teacher.service";
 
 const teacherUiModuleRoutes: Routes = [
    {
@@ -25,7 +24,7 @@ const teacherUiModuleRoutes: Routes = [
       CommonModule,
       RouterModule.forChild(teacherUiModuleRoutes)
    ],
-   providers: [TeacherService]
+   providers: []
 })
 export class TeacherUiModule {
 }

@@ -38,13 +38,11 @@ export class CreateStudentComponent implements OnInit {
         const studentFromData = this.studentForm.value as StudentFormInputModel;
         const student = <StudentInputModel>{
             ...this.user,
-
             classId: studentFromData.class.id,
             startYear: studentFromData.startYear
         };
         this.studentService.addStudent$(student).pipe(
             take(1),
-            tap(console.log),
             tap(() => this.router.navigateByUrl('app/admin'))
         ).subscribe();
     }

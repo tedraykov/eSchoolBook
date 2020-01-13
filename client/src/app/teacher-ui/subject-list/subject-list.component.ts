@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TeacherService } from "../shared/services/teacher.service";
+import { TeacherService } from "../../shared/services/teacher.service";
 import { Observable } from "rxjs";
 import { Subject } from "../shared/models/subject";
 import { MatTableDataSource } from "@angular/material/table";
