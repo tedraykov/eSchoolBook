@@ -5,4 +5,5 @@ export interface StudentDialogData extends SchoolUsersTableData{
     avgScore: number;
     absences: Map<string, Map<string, number>>
     parentName: string
+    email: string
 }

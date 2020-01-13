@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PrincipalService } from './shared/services/principal.service';
+import {NbDialogModule} from "@nebular/theme";
 
 const principalUiModuleRoutes: Routes = [
     {
@@ -30,8 +31,9 @@ const principalUiModuleRoutes: Routes = [
  @NgModule({
     declarations: [],
     imports: [
-       CommonModule,
-       RouterModule.forChild(principalUiModuleRoutes)
+        CommonModule,
+        RouterModule.forChild(principalUiModuleRoutes),
+        NbDialogModule.forChild(),
     ],
     providers: [PrincipalService]
  })

@@ -57,7 +57,9 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                 .ForMember(o => o.Address,
                     ex => ex.MapFrom(o => o.Town + ", " + o.Address))
                 .ForMember(o => o.ParentName,
-                    ex => ex.MapFrom(o => GetFullName(o.Parent)));
+                    ex => ex.MapFrom(o => GetFullName(o.Parent)))
+                .ForMember(o => o.Email, 
+                    ex => ex.MapFrom(o => o.User.Email));
             CreateMap<Student, string>()
                 .ConvertUsing(o => GetFullName(o));
             
@@ -71,7 +73,7 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                 .ForMember(o => o.Address,
                     ex => ex.MapFrom(o => o.Town + ", " + o.Address));
             
-            CreateMap<Parent, ParentTableViewModel>()
+            CreateMap<Parent, ParentViewModel>()
                 .ForMember(o => o.SchoolUserId,
                     ex => ex.MapFrom(o => o.Id))
                 .ForMember(o => o.FullName,
@@ -79,7 +81,22 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                 .ForMember(o => o.Address,
                     ex => ex.MapFrom(o => o.Town + ", " + o.Address))
                 .ForMember( o => o.Children, 
-                    ex => ex.MapFrom(o => o.Children));
+                    ex => ex.MapFrom(o => o.Children))
+                .ForMember(o => o.Email, 
+                    ex => ex.MapFrom(o => o.User.Email));
+            CreateMap<Parent, ParentDialogViewModel>()
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address))
+                .ForMember( o => o.Children, 
+                    ex => ex.MapFrom(o => o.Children))
+                .ForMember(o => o.Email, 
+                    ex => ex.MapFrom(o => o.User.Email))
+                .ForMember( o => o.ChildrenData, 
+                    ex => ex.UseDestinationValue());
 
 
             /* ------------------- Authentication Mapping ------------------- */

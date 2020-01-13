@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
-import {SchoolUsersTableData} from "../shared/models/SchoolUsersTableData";
-import {TeacherDialogData} from "../shared/models/TeacherDialogData";
-import {ParentTableData} from "../shared/models/ParentTableData";
-import {ParentDialogData} from "../shared/models/ParentDialogData";
 import {PrincipalService} from "../shared/services/principal.service";
 import {select, Store} from "@ngrx/store";
 import {AppState} from "../../state/app.state";
 import {NbDialogService} from "@nebular/theme";
 import {map} from "rxjs/operators";
 import {selectSchoolId} from "../../auth/state/auth.reducer";
+import {ParentDialogComponent} from "./parent-dialog/parent-dialog.component";
+import {ParentData} from "../shared/models/ParentData";
 
 @Component({
    selector: 'app-parents-data',
@@ -18,9 +16,9 @@ import {selectSchoolId} from "../../auth/state/auth.reducer";
    styleUrls: ['./parents-data.component.scss']
 })
 export class ParentsDataComponent implements OnInit {
-   dataForTable: Observable<MatTableDataSource<ParentTableData>>;
+   dataForTable: Observable<MatTableDataSource<ParentData>>;
    parentColumns: string[] = ['name', 'address', 'children', 'actions'];
-   dataForDialog: Observable<ParentDialogData>;
+   dataForDialog: Observable<ParentData>;
    schoolId: string;
    
    constructor(
@@ -35,8 +33,16 @@ export class ParentsDataComponent implements OnInit {
 
    ngOnInit() {
       this.dataForTable = this.principalService.getParentsData$(this.schoolId).pipe(
-          map((parents: ParentTableData[]) => new MatTableDataSource<ParentTableData>(parents))
+          map((parents: ParentData[]) => new MatTableDataSource<ParentData>(parents))
       );
+   }
+
+   public openDialog(parentData: ParentData){
+      this.dialogService.open(ParentDialogComponent, {
+         context: {
+            data: this.principalService.getParentData$(parentData.schoolUserId)
+         }
+      });
    }
 
 }

@@ -1,0 +1,26 @@
+﻿<nb-card>
+    <nb-card-header>{{parent.fullName}}</nb-card-header>
+    <nb-card-body>
+        <nb-tabset>
+            <nb-tab tabTitle="Personal Data">
+                <h2>Address:</h2>
+                <span>{{parent.address}}</span>
+                <h2>Contact:</h2>
+                <span>{{parent.email}}</span>
+            </nb-tab>
+            <nb-tab *ngFor="let child of parent.childrenData" tabTitle="{{child.fullName}}">
+                <h2>Grade:</h2>
+                <span>{{child.grade}}</span>
+                <h2>Average score:</h2>
+                <span>{{child.avgScore.toPrecision(3)}}</span>
+                <h2>Absences:</h2>
+                <span>Excused Full Absences: {{child.absences["Excused Full Absences"]}}</span><br>
+                <span>Unexcused Full Absences: {{child.absences["Unexcused Full Absences"]}}</span><br>
+                <span>Unexcused Half Absences: {{child.absences["Unexcused Half Absences"]}}</span>
+            </nb-tab>
+        </nb-tabset>
+    </nb-card-body>
+    <nb-card-footer>
+        <button nbButton status="basic" size="small" (click)="close()">Cancel</button>
+    </nb-card-footer>
+</nb-card>

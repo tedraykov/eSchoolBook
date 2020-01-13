@@ -24,9 +24,16 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
 
         [HttpGet("school/{schoolId}")]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
-        public IEnumerable<ParentTableViewModel> GetAllParentsFromSchool(string schoolId)
+        public IEnumerable<ParentViewModel> GetAllParentsFromSchool(string schoolId)
         {
             return ParentService.GetAllParentsFromSchool(schoolId);
+        }
+        
+        [HttpGet("dialog/{parentId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
+        public ParentDialogViewModel GetParentDialogData(string parentId)
+        {
+            return ParentService.GetParentDialogData(parentId);
         }
     }
 }

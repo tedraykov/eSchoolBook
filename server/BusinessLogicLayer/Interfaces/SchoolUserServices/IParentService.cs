@@ -5,6 +5,8 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices
 {
     public interface IParentService
     {
-        IEnumerable<ParentTableViewModel> GetAllParentsFromSchool(string schoolId);
+        IEnumerable<ParentViewModel> GetAllParentsFromSchool(string schoolId);
+
+        ParentDialogViewModel GetParentDialogData(string parentId);
     }
 }

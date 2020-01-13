@@ -87,6 +87,7 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
                 .AsNoTracking()
                 .Include(s => s.Class)
                 .Include(s => s.Parent)
+                .Include(s => s.User)
                 .FirstOrDefault(s => s.Id == id);
 
             var student = Mapper.Map<Student, StudentDialogViewModel>(st);

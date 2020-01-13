@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from "rxjs";
 import {tap} from "rxjs/operators";
 import {SchoolUsersTableData} from "../models/SchoolUsersTableData";
 import {StudentDialogData} from "../models/StudentDialogData";
-import {ParentTableData} from "../models/ParentTableData";
+import {ParentData} from "../models/ParentData";
 
 @Injectable()
 export class PrincipalService {
@@ -30,7 +30,14 @@ export class PrincipalService {
    };
 
    /*Get all parents in school*/
-   public getParentsData$(schoolId: string): Observable<ParentTableData[]>{
-      return this.http.get<ParentTableData[]>(`${this.serverUrl}/parents/school/${schoolId}`);
+   public getParentsData$(schoolId: string): Observable<ParentData[]>{
+      return this.http.get<ParentData[]>(`${this.serverUrl}/parents/school/${schoolId}`);
+   };
+
+   /*Get single parent data*/
+   public getParentData$(parentId: string): Observable<ParentData>{
+      return this.http.get<ParentData>(`${this.serverUrl}/parents/dialog/${parentId}`).pipe(
+          tap(x => console.log(x))
+      );
    };
 }

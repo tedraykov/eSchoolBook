@@ -20,5 +20,7 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers
         public IDictionary<string, int> Absences { get; set; }
         
         public string ParentName { get; set; }
+
+        public string Email { get; set; }
     }
 }

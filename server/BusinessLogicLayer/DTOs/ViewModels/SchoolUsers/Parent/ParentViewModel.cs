@@ -2,7 +2,7 @@
 
 namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Parent
 {
-    public class ParentTableViewModel
+    public class ParentViewModel
     {
         public string SchoolUserId { get; set; }
         
@@ -11,5 +11,7 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Parent
         public string Address { get; set; }
         
         public ICollection<string> Children { get; set; }
+
+        public string Email { get; set; }
     }
 }
