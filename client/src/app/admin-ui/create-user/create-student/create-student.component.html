@@ -15,5 +15,7 @@
     </label>
 </form>
 
-<button nbButton (click)="submitStudent()" [disabled]="studentForm.invalid">Submit</button>
-<button nbButton status="basic">Cancel</button>
+<div class="btn-group">
+    <button nbButton status="basic" (click)="back.emit()">Back</button>
+    <button nbButton (click)="submitStudent()" [disabled]="studentForm.invalid">Submit</button>
+</div>

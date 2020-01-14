@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SchoolService} from "../../shared/services/school.service";
 import {Observable} from "rxjs";
 import {School} from "../../shared/models/school.interface";
@@ -7,6 +7,8 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {SchoolUserInputModel} from "../models/school-user.model";
 import {StudentFormInputModel} from "./models/student-form-input.model";
 import {StudentInputModel} from "./models/student-input.model";
+import {tap} from "rxjs/operators";
+import {NbStepperComponent} from "@nebular/theme";
 
 @Component({
     selector: 'app-create-user',
@@ -18,6 +20,7 @@ export class CreateUserComponent implements OnInit {
     roles: string[] = [];
     baseUserComplete: boolean = false;
     studentData: StudentFormInputModel;
+    @ViewChild('userStepper', {static: false}) stepper: NbStepperComponent;
 
     createUser = this.fb.group({
         firstName: ['Tedi', Validators.required],
@@ -42,6 +45,10 @@ export class CreateUserComponent implements OnInit {
                 this.roles.push(role);
             }
         }
+
+        this.createUser.valueChanges.pipe(
+            tap(() => this.baseUserComplete = false)
+        ).subscribe();
     }
 
     getRole() {
@@ -54,5 +61,9 @@ export class CreateUserComponent implements OnInit {
 
     getUserData(): SchoolUserInputModel {
         return this.createUser.value as SchoolUserInputModel;
+    }
+
+    onBack() {
+        this.stepper.previous();
     }
 }

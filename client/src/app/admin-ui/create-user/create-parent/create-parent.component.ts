@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {take, tap} from "rxjs/operators";
 import {ParentService} from "../../../shared/services/parent.service";
 import {Router} from "@angular/router";
@@ -15,8 +15,10 @@ import {MinimalStudent} from "../models/minimal-student.model";
 })
 export class CreateParentComponent implements OnInit {
     @Input() user: SchoolUserInputModel;
+    @Output() back: EventEmitter<void> = new EventEmitter<void>();
     children: MinimalStudent[] = [];
     students: Observable<MinimalStudent[]>;
+
     constructor(
         private parentService: ParentService,
         private studentService: StudentService,
@@ -24,16 +26,16 @@ export class CreateParentComponent implements OnInit {
     }
 
     ngOnInit() {
-      this.students = this.studentService.getAllStudentsBySchool$(this.user.schoolId).pipe(tap(console.log));
+        this.students = this.studentService.getAllStudentsBySchool$(this.user.schoolId).pipe(tap(console.log));
     }
 
     submitParent() {
         const childrenId: string[] = this.children.map(ch => ch.id);
         let parent = <ParentInputModel>{
-          ...this.user,
-          childrenId
+            ...this.user,
+            childrenId
         };
-
+        console.log(`Adding parent ${JSON.stringify(parent, null, 2)}`);
         this.parentService.addParent$(parent).pipe(
             take(1),
             tap(() => this.router.navigateByUrl('app/admin'))

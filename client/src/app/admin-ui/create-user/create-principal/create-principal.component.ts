@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {take, tap} from "rxjs/operators";
 import {PrincipalService} from "../../../shared/services/principal.service";
 import {Router} from "@angular/router";
@@ -11,6 +11,7 @@ import {SchoolUserInputModel} from "../../models/school-user.model";
 })
 export class CreatePrincipalComponent implements OnInit {
     @Input() user: SchoolUserInputModel;
+    @Output() back: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(
         private principalService: PrincipalService,

@@ -74,9 +74,14 @@ namespace SchoolBook
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IClassService, ClassService>();
             services.AddTransient<ISubjectService, SubjectService>();
+            
             services.AddTransient<ISchoolUserService, SchoolUserService>();
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ITeacherService, TeacherService>();
+            services.AddTransient<IPrincipalService, PrincipalService>();
+            services.AddTransient<IParentService, ParentService>();
+            services.AddTransient<ISchoolAdminService, SchoolAdminService>();
+
             services.AddTransient<ISchoolService, SchoolService>();
             services.AddTransient<ICurriculumService, CurriculumService>();
             services.AddTransient<IStatisticalService, StatisticalService>();

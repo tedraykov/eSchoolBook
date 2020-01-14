@@ -23,8 +23,10 @@
     </nb-card>
 </section>
 
-<button nbButton (click)="submitParent()">Submit</button>
-<button nbButton status="basic">Cancel</button>
+<div class="btn-group">
+    <button nbButton status="basic" (click)="back.emit()">Back</button>
+    <button nbButton (click)="submitParent()">Submit</button>
+</div>
 
 <ng-template #noChildren>
     <div class="no-result">

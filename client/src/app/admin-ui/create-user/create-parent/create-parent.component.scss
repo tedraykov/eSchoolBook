@@ -37,6 +37,12 @@ nb-list-item {
   .student-name {
     flex: 1;
   }
+
+  transition: background-color 200ms ease-in-out;
+}
+
+button {
+  margin-right: 1rem;
 }
 
 nb-list-item:hover {

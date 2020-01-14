@@ -1,5 +1,9 @@
-<h4>New user summary</h4>
-<ul>
-    <li>Name: <strong>{{getFullName()}}</strong></li>
-    <li>Role: <strong>{{schoolUser.role}}</strong></li>
-</ul>
+<nb-card accent="control">
+    <nb-card-header>New user summary</nb-card-header>
+    <nb-card-body>
+        <nb-user size="giant"
+                 [name]="getFullName()"
+                 [title]="schoolUser.role">
+        </nb-user>
+    </nb-card-body>
+</nb-card>

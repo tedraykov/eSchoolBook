@@ -37,6 +37,7 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
             CreateMap<TeacherModel, Teacher>();
             CreateMap<PrincipalModel, Principal>();
             CreateMap<ParentModel, Parent>();
+            CreateMap<SchoolAdminModel, SchoolAdmin>();
 
             CreateMap<SchoolUser, MinimalSchoolUserModel>()
                 .Include<Student, MinimalStudentModel>();

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TeacherService} from "../../../shared/services/teacher.service";
 import {SchoolUserInputModel} from "../../models/school-user.model";
 import {take, tap} from "rxjs/operators";
@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 })
 export class CreateTeacherComponent implements OnInit {
     @Input() user: SchoolUserInputModel;
-
+    @Output() back: EventEmitter<void> = new EventEmitter<void>();
     constructor(
         private teacherService: TeacherService,
         private router: Router) {

@@ -1,8 +1,8 @@
 <nb-card>
     <nb-card-header><h5>Create User</h5></nb-card-header>
     <nb-card-body>
-        <nb-stepper orientation="vertical" linear="true">
-            <nb-step [stepControl]="createUser">
+        <nb-stepper orientation="vertical" disableStepNavigation #userStepper>
+            <nb-step [stepControl]="createUser" label="Basic info">
                 <form [formGroup]="createUser" class="base-user-form">
                     <label for="first-name">
                         <span class="label-text">First Name</span>
@@ -42,29 +42,48 @@
                         </nb-select>
                     </label>
                 </form>
-                <button nbButton nbStepperNext (click)="completeBaseUser()" [disabled]="createUser.invalid">Next
-                </button>
-                <button nbButton status="basic">Cancel</button>
+                <div class="btn-group">
+                    <button nbButton status="basic">Cancel</button>
+                    <button nbButton
+                            nbStepperNext
+                            (click)="completeBaseUser()"
+                            [disabled]="createUser.invalid">Next
+                    </button>
+                </div>
             </nb-step>
             <nb-step label="Role specific info" class="role-step">
-                <div *ngIf="baseUserComplete">
+                <div *ngIf="baseUserComplete" class="role-specific-wrapper">
                     <new-user-summary [schoolUser]="getUserData()"></new-user-summary>
                     <create-student
+                            class="role-form"
                             *ngIf="getRole() === 'Student'"
+                            (back)="onBack()"
                             [user]="getUserData()">
                     </create-student>
                     <create-teacher
+                            class="role-form"
                             *ngIf="getRole() === 'Teacher'"
+                            (back)="onBack()"
                             [user]="getUserData()">
                     </create-teacher>
                     <create-principal
+                            class="role-form"
                             *ngIf="getRole() === 'Principal'"
+                            (back)="onBack()"
                             [user]="getUserData()">
                     </create-principal>
                     <create-parent
+                            class="role-form"
                             *ngIf="getRole() === 'Parent'"
+                            (back)="onBack()"
                             [user]="getUserData()">
                     </create-parent>
+                    <create-admin
+                            class="role-form"
+                            *ngIf="getRole() === 'Admin'"
+                            (back)="onBack()"
+                            [user]="getUserData()">
+                    </create-admin>
                 </div>
             </nb-step>
         </nb-stepper>

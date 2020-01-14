@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {ClassService} from "../../../shared/services/class.service";
 import {Observable} from "rxjs";
@@ -17,6 +17,7 @@ import {take, tap} from "rxjs/operators";
 })
 export class CreateStudentComponent implements OnInit {
     @Input() user: SchoolUserInputModel;
+    @Output() back: EventEmitter<void> = new EventEmitter<void>();
     studentForm = this.fb.group({
         class: ['', Validators.required],
         startYear: ['', [Validators.min(1970), Validators.required]]
