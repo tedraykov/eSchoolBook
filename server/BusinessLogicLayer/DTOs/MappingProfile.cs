@@ -24,8 +24,7 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
 
             CreateMap<StudentModel, Student>();
             CreateMap<Student, StudentModel>()
-                .ForMember(o => o.ClassId, ex => ex.MapFrom(o => o.Class.Id))
-                .ForMember(o => o.UserId, ex => ex.MapFrom(o => o.User.Id));
+                .ForMember(o => o.ClassId, ex => ex.MapFrom(o => o.Class.Id));
             CreateMap<StudentEditInputModel, Student>();
             CreateMap<Student, StudentViewModel>()
                 .ForMember(o => o.FullName,
@@ -35,7 +34,17 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                 .ForMember(o => o.ClassId,
                     ex => ex.MapFrom(o => o.Class.Id));
 
+            CreateMap<TeacherModel, Teacher>();
+            CreateMap<PrincipalModel, Principal>();
+            CreateMap<ParentModel, Parent>();
+            CreateMap<SchoolAdminModel, SchoolAdmin>();
 
+            CreateMap<SchoolUser, MinimalSchoolUserModel>()
+                .Include<Student, MinimalStudentModel>();
+
+            CreateMap<Student, MinimalStudentModel>()
+                .ForMember(o => o.Grade, ex => ex.MapFrom(o => o.Class.Grade))
+                .ForMember(o => o.GradeLetter, ex => ex.MapFrom(o => o.Class.GradeLetter));
             /* ------------------- Authentication Mapping ------------------- */
             CreateMap<RegisterInputModel, User>()
                 .ForMember(o => o.UserName,

@@ -15,8 +15,6 @@ namespace SchoolBook.BusinessLogicLayer.Services
 {
     public class CurriculumService : BaseService, ICurriculumService
     {
-        private ICurriculumService _curriculumServiceImplementation;
-
         public CurriculumService(
             IRepositories repositories, 
             ILogger<BaseService> logger, 

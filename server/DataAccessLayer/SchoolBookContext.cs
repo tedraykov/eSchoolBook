@@ -56,7 +56,8 @@ namespace SchoolBook.DataAccessLayer
                 .HasValue<Student>(RoleTypes.Student)
                 .HasValue<Teacher>(RoleTypes.Teacher)
                 .HasValue<Principal>(RoleTypes.Principal)
-                .HasValue<Parent>(RoleTypes.Parent);
+                .HasValue<Parent>(RoleTypes.Parent)
+                .HasValue<SchoolAdmin>(RoleTypes.SchoolAdmin);
             
             /* Many to many relationships configuration */
             builder.Entity<ClassToSubject>()

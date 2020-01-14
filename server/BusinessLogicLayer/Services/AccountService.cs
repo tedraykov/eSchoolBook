@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
+using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.DataAccessLayer.Entities;
@@ -173,6 +174,18 @@ namespace SchoolBook.BusinessLogicLayer.Services
 
             return emailPrefix + "@eschoolbook.bg";
 
+        }
+
+        public async Task<User> RegisterSchoolUser(SchoolUser schoolUser)
+        {
+            var accountRegister = new FullRegisterInputModel
+            {
+                Pin = schoolUser.Pin,
+                FirstName = schoolUser.FirstName,
+                LastName = schoolUser.LastName,
+                RoleName = schoolUser.Role.ToString()
+            };
+            return await Register(accountRegister);
         }
     }
 }

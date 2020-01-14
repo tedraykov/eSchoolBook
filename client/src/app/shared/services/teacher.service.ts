@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { Subject } from "../models/subject";
+import { Subject } from "../../teacher-ui/shared/models/subject";
 import { subjects } from "./mocked-subjects";
+import {SchoolUserInputModel} from "../../admin-ui/models/school-user.model";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class TeacherService {
    private readonly serverUrl = "http://localhost:5000";
+   private readonly teacherEndpoint = "teacher";
 
    constructor(private http: HttpClient) {
    }
@@ -19,4 +23,8 @@ export class TeacherService {
       // Mocked implementation
       return of(subjects);
    }
+
+    addTeacher$(teacher: SchoolUserInputModel) {
+        return this.http.post(`${this.serverUrl}/${this.teacherEndpoint}`, teacher);
+    }
 }

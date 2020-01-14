@@ -1,0 +1,50 @@
+section {
+  margin: 2rem 0;
+  display: flex;
+
+  & > * {
+    flex: 1;
+    align-self: start;
+  }
+}
+
+.selected-children-header {
+  margin-bottom: 0.5rem;
+}
+
+.children {
+  nb-card {
+    margin: 0 1rem 1rem 0;
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: row;
+
+    span {
+      flex: 1;
+    }
+
+    nb-icon {
+      cursor: pointer;
+    }
+  }
+}
+
+nb-list-item {
+  cursor: pointer;
+  display: flex;
+
+  .student-name {
+    flex: 1;
+  }
+
+  transition: background-color 200ms ease-in-out;
+}
+
+button {
+  margin-right: 1rem;
+}
+
+nb-list-item:hover {
+  background-color: #f5f5f5;
+}

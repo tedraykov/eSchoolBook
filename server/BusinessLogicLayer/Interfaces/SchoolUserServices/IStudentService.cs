@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
@@ -9,13 +10,13 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices
     {
         IEnumerable<StudentModel> GetAllStudents();
         
-        IEnumerable<StudentModel> GetAllStudentsFromSchool(string schoolId);
+        IEnumerable<MinimalStudentModel> GetAllStudentsFromSchool(string schoolId);
         
         IEnumerable<StudentModel> GetAllStudentsFromClass(string classId);
         
         StudentModel GetStudent(string id);
 
-        void AddStudent(StudentModel studentModel);
+        Task AddStudent(StudentModel studentModel);
         
         void UpdateStudent(string studentId, StudentEditInputModel studentModel);
 

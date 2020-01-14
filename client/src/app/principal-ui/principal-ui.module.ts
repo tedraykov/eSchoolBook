@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { PrincipalService } from './shared/services/principal.service';
+import { PrincipalService } from '../shared/services/principal.service';
 
 const principalUiModuleRoutes: Routes = [
     {

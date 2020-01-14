@@ -50,7 +50,9 @@ namespace SchoolBook.DataAccessLayer
         public IGeneralRepository<Subject> Subjects => this.GetRepository<Subject>();
         
         public IGeneralRepository<Teacher> Teachers => this.GetRepository<Teacher>();
-        
+
+        public IGeneralRepository<SchoolAdmin> SchoolAdmins => this.GetRepository<SchoolAdmin>();
+
         public IGeneralRepository<User> Users => this.GetRepository<User>();
 
         public IGeneralRepository<SchoolUser> SchoolUsers => this.GetRepository<SchoolUser>();

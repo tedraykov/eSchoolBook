@@ -45,9 +45,8 @@ export class AuthService {
    }
 
    hasTokenExpired(token: string): boolean {
-      console.log(token);
       const payload = AuthService.getTokenPayload(token);
-      return Date.now() < payload.exp;
+      return Date.now() > payload.exp;
    }
 
    login(user: LoginModel): Observable<AuthUserModel> {
@@ -58,7 +57,7 @@ export class AuthService {
 
    getAuthState(): AuthState {
       const token = this.getToken();
-      if (token && !this.hasTokenExpired(token)) {
+      if (token && this.hasTokenExpired(token)) {
          const payload = AuthService.getTokenPayload(token);
          return <AuthState>{
             name: payload.userNames,

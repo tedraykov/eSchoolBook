@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentInSubject } from "../../shared/models/student-in-subject.model";
-import { mockedStudentsInSubject } from "../../shared/services/mocked-students";
+import { mockedStudentsInSubject } from "../../../shared/services/mocked-students";
 import { MatTableDataSource } from "@angular/material/table";
 
 @Component({

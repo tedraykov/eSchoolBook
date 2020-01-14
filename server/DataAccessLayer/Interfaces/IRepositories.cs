@@ -24,6 +24,8 @@ namespace SchoolBook.DataAccessLayer.Interfaces
         
         IGeneralRepository<Teacher> Teachers { get; }
         
+        IGeneralRepository<SchoolAdmin> SchoolAdmins { get; }
+
         IGeneralRepository<User> Users { get; }
 
         IGeneralRepository<SchoolUser> SchoolUsers { get; }
