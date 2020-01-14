@@ -1,56 +1,32 @@
 import {
    Component,
-   EventEmitter,
    OnDestroy,
-   OnInit,
-   Output
+   OnInit
 } from '@angular/core';
-import { NbMenuBag, NbMenuItem, NbMenuService } from "@nebular/theme";
-import { filter, tap } from "rxjs/operators";
-import { Subscription } from "rxjs";
+import { NbMenuItem, NbMenuService } from "@nebular/theme";
+import { map } from "rxjs/operators";
+import {Observable, Subscription} from "rxjs";
+import {select, State} from "@ngrx/store";
+import {AuthState} from "../../auth/state";
+import {selectRole} from "../../auth/state/auth.reducer";
+import {menuConfig} from "./config/menu.config";
 
 @Component({
    selector: 'app-sidebar',
    templateUrl: './sidebar.html',
    styleUrls: ['./sidebar.scss']
 })
-export class SidebarComponent implements OnInit, OnDestroy {
-   @Output() sidebarStateChanged: EventEmitter<void>;
+export class SidebarComponent implements OnInit {
+   menuItems: Observable<NbMenuItem[]>;
 
-   menuItemClickedSubscription: Subscription;
-   menuItems: NbMenuItem[] = [
-      {title: '', icon: 'menu-outline'},
-      {title: 'users', icon: 'people-outline', link: 'users'},
-      {
-         title: 'teacher', link: 'teacher', children: [
-            {title: 'subjects list', link: 'teacher/subject'},
-            {title: 'subject details', link: 'teacher/subject/1'}
-         ]
-      },
-      {title: 'admin', children: [
-            {title: 'create user', link: 'admin/create'}
-         ]
-      }
-   ];
-
-   constructor(private menuService: NbMenuService) {
-      this.sidebarStateChanged = new EventEmitter<void>();
+   constructor(
+       private menuService: NbMenuService,
+       private authState: State<AuthState>) {
    }
 
    ngOnInit() {
-      this.menuItemClickedSubscription = this.menuService.onItemClick().pipe(
-            filter((bag: NbMenuBag) =>
-                  bag.item.icon === "menu-outline"
-            ),
-            tap(this.onSidenavHamburgerClicked.bind(this))
-      ).subscribe();
-   }
-
-   onSidenavHamburgerClicked(): void {
-      this.sidebarStateChanged.emit();
-   };
-
-   ngOnDestroy(): void {
-      this.menuItemClickedSubscription.unsubscribe();
+      this.menuItems = this.authState.pipe(
+          select(selectRole),
+          map(role => menuConfig.get(role) || []));
    }
 }

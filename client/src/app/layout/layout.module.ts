@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-   NbActionsModule,
+   NbActionsModule, NbIconModule,
    NbLayoutModule,
    NbMenuModule,
    NbSidebarModule, NbUserModule
@@ -29,7 +29,8 @@ import { UserAvatarModule } from "../shared/components/user-avatar/user-avatar.m
       NbMenuModule,
       AppSettingsModule,
       NbUserModule,
-      UserAvatarModule
+      UserAvatarModule,
+      NbIconModule
    ]
 })
 export class LayoutModule {
