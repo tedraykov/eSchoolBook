@@ -19,7 +19,6 @@ import {StudentDialogComponent} from "./student-dialog/student-dialog.component"
 export class StudentsDataComponent implements OnInit {
    dataForTable: Observable<MatTableDataSource<SchoolUsersTableData>>;
    studentColumns: string[] = ['name', 'address', 'grade', 'actions'];
-   dataForDialog: Observable<StudentDialogData>;
    schoolId: string;
 
    constructor(

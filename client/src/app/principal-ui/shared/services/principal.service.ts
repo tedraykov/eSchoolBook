@@ -5,6 +5,7 @@ import {tap} from "rxjs/operators";
 import {SchoolUsersTableData} from "../models/SchoolUsersTableData";
 import {StudentDialogData} from "../models/StudentDialogData";
 import {ParentData} from "../models/ParentData";
+import {TeacherDialogData} from "../models/TeacherDialogData";
 
 @Injectable()
 export class PrincipalService {
@@ -19,14 +20,17 @@ export class PrincipalService {
 
    /*Get single student data*/
    public getStudentData$(studentId: string): Observable<StudentDialogData>{
-      return this.http.get<StudentDialogData>(`${this.serverUrl}/students/dialog/${studentId}`).pipe(
-          tap(x => console.log(x))
-      );
+      return this.http.get<StudentDialogData>(`${this.serverUrl}/students/dialog/${studentId}`);
    };
    
    /*Get all teachers in school*/
    public getTeachersData$(schoolId: string): Observable<SchoolUsersTableData[]>{
       return this.http.get<SchoolUsersTableData[]>(`${this.serverUrl}/teachers/school/${schoolId}`);
+   };
+
+   /*Get single teacher data*/
+   public getTeacherData$(teacherId: string): Observable<TeacherDialogData>{
+      return this.http.get<TeacherDialogData>(`${this.serverUrl}/teachers/dialog/${teacherId}`);
    };
 
    /*Get all parents in school*/
@@ -36,8 +40,6 @@ export class PrincipalService {
 
    /*Get single parent data*/
    public getParentData$(parentId: string): Observable<ParentData>{
-      return this.http.get<ParentData>(`${this.serverUrl}/parents/dialog/${parentId}`).pipe(
-          tap(x => console.log(x))
-      );
+      return this.http.get<ParentData>(`${this.serverUrl}/parents/dialog/${parentId}`);
    };
 }

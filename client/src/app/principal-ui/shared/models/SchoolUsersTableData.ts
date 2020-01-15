@@ -3,4 +3,5 @@
     fullName: string;
     address: string;
     grade: string;
+    email: string;
 }

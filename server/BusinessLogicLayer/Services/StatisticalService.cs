@@ -285,5 +285,23 @@ namespace SchoolBook.BusinessLogicLayer.Services
 
             return absencesDictionary;
         }
+
+        public double TeacherAverageScore(string teacherId)
+        {
+            var grades = Repositories.StudentsToGrades.Query()
+                .Include(stg => stg.Grade)
+                .Include(stg => stg.Subject)
+                .Include(stg => stg.Teacher)
+                .Where(stg => stg.Teacher.Id == teacherId)
+                .ProjectTo<double>(Mapper.ConfigurationProvider)
+                .ToList();
+            
+            if (grades.Count <= 0)
+            {
+                throw new ArithmeticException("No grades registered for this teacher");
+            }
+
+            return grades.Sum() / grades.Count();
+        }
     }
 }

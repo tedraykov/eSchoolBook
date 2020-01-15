@@ -1,9 +1,8 @@
 ﻿import {SchoolUsersTableData} from "./SchoolUsersTableData";
 
 export interface StudentDialogData extends SchoolUsersTableData{
-    startYear: number
+    startYear: number;
     avgScore: number;
-    absences: Map<string, Map<string, number>>
-    parentName: string
-    email: string
+    absences: Map<string, Map<string, number>>;
+    parentName: string;
 }

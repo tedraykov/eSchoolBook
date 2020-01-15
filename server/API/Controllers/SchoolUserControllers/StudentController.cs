@@ -53,6 +53,7 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
         }
         
         [HttpGet("dialog/{studentId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal, Teacher")]
         public StudentDialogViewModel GetForDialog(string studentId)
         {
             return _studentService.GetStudentDialogData(studentId);

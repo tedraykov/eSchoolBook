@@ -30,5 +30,7 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
         double StudentAverageScore(string studentId);
         
        IDictionary<string, int> StudentAbsences(string studentId);
+       
+       double TeacherAverageScore(string teacherId);
     }
 }

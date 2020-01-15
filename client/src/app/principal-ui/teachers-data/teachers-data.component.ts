@@ -9,6 +9,8 @@ import {selectSchoolId} from "../../auth/state/auth.reducer";
 import {map} from "rxjs/operators";
 import {SchoolUsersTableData} from "../shared/models/SchoolUsersTableData";
 import {TeacherDialogData} from "../shared/models/TeacherDialogData";
+import {StudentDialogComponent} from "../students-data/student-dialog/student-dialog.component";
+import {TeacherDialogComponent} from "./teacher-dialog/teacher-dialog.component";
 
 @Component({
    selector: 'app-teachers-data',
@@ -18,7 +20,6 @@ import {TeacherDialogData} from "../shared/models/TeacherDialogData";
 export class TeachersDataComponent implements OnInit {
    dataForTable: Observable<MatTableDataSource<SchoolUsersTableData>>;
    teacherColumns: string[] = ['name', 'address', 'class', 'actions'];
-   dataForDialog: Observable<TeacherDialogData>;
    schoolId: string;
    
    constructor(
@@ -37,4 +38,11 @@ export class TeachersDataComponent implements OnInit {
       );
    }
 
+   public openDialog(teacherData: SchoolUsersTableData){
+      this.dialogService.open(TeacherDialogComponent, {
+         context: {
+            data: this.principalService.getTeacherData$(teacherData.schoolUserId)
+         }
+      });
+   }
 }

@@ -28,5 +28,12 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
         {
             return this.TeacherService.GetAllTeachersFromSchool(schoolId);
         }
+        
+        [HttpGet("dialog/{teacherId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
+        public TeacherDialogViewModel GetTeacherDialogData([FromRoute] string teacherId)
+        {
+            return this.TeacherService.GetTeacherDialogData(teacherId);
+        }
     }
 }

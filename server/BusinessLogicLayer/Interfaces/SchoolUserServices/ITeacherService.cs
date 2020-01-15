@@ -7,5 +7,7 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices
     public interface ITeacherService
     {
         IEnumerable<TeacherTableViewModel> GetAllTeachersFromSchool(string schoolId);
+        
+        TeacherDialogViewModel GetTeacherDialogData(string teacherId);
     }
 }

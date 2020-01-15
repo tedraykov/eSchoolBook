@@ -72,6 +72,21 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                     ex => ex.UseDestinationValue())
                 .ForMember(o => o.Address,
                     ex => ex.MapFrom(o => o.Town + ", " + o.Address));
+            CreateMap<Teacher, TeacherDialogViewModel>()
+                .ForMember(o => o.Email,
+                    ex => ex.MapFrom(o => o.User.Email))
+                .ForMember(o => o.Subjects,
+                    ex => ex.MapFrom(o => o.Subjects))
+                .ForMember(o => o.AvgScore,
+                    ex => ex.UseDestinationValue())
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Grade,
+                    ex => ex.UseDestinationValue())
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address));
             
             CreateMap<Parent, ParentViewModel>()
                 .ForMember(o => o.SchoolUserId,
@@ -127,7 +142,14 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                     ex.UseDestinationValue());
             CreateMap<SubjectInputModel, Subject>();
             CreateMap<Subject, SubjectOnlyViewModel>();
-
+            
+            CreateMap<TeacherToSubject, SubjectOnlyViewModel>()
+                .ForMember(o => o.Name, ex => 
+                    ex.MapFrom(o => o.Subject.Name))
+                .ForMember(o => o.Grade, ex => 
+                    ex.MapFrom(o => o.Subject.GradeYear))
+                .ForMember(o => o.Id, ex => 
+                    ex.MapFrom(o => o.SubjectId));
             CreateMap<TeacherToSubject, MinimalSchoolUserModel>()
                 .ForMember(o => o.Id, ex =>
                     ex.MapFrom(o => o.TeacherId))
@@ -172,6 +194,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                 .ForMember(o => o.Class,
                     ex => ex.MapFrom(o => o.Grade.ToString() 
                                           + o.GradeLetter.ToString().ToUpper()));
+            CreateMap<Class, string>()
+                .ConvertUsing(o => o.Grade.ToString() + o.GradeLetter.ToString().ToUpper());
         }
 
         private static string GetFullName(SchoolUser user)

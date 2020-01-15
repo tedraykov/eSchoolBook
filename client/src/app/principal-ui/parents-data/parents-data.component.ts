@@ -18,7 +18,6 @@ import {ParentData} from "../shared/models/ParentData";
 export class ParentsDataComponent implements OnInit {
    dataForTable: Observable<MatTableDataSource<ParentData>>;
    parentColumns: string[] = ['name', 'address', 'children', 'actions'];
-   dataForDialog: Observable<ParentData>;
    schoolId: string;
    
    constructor(
