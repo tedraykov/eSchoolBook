@@ -1,0 +1,37 @@
+<nb-card>
+    <nb-card-header><h5>Add new school</h5></nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="schoolForm">
+            <label>
+                <span class="label-text">School name:</span>
+                <input type="text"
+                       nbInput
+                       class="school-name"
+                       formControlName="name"
+                       [status]="getInputStatus('name')">
+            </label>
+            <label>
+                <span class="label-text">Number:</span>
+                <input type="number"
+                       nbInput
+                       class="school-number"
+                       formControlName="number"
+                       [status]="getInputStatus('number')">
+            </label>
+            <label>
+                <span class="label-text">Address:</span>
+                <input type="text"
+                       nbInput
+                       formControlName="address"
+                       [status]="getInputStatus('address')">
+            </label>
+            <div class="btn-group">
+                <button nbButton
+                        (click)="addSchool()"
+                        [disabled]="schoolForm.invalid">Next
+                </button>
+                <button nbButton status="basic">Cancel</button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>

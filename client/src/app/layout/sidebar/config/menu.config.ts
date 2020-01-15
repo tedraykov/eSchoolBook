@@ -5,7 +5,13 @@ const superAdminMenu: NbMenuItem[] = [
     {
         title: 'Users', icon:"people-outline", expanded: true,
         children: [
-            {title: 'Create school user', link: 'admin/create', icon: "person-add-outline"}
+            {title: 'Create school user', link: 'admin/user/create', icon: 'person-add-outline'}
+        ],
+    },
+    {
+        title: 'Schools', icon: 'home-outline', expanded: true,
+        children: [
+            {title: 'Add new school', link: 'admin/school/add'}
         ]
     }
 ];
@@ -14,7 +20,7 @@ const schoolAdminMenu: NbMenuItem[] = [
     {
         title: 'Users', group: true,
         children: [
-            {title: 'create user', link: 'admin/create', icon: "person-add-outline"}
+            {title: 'create user', link: 'admin/user/create', icon: "person-add-outline"}
         ]
     }
 ];

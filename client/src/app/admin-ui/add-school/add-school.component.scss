@@ -1,0 +1,45 @@
+:host {
+  display: flex;
+  height: 100%;
+}
+
+nb-card {
+  width: 100%;
+}
+
+form {
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    display: flex;
+    width: 100%;
+    margin: 1rem 0;
+    align-items: center;
+
+    .label-text {
+      width: 6rem;
+      margin-right: 0.5rem;
+      text-align: right;
+    }
+
+    .school-name {
+      width: 100%;
+      max-width: 24rem !important;
+    }
+
+    .school-number {
+      width: 8rem;
+    }
+  }
+
+
+
+  .btn-group {
+    margin: 1rem 0 0;
+    button {
+      margin-right: 0.5rem;
+    }
+  }
+}

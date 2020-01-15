@@ -12,8 +12,8 @@ import {NbStepperComponent} from "@nebular/theme";
 
 @Component({
     selector: 'app-create-user',
-    templateUrl: './create-user.html',
-    styleUrls: ['./create-user.scss']
+    templateUrl: './create-user.component.html',
+    styleUrls: ['./create-user.component.scss']
 })
 export class CreateUserComponent implements OnInit {
     schools: Observable<School[]>;
