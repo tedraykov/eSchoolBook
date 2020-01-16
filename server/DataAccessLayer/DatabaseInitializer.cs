@@ -230,12 +230,15 @@ namespace SchoolBook.DataAccessLayer
                 return;
             }
 
+            var school = _ctx.Schools.FirstOrDefault();
             var defaultClass = new Class
             {
                 StartYear = 2019,
                 Grade = 1,
                 GradeLetter = 'A',
             };
+            if (school == null) return;
+            defaultClass.School = school;
             _ctx.Classes.Add(defaultClass);
             _ctx.SaveChanges();
         }

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
+using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
@@ -42,15 +44,15 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
             return students;
         }
 
-        public IEnumerable<StudentModel> GetAllStudentsFromSchool(string schoolId)
+        public IEnumerable<MinimalStudentModel> GetAllStudentsFromSchool(string schoolId)
         {
             var students = Repositories.Students.Query()
                 .Include(o => o.School)
                 .Include(o => o.Class)
                 .Include(o => o.User)
                 .Where(s => s.School.Id == schoolId)
-                .ProjectTo<StudentModel>(Mapper.ConfigurationProvider);
-
+                .ProjectTo<MinimalStudentModel>(Mapper.ConfigurationProvider);
+            
             return students;
         }
 
@@ -76,10 +78,9 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
             return Mapper.Map<Student, StudentModel>(student);
         }
 
-        public void AddStudent(StudentModel studentModel)
+        public async Task AddStudent(StudentModel studentModel)
         {
-            if (Repositories.SchoolUsers.Query().Any(su => su.Pin == studentModel.Pin) ||
-                Repositories.SchoolUsers.Query().Any(su => su.User.Id == studentModel.UserId))
+            if (Repositories.SchoolUsers.Query().Any(su => su.Pin == studentModel.Pin))
             {
                 throw new DuplicateNameException("User already exists");
             }
@@ -101,7 +102,9 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
 
             student.Class = studentClass;
             student.School = studentSchool;
-            student.User = Repositories.Users.GetById(studentModel.UserId);
+            
+            var account =  await _accountService.RegisterSchoolUser(student);
+            student.User = account;
             student.Id = student.User.Id;
             
             Repositories.Students.Create(student);

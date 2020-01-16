@@ -23,8 +23,5 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels
 
         [Required] 
         public string SchoolId { get; set; }
-        
-        [Required] 
-        public string UserId { get; set; }
     }
 }

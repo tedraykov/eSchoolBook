@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 using SchoolBook.DataAccessLayer.Entities;
+using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 
 namespace SchoolBook.BusinessLogicLayer.Interfaces
 {
@@ -14,5 +15,7 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
         Task SeedAdmin(RegisterInputModel model);
 
         Task Logout();
+
+        Task<User> RegisterSchoolUser(SchoolUser schoolUser);
     }
 }

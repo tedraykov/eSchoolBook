@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 
 namespace SchoolBook.API.Controllers
 {
-    [Route("[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class BaseController : ControllerBase

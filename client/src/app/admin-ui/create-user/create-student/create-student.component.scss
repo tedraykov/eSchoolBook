@@ -1,0 +1,22 @@
+form {
+
+  display: flex;
+  flex-direction: column;
+  max-width: 24rem;
+
+  label {
+    display: flex;
+    width: 100%;
+    margin: 1rem 0;
+    align-items: center;
+
+    .label-text {
+      flex: 1;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+button {
+  margin-right: 1rem;
+}

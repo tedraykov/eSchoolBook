@@ -26,6 +26,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
             {title: 'subjects list', link: 'teacher/subject'},
             {title: 'subject details', link: 'teacher/subject/1'}
          ]
+      },
+      {title: 'admin', children: [
+            {title: 'create user', link: 'admin/create'}
+         ]
       }
    ];
 

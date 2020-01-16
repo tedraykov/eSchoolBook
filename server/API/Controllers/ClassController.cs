@@ -29,6 +29,12 @@ namespace SchoolBook.API.Controllers
         {
             return this.ClassService.GetAll();
         }
+
+        [HttpGet("school/{schoolId}")]
+        public List<MinimalClassViewModel> GetBySchool([FromRoute] string schoolId)
+        {
+            return this.ClassService.GetAllBySchool(schoolId);
+        }
         
         /*Get all classes by class grade. E.g. all first graders.*/
         [HttpGet("grade/{grade}")]

@@ -42,6 +42,15 @@ namespace SchoolBook.BusinessLogicLayer.Services
             return classes;
         }
 
+        public List<MinimalClassViewModel> GetAllBySchool(string schoolId)
+        {
+            return Repositories.Classes.Query()
+                .Include(c => c.School)
+                .Where(c => c.School.Id == schoolId)
+                .ProjectTo<MinimalClassViewModel>(Mapper.ConfigurationProvider)
+                .ToList();
+        }
+
         public List<ClassViewModel> GetAllByGrade(int grade)
         {
             var classes = this.Repositories.Classes.Query()

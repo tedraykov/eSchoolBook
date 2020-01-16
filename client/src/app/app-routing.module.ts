@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from "./layout/layout.component";
+import {AuthGuard} from "./auth/guards/auth.guard";
 
 const routes: Routes = [
    {
-      path: 'app', component: LayoutComponent,
+      path: 'app', component: LayoutComponent, canActivate: [AuthGuard],
       children: [
          {
             path: 'users',
@@ -21,6 +22,10 @@ const routes: Routes = [
          {
             path: 'principal',
             loadChildren: () => import('./principal-ui/principal-ui.module').then(m => m.PrincipalUiModule)
+         },
+         {
+            path: 'admin',
+            loadChildren: () => import('./admin-ui/admin-ui.module').then(m => m.AdminUiModule)
          }
       ]
    },

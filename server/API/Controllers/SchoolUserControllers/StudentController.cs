@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -35,7 +36,7 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
         
         [HttpGet("school/{schoolId}")]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
-        public IEnumerable<StudentModel> GetAllBySchool([FromRoute] string schoolId)
+        public IEnumerable<MinimalStudentModel> GetAllBySchool([FromRoute] string schoolId)
         {
             return _studentService.GetAllStudentsFromSchool(schoolId);
         }
@@ -55,9 +56,9 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
 
         [HttpPost]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin")]
-        public void Create([FromBody] StudentModel studentModel)
+        public async Task Create([FromBody] StudentModel studentModel)
         {
-            _studentService.AddStudent(studentModel);
+            await _studentService.AddStudent(studentModel);
         }
         
         [HttpPost("grade/{studentId}")]
