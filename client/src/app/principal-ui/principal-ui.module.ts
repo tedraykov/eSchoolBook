@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { PrincipalService } from './shared/services/principal.service';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule, Routes} from '@angular/router';
+import {PrincipalService} from './shared/services/principal.service';
 import {NbDialogModule} from "@nebular/theme";
 
 const principalUiModuleRoutes: Routes = [
@@ -12,7 +12,7 @@ const principalUiModuleRoutes: Routes = [
     },
     {
         path: 'statistics',
-        loadChildren: () => import('./statistics/statistics.module').then(m => m.StatisticsModule)
+        loadChildren: () => import('./statistics/principal-statistics.module').then(m => m.PrincipalStatisticsModule)
      },
     {
        path: 'students',
@@ -21,6 +21,10 @@ const principalUiModuleRoutes: Routes = [
     {
        path: 'teachers',
        loadChildren: () => import('./teachers-data/teachers-data.module').then(m => m.TeachersDataModule)
+    },
+    {
+        path: 'teacher',
+        loadChildren: () => import('../teacher-ui/teacher-ui.module').then(m => m.TeacherUiModule)
     },
     {
       path: 'parents',

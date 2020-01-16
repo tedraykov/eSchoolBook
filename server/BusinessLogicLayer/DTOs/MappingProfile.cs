@@ -175,6 +175,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                                     o.Teacher.LastName))
                 .ForMember( o => o.SubjectName, ex => 
                     ex.MapFrom(o => o.Subject.Name));
+            CreateMap<ClassToSubject, Subject>()
+                .ConvertUsing( o => o.Subject);
 
             CreateMap<SchoolInputModel, School>();
             CreateMap<School, SchoolViewModel>();

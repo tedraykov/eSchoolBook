@@ -34,7 +34,7 @@ export class TeachersDataComponent implements OnInit {
 
    ngOnInit() {
       this.dataForTable = this.principalService.getTeachersData$(this.schoolId).pipe(
-          map((students: SchoolUsersTableData[]) => new MatTableDataSource<SchoolUsersTableData>(students))
+          map((teachers: SchoolUsersTableData[]) => new MatTableDataSource<SchoolUsersTableData>(teachers))
       );
    }
 
