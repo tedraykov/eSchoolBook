@@ -24,21 +24,21 @@ export class PrincipalService {
    
    /*Get all teachers in school*/
    public getTeachersData$(schoolId: string): Observable<SchoolUsersTableData[]>{
-      return this.http.get<SchoolUsersTableData[]>(`${this.serverUrl}/teachers/school/${schoolId}`);
+      return this.http.get<SchoolUsersTableData[]>(`${this.serverUrl}/teacher/school/${schoolId}`);
    };
 
    /*Get single teacher data*/
    public getTeacherData$(teacherId: string): Observable<TeacherDialogData>{
-      return this.http.get<TeacherDialogData>(`${this.serverUrl}/teachers/dialog/${teacherId}`);
+      return this.http.get<TeacherDialogData>(`${this.serverUrl}/teacher/dialog/${teacherId}`);
    };
 
    /*Get all parents in school*/
    public getParentsData$(schoolId: string): Observable<ParentData[]>{
-      return this.http.get<ParentData[]>(`${this.serverUrl}/parents/school/${schoolId}`);
+      return this.http.get<ParentData[]>(`${this.serverUrl}/parent/school/${schoolId}`);
    };
 
    /*Get single parent data*/
    public getParentData$(parentId: string): Observable<ParentData>{
-      return this.http.get<ParentData>(`${this.serverUrl}/parents/dialog/${parentId}`);
+      return this.http.get<ParentData>(`${this.serverUrl}/parent/dialog/${parentId}`);
    };
 }

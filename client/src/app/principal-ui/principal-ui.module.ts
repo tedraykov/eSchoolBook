@@ -11,7 +11,7 @@ const principalUiModuleRoutes: Routes = [
     },
     {
         path: 'statistics',
-        loadChildren: () => import('./statistics/statistics.module').then(m => m.StatisticsModule)
+        loadChildren: () => import('./statistics/principal-statistics.module').then(m => m.PrincipalStatisticsModule)
      },
     {
        path: 'students',
@@ -37,4 +37,3 @@ const principalUiModuleRoutes: Routes = [
  })
  export class PrincipalUiModule {
  }
- 

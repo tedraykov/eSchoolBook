@@ -12,7 +12,7 @@ using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 
 namespace SchoolBook.API.Controllers.SchoolUserControllers
 {
-    [Route("teachers")]
+    [Route("teacher")]
     [ApiController]
     [Produces("application/json")]
     public class TeacherController : BaseController

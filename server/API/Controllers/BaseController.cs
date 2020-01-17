@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 namespace SchoolBook.API.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [ApiController]
     public class BaseController : ControllerBase
     {
         protected  ILogger<BaseController> Logger { get; set; }
