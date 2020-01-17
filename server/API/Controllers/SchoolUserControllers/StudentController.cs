@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 
 namespace SchoolBook.API.Controllers.SchoolUserControllers
@@ -16,14 +17,12 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
     [Produces("application/json")]
     public class StudentController : BaseController
     {
-        private readonly ILogger<BaseController> _logger;
         private readonly IStudentService _studentService;
 
         public StudentController(
             ILogger<BaseController> logger,
             IStudentService studentService) : base(logger)
         {
-            _logger = logger;
             _studentService = studentService;
         }
 
@@ -36,7 +35,7 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
         
         [HttpGet("school/{schoolId}")]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
-        public IEnumerable<MinimalStudentModel> GetAllBySchool([FromRoute] string schoolId)
+        public IEnumerable<StudentTableViewModel> GetAllBySchool([FromRoute] string schoolId)
         {
             return _studentService.GetAllStudentsFromSchool(schoolId);
         }
@@ -53,6 +52,13 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
         {
             return _studentService.GetStudent(id);
         }
+        
+        [HttpGet("dialog/{studentId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal, Teacher")]
+        public StudentDialogViewModel GetForDialog(string studentId)
+        {
+            return _studentService.GetStudentDialogData(studentId);
+            }
 
         [HttpPost]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin")]

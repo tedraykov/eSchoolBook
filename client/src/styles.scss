@@ -15,12 +15,12 @@ html, body {
 
 body {
    margin: 0;
-   font-family: "Helvetica Neue", sans-serif;
+   font-family: "Open Sans", sans-serif;
 }
 
 @import '~@angular/material/theming';
 $custom-typography: mat-typography-config(
-   $font-family: 'Helvetica Neue'
+   $font-family: "Open Sans"
 );
 
 @include angular-material-typography($custom-typography);

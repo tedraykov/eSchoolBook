@@ -3,30 +3,49 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Parent;
 using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 
 namespace SchoolBook.API.Controllers.SchoolUserControllers
 {
-    [Route("parent")]
+    [Route("parents")]
+    [ApiController]
     [Produces("application/json")]
     public class ParentController : BaseController
     {
-        private readonly ILogger<BaseController> _logger;
-        private readonly IParentService _parentService;
+        private readonly IParentService ParentService;
 
         public ParentController(
-            ILogger<BaseController> logger,
-            IParentService parentService) : base(logger)
+            IParentService parentService,
+            ILogger<BaseController> logger
+            ) : base(logger)
         {
-            _logger = logger;
-            _parentService = parentService;
+            ParentService = parentService;
         }
 
+        [HttpGet("school/{schoolId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
+        public IEnumerable<ParentViewModel> GetAllParentsFromSchool(string schoolId)
+        {
+            return ParentService.GetAllParentsFromSchool(schoolId);
+        }
+        
+        [HttpGet("dialog/{parentId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
+        public ParentDialogViewModel GetParentDialogData(string parentId)
+        {
+            return ParentService.GetParentDialogData(parentId);
+        }
+        
         [HttpPost]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin")]
         public async Task Create([FromBody] ParentModel parentModel)
         {
-            await _parentService.AddParent(parentModel);
+            await ParentService.AddParent(parentModel);
         }
     }
 }

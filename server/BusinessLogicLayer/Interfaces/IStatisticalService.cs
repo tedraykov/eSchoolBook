@@ -1,21 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using SchoolBook.BusinessLogicLayer.DTOs.Models;
 
 namespace SchoolBook.BusinessLogicLayer.Interfaces
 {
     public interface IStatisticalService
     {
-        /*For Specific School*/
+        /*Statistics for specific school*/
         double SchoolAverageScore(string schoolId);
 
-        IDictionary<string, double> AverageSubjectScores(string schoolId);
+        ICollection<StringDoubleModel> AverageSubjectScores(string schoolId);
 
-        IDictionary<string, double> AverageTeacherScores(string schoolId);
+        ICollection<StringDoubleModel> AverageTeacherScores(string schoolId);
 
-        IDictionary<string, int>  SchoolAbsences(string schoolId);
+        ICollection<StringDoubleModel> SchoolAbsences(string schoolId);
         
-        /*For All Schools in DB*/
-        int SchoolAverageScore();
+        /*Statistics for all schools in DB*/
+        double SchoolAverageScore();
         
         ICollection  BestNSchools(int n);
 
@@ -23,6 +24,14 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
 
         IDictionary<string, double> AverageTeacherScores();
 
-        IDictionary<string, IDictionary<string, int>>  SchoolAbsences();
+        IDictionary<string, ICollection<StringDoubleModel>>  SchoolAbsences();
+        
+        /*Statistics for a single user*/
+
+        double StudentAverageScore(string studentId);
+        
+       IDictionary<string, int> StudentAbsences(string studentId);
+       
+       double TeacherAverageScore(string teacherId);
     }
 }

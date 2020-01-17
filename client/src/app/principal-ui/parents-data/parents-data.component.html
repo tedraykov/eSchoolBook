@@ -1,0 +1,43 @@
+<nb-card>
+    <nb-card-header><h4>Parents</h4></nb-card-header>
+    <nb-card-body>
+        <table mat-table [dataSource]="dataForTable | async">
+
+            <!-- Parent name column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let parent">{{parent.fullName}}</td>
+            </ng-container>
+
+            <!-- Parent address column -->
+            <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef>Address</th>
+                <td mat-cell *matCellDef="let parent">{{parent.address}}</td>
+            </ng-container>
+
+            <!-- Parent children column -->
+            <ng-container matColumnDef="children">
+                <th mat-header-cell *matHeaderCellDef>Children</th>
+                <td mat-cell
+                    *matCellDef="let parent">{{parent.children}}</td>
+            </ng-container>
+
+            <!-- Parent actions column -->
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let parent">
+                    <div class="btn-group">
+                        <button nbButton status="info" size="small"
+                                (click)="openDialog(parent)">Details
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="parentColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: parentColumns"></tr>
+        </table>
+    </nb-card-body>
+</nb-card>

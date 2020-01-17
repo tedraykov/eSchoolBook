@@ -13,6 +13,7 @@ using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels;
 using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.Interfaces;
 using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 using SchoolBook.DataAccessLayer.Entities;
@@ -24,13 +25,16 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
     public class StudentService : BaseService, IStudentService
     {
         private readonly IAccountService _accountService ;
+        private readonly IStatisticalService _statisticalService ;
         public StudentService(
             IAccountService accountService,
+            IStatisticalService statisticalService,
             IRepositories repositories,
             ILogger<BaseService> logger,
             IMapper mapper) : base(repositories, logger, mapper)
         {
             _accountService = accountService;
+            _statisticalService = statisticalService;
         }
 
         public IEnumerable<StudentModel> GetAllStudents()
@@ -44,15 +48,16 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
             return students;
         }
 
-        public IEnumerable<MinimalStudentModel> GetAllStudentsFromSchool(string schoolId)
+        public IEnumerable<StudentTableViewModel> GetAllStudentsFromSchool(string schoolId)
         {
             var students = Repositories.Students.Query()
                 .Include(o => o.School)
                 .Include(o => o.Class)
                 .Include(o => o.User)
                 .Where(s => s.School.Id == schoolId)
-                .ProjectTo<MinimalStudentModel>(Mapper.ConfigurationProvider);
-            
+                .ProjectTo<StudentTableViewModel>(Mapper.ConfigurationProvider)
+                .ToList();
+
             return students;
         }
 
@@ -76,6 +81,23 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
                 .Include(o => o.User)
                 .SingleOrDefault(o => o.Id == id);
             return Mapper.Map<Student, StudentModel>(student);
+        }
+        
+        public StudentDialogViewModel GetStudentDialogData(string id)
+        {
+            var st = Repositories.Students.Query()
+                .AsNoTracking()
+                .Include(s => s.Class)
+                .Include(s => s.Parent)
+                .Include(s => s.User)
+                .FirstOrDefault(s => s.Id == id);
+
+            var student = Mapper.Map<Student, StudentDialogViewModel>(st);
+            
+            student.AvgScore = _statisticalService.StudentAverageScore(id);
+            student.Absences = _statisticalService.StudentAbsences(id);
+
+            return student;
         }
 
         public async Task AddStudent(StudentModel studentModel)

@@ -4,6 +4,8 @@ using SchoolBook.BusinessLogicLayer.DTOs.InputModels.SchoolUsers.Edit;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Parent;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Teacher;
 using SchoolBook.DataAccessLayer.Entities;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 
@@ -33,6 +35,82 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                     ex => ex.MapFrom(o => o.Id))
                 .ForMember(o => o.ClassId,
                     ex => ex.MapFrom(o => o.Class.Id));
+            CreateMap<Student, StudentTableViewModel>()
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Grade,
+                    ex => ex.MapFrom(o => o.Class.Grade.ToString() 
+                                          + o.Class.GradeLetter.ToString()))
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address));
+            CreateMap<Student, StudentDialogViewModel>()
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Grade,
+                    ex => ex.MapFrom(o => o.Class.Grade.ToString()
+                                          + o.Class.GradeLetter.ToString()))
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address))
+                .ForMember(o => o.ParentName,
+                    ex => ex.MapFrom(o => GetFullName(o.Parent)))
+                .ForMember(o => o.Email, 
+                    ex => ex.MapFrom(o => o.User.Email));
+            CreateMap<Student, string>()
+                .ConvertUsing(o => GetFullName(o));
+            
+            CreateMap<Teacher, TeacherTableViewModel>()
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Grade,
+                    ex => ex.UseDestinationValue())
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address));
+            CreateMap<Teacher, TeacherDialogViewModel>()
+                .ForMember(o => o.Email,
+                    ex => ex.MapFrom(o => o.User.Email))
+                .ForMember(o => o.Subjects,
+                    ex => ex.MapFrom(o => o.Subjects))
+                .ForMember(o => o.AvgScore,
+                    ex => ex.UseDestinationValue())
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Grade,
+                    ex => ex.UseDestinationValue())
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address));
+            
+            CreateMap<Parent, ParentViewModel>()
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address))
+                .ForMember( o => o.Children, 
+                    ex => ex.MapFrom(o => o.Children))
+                .ForMember(o => o.Email, 
+                    ex => ex.MapFrom(o => o.User.Email));
+            CreateMap<Parent, ParentDialogViewModel>()
+                .ForMember(o => o.SchoolUserId,
+                    ex => ex.MapFrom(o => o.Id))
+                .ForMember(o => o.FullName,
+                    ex => ex.MapFrom(o => GetFullName(o)))
+                .ForMember(o => o.Address,
+                    ex => ex.MapFrom(o => o.Town + ", " + o.Address))
+                .ForMember( o => o.Children, 
+                    ex => ex.MapFrom(o => o.Children))
+                .ForMember(o => o.Email, 
+                    ex => ex.MapFrom(o => o.User.Email))
+                .ForMember( o => o.ChildrenData, 
+                    ex => ex.UseDestinationValue());
 
             CreateMap<TeacherModel, Teacher>();
             CreateMap<PrincipalModel, Principal>();
@@ -75,7 +153,14 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                     ex.UseDestinationValue());
             CreateMap<SubjectInputModel, Subject>();
             CreateMap<Subject, SubjectOnlyViewModel>();
-
+            
+            CreateMap<TeacherToSubject, SubjectOnlyViewModel>()
+                .ForMember(o => o.Name, ex => 
+                    ex.MapFrom(o => o.Subject.Name))
+                .ForMember(o => o.Grade, ex => 
+                    ex.MapFrom(o => o.Subject.GradeYear))
+                .ForMember(o => o.Id, ex => 
+                    ex.MapFrom(o => o.SubjectId));
             CreateMap<TeacherToSubject, MinimalSchoolUserModel>()
                 .ForMember(o => o.Id, ex =>
                     ex.MapFrom(o => o.TeacherId))
@@ -101,6 +186,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                                     o.Teacher.LastName))
                 .ForMember( o => o.SubjectName, ex => 
                     ex.MapFrom(o => o.Subject.Name));
+            CreateMap<ClassToSubject, Subject>()
+                .ConvertUsing( o => o.Subject);
 
             CreateMap<SchoolInputModel, School>();
             CreateMap<School, SchoolViewModel>();
@@ -112,6 +199,16 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
             CreateMap<Student, Class>().ConvertUsing(o => o.Class);
             CreateMap<ClassToSubject, Subject>().ConvertUsing(o => o.Subject);
             CreateMap<StudentToGrade, Teacher>().ConvertUsing(o => o.Teacher);
+            
+            /* ------------------- Class Mapping ------------------- */
+            CreateMap<Class, ClassTeacherModel>()
+                .ForMember(o => o.TeacherId, 
+                    ex => ex.MapFrom(o => o.ClassTeacher.Id))
+                .ForMember(o => o.Class,
+                    ex => ex.MapFrom(o => o.Grade.ToString() 
+                                          + o.GradeLetter.ToString().ToUpper()));
+            CreateMap<Class, string>()
+                .ConvertUsing(o => o.Grade.ToString() + o.GradeLetter.ToString().ToUpper());
         }
 
         private static string GetFullName(SchoolUser user)
