@@ -38,6 +38,21 @@ const teacherMenu: NbMenuItem[] = [
 ];
 
 const principalMenu: NbMenuItem[] = [
+    {
+        title: 'Dashboard', icon: "trending-up-outline", expanded: true,
+        children: [
+            {title: 'School Analytics', link: 'principal/statistics'}
+        ]
+    },
+    {
+        title: 'School Archive', icon: "archive-outline", expanded: true,
+        children: [
+            {title: 'Teachers Data', link: 'principal/teachers'},
+            {title: 'Students Data', link: 'principal/students'},
+            {title: 'Parents Data', link: 'principal/parents'}
+        ]
+    }
+
 ];
 const parentMenu: NbMenuItem[] = [
 ];
