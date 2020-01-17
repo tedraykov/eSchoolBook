@@ -4,16 +4,12 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Parent;
 using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 using System.Reflection;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.Extensions.Logging;
 using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.Interfaces;
-using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 using SchoolBook.DataAccessLayer.Interfaces;
 

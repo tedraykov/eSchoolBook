@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {StudentInputModel} from "../../admin-ui/create-user/models/student-input.model";
 import {Observable} from "rxjs";
-import {MinimalStudent} from "../../admin-ui/create-user/models/minimal-student.model";
+import {MinimalStudent} from "../models/minimal-student.model";
+import { tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -12,10 +12,6 @@ export class StudentService {
     private readonly endpoint = 'students';
 
     constructor(private http: HttpClient) {
-    }
-
-    addStudent$(student: StudentInputModel) {
-      return this.http.post(`${this.url}/${this.endpoint}`, student);
     }
 
     getAllStudentsBySchool$(schoolId: string): Observable<MinimalStudent[]> {

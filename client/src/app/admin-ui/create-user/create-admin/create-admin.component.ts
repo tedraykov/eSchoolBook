@@ -1,8 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SchoolAdminService} from "../../../shared/services/school-admin.service";
 import {Router} from "@angular/router";
-import {SchoolUserInputModel} from "../../models/school-user.model";
 import {take, tap} from "rxjs/operators";
+
+import {SchoolUserInputModel} from "../../models/school-user.model";
+import { CreateUserService } from '../create-user.service';
 
 @Component({
     selector: 'create-admin',
@@ -14,7 +15,7 @@ export class CreateAdminComponent implements OnInit {
     @Output() back: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(
-        private schoolAdminService: SchoolAdminService,
+        private createUserService: CreateUserService,
         private router: Router
     ) {
     }
@@ -23,7 +24,7 @@ export class CreateAdminComponent implements OnInit {
     }
 
     submitAdmin() {
-        this.schoolAdminService.addSchoolAdmin$(this.user).pipe(
+        this.createUserService.addAdmin$(this.user).pipe(
             take(1),
             tap(() => this.router.navigateByUrl('app/admin'))
         ).subscribe();

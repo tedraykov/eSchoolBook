@@ -1,14 +1,15 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import {ClassService} from "../../../shared/services/class.service";
-import {Observable} from "rxjs";
-import {Class} from "../../../shared/models/class.interface";
-import {StudentFormInputModel} from "../models/student-form-input.model";
-import {SchoolUserInputModel} from "../../models/school-user.model";
-import {StudentInputModel} from "../models/student-input.model";
-import {StudentService} from "../../../shared/services/student.service";
-import {Router} from "@angular/router";
-import {take, tap} from "rxjs/operators";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { Observable } from "rxjs";
+import { take, tap } from "rxjs/operators";
+
+import { ClassService } from "../../../shared/services/class.service";
+import { Class } from "../../../shared/models/class.interface";
+import { StudentFormInputModel } from "../models/student-form-input.model";
+import { SchoolUserInputModel } from "../../models/school-user.model";
+import { StudentInputModel } from "../models/student-input.model";
+import { CreateUserService } from '../create-user.service';
 
 @Component({
     selector: 'create-student',
@@ -27,7 +28,7 @@ export class CreateStudentComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private classService: ClassService,
-        private studentService: StudentService,
+        private createUserService: CreateUserService,
         private router: Router) {
     }
 
@@ -42,7 +43,7 @@ export class CreateStudentComponent implements OnInit {
             classId: studentFromData.class.id,
             startYear: studentFromData.startYear
         };
-        this.studentService.addStudent$(student).pipe(
+        this.createUserService.addStudent$(student).pipe(
             take(1),
             tap(() => this.router.navigateByUrl('app/admin'))
         ).subscribe();

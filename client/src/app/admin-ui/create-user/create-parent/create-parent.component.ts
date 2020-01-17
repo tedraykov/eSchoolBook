@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {take, tap} from "rxjs/operators";
-import {ParentService} from "../../../shared/services/parent.service";
 import {Router} from "@angular/router";
 import {SchoolUserInputModel} from "../../models/school-user.model";
 import {ParentInputModel} from "../models/parent-input.model";
 import {Observable} from "rxjs";
 import {StudentService} from "../../../shared/services/student.service";
-import {MinimalStudent} from "../models/minimal-student.model";
+import {MinimalStudent} from "../../../shared/models/minimal-student.model";
+import { CreateUserService } from '../create-user.service';
 
 @Component({
     selector: 'create-parent',
@@ -20,35 +20,34 @@ export class CreateParentComponent implements OnInit {
     students: Observable<MinimalStudent[]>;
 
     constructor(
-        private parentService: ParentService,
+        private createUserService: CreateUserService,
         private studentService: StudentService,
         private router: Router) {
     }
 
     ngOnInit() {
-        this.students = this.studentService.getAllStudentsBySchool$(this.user.schoolId).pipe(tap(console.log));
+        this.students = this.studentService.getAllStudentsBySchool$(this.user.schoolId);
     }
 
     submitParent() {
-        const childrenId: string[] = this.children.map(ch => ch.id);
+        const childrenId: string[] = this.children.map(ch => ch.schoolUserId);
         let parent = <ParentInputModel>{
             ...this.user,
             childrenId
         };
-        console.log(`Adding parent ${JSON.stringify(parent, null, 2)}`);
-        this.parentService.addParent$(parent).pipe(
+        this.createUserService.addParent$(parent).pipe(
             take(1),
             tap(() => this.router.navigateByUrl('app/admin'))
         ).subscribe();
     }
 
     addStudentToChildren(student: MinimalStudent) {
-        if (!this.children.find(ch => ch.id === student.id)) {
+        if (!this.children.find(ch => ch.schoolUserId === student.schoolUserId)) {
             this.children.push(student);
         }
     }
 
     removeChild(student: MinimalStudent) {
-        this.children = this.children.filter(ch => ch.id !== student.id);
+        this.children = this.children.filter(ch => ch.schoolUserId !== student.schoolUserId);
     }
 }

@@ -1,4 +1,4 @@
-import { Subject } from "../../teacher-ui/shared/models/subject";
+import { Subject } from "../models/subject";
 
 export const subjects: Subject[] = [
    {

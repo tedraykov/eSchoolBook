@@ -8,15 +8,10 @@ using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 using SchoolBook.DataAccessLayer.Entities.SchoolUserEntities;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Logging;
-using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Teacher;
-using SchoolBook.BusinessLogicLayer.Interfaces;
-using SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices;
 using SchoolBook.DataAccessLayer.Interfaces;
 
 namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices

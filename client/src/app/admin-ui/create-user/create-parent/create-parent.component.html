@@ -5,8 +5,8 @@
         </div>
         <div class="children" *ngIf="children.length > 0; else noChildren">
             <nb-card *ngFor="let child of children">
-                <span>{{child.firstName + ' ' + child.lastName}}</span>
-                <nb-icon icon="close-outline" status="warning" (click)="removeChild(child)" ></nb-icon>
+                <span>{{child.fullName}}</span>
+                <nb-icon icon="close-outline" status="warning" (click)="removeChild(child)"></nb-icon>
             </nb-card>
         </div>
     </article>
@@ -16,8 +16,8 @@
         </nb-card-header>
         <nb-list>
             <nb-list-item *ngFor="let student of students | async" (click)="addStudentToChildren(student)">
-                <span class="student-name">{{ student.firstName + ' ' + student.lastName }}</span>
-                <span class="grade">{{student.grade + student.gradeLetter.toUpperCase()}}</span>
+                <span class="student-name">{{ student.fullName }}</span>
+                <span class="grade">{{student.grade}}</span>
             </nb-list-item>
         </nb-list>
     </nb-card>
