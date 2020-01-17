@@ -1,10 +1,10 @@
 <nb-layout>
    <nb-layout-header fixed>
-      <app-header>
+      <app-header (sidebarStateChanged)="onSidebarStateChanged()">
       </app-header>
    </nb-layout-header>
    <nb-sidebar [state]="sidebarState">
-      <app-sidebar (sidebarStateChanged)="onSidebarStateChanged()">
+      <app-sidebar>
       </app-sidebar>
    </nb-sidebar>
    <nb-layout-column>

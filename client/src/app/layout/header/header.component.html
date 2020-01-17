@@ -1,9 +1,13 @@
-<nb-actions size="medium">
+<nb-actions size="small">
+   <nb-action
+           icon="menu-2-outline"
+           (click)="sidebarStateChanged.emit()">
+   </nb-action>
    <nb-action [routerLink]="'/'">
       eSchoolBook
    </nb-action>
 </nb-actions>
-<nb-actions size="medium" class="right-menu">
+<nb-actions size="small" class="right-menu">
    <nb-action>
       <app-user-avatar></app-user-avatar>
    </nb-action>
