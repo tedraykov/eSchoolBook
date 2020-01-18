@@ -1,0 +1,9 @@
+<nb-card>
+    <nb-card-body>
+        <span>{{message}}</span>
+    </nb-card-body>
+    <nb-card-footer>
+        <button nbButton ghost [autofocus]="false" (click)="close()">Отказ</button>
+        <button nbButton status="danger" (click)="approve()">Потвърди</button>
+    </nb-card-footer>
+</nb-card>
