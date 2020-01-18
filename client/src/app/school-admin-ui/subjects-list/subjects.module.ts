@@ -4,20 +4,25 @@ import {SubjectsComponent} from "./subjects.component";
 import {RouterModule} from "@angular/router";
 import {AddSubjectComponent} from "../add-subject/add-subject.component";
 import {
-    NbAccordionModule,
     NbButtonModule,
-    NbCardModule, NbDialogService, NbIconModule, NbInputModule,
+    NbCardModule,
+    NbDialogService,
+    NbIconModule,
+    NbInputModule,
     NbListModule,
     NbSelectModule,
-    NbTabsetModule, NbTooltipModule
+    NbTabsetModule,
+    NbTooltipModule
 } from "@nebular/theme";
 import {DialogsModule} from "../../shared/components/dialogs/dialogs.module";
 import {ReactiveFormsModule} from "@angular/forms";
+import {ConfigureSubjectTeacherComponent} from "../configure-subject-teacher/configure-subject-teacher.component";
 
 @NgModule({
     declarations: [
         SubjectsComponent,
-        AddSubjectComponent
+        AddSubjectComponent,
+        ConfigureSubjectTeacherComponent
     ],
     imports: [
         CommonModule,
@@ -34,7 +39,8 @@ import {ReactiveFormsModule} from "@angular/forms";
         NbInputModule
     ],
     entryComponents: [
-        AddSubjectComponent
+        AddSubjectComponent,
+        ConfigureSubjectTeacherComponent
     ],
     providers: [
         NbDialogService

@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from "rxjs";
 import {SubjectViewModel} from "../models/subject-view.model";
 import {SubjectInputModel} from "../models/subject-input.model";
-import {map} from "rxjs/operators";
+import {MinimalSchoolUser} from "../../../shared/models/minimal-school-user.interface";
 
 @Injectable({providedIn: "root"})
 export class SchoolAdminService {
@@ -42,9 +42,24 @@ export class SchoolAdminService {
         return this.http.post(`${this.serverUrl}/subject/`, data);
     }
 
-    /*Get single subject details*/
+    /*Get all teachers from school*/
+    public getAllTeachers$(schoolId: string): Observable<MinimalSchoolUser[]>{
+        return this.http.get<MinimalSchoolUser[]>(`${this.serverUrl}/teacher/dropdown/${schoolId}`);
+    }
+
+    /*Get all teachers from school*/
+    public getAllTeachersForSubject$(subjectId: string): Observable<MinimalSchoolUser[]>{
+        return this.http.get<MinimalSchoolUser[]>(`${this.serverUrl}/teacher/subject/${subjectId}`);
+    }
+
+    /*Add teacher to Subject's teacher list*/
+    public addTeacherToSubject$(subjectId: string, teacherId: string): Observable<any>{
+        return this.http.post(`${this.serverUrl}/subject/teacher/${subjectId}`, JSON.stringify(teacherId));
+    }
+
+    /*Remove teacher from Subject's teacher list*/
     public removeTeacherFromSubject$(subjectId: string, teacherId: string){
         return this.http.request('delete',`${this.serverUrl}/subject/teacher/${subjectId}`, 
-            {body: {teacherId: teacherId}});
+            {body: JSON.stringify(teacherId)});
     }
 }

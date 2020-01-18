@@ -2,10 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {SubjectViewModel} from "../shared/models/subject-view.model";
 import {SchoolAdminService} from "../shared/services/school-admin.service";
 import {map, take} from "rxjs/operators";
-import {from, Observable} from "rxjs";
-import {TeacherDialogComponent} from "../../principal-ui/teachers-data/teacher-dialog/teacher-dialog.component";
-import {NbDialogRef, NbDialogService} from "@nebular/theme";
+import {NbDialogService} from "@nebular/theme";
 import {ConfirmationDialogComponent} from "../../shared/components/dialogs/confirmation-dialog/confirmation-dialog.component";
+import {select, Store} from "@ngrx/store";
+import {selectSchoolId} from "../../auth/state/auth.reducer";
+import {AppState} from "../../state/app.state";
+import {ConfigureSubjectTeacherComponent} from "../configure-subject-teacher/configure-subject-teacher.component";
 
 @Component({
     selector: 'app-subjects',
@@ -17,12 +19,16 @@ export class SubjectsComponent implements OnInit {
     detailed: SubjectViewModel;
     grades: number[] = Array.from({length: 13}, (v, i) => i);
     grade: number = this.grades[1];
-    subjectEditMode: boolean = false;
+    schoolId: string;
     
     constructor(
         private schoolAdminService: SchoolAdminService,
-        private dialogService: NbDialogService
+        private dialogService: NbDialogService,
+        store: Store<AppState>
     ) {
+        store.pipe(select(selectSchoolId)).subscribe(
+            (schoolId: string) => this.schoolId = schoolId
+        )
     }
 
     ngOnInit() {
@@ -70,8 +76,51 @@ export class SubjectsComponent implements OnInit {
             });
     }
 
-    public editSubject(): void {
-        this.subjectEditMode = true;
+    protected addTeacher(subject: SubjectViewModel){
+        let dialogData;
+
+        this.addTeacherDialog(subject).pipe(take(1),
+            map(x => dialogData = x))
+            .subscribe(() => {
+                if (dialogData.approved) this.schoolAdminService.addTeacherToSubject$(subject.id, dialogData.teacherId)
+                    .subscribe(() => this.showDetails(subject.id))
+            });
     }
 
+    protected removeTeacher(subject: SubjectViewModel){
+        let dialogData;
+
+        this.removeTeacherDialog(subject).pipe(take(1),
+            map(x => dialogData = x))
+            .subscribe(() => {
+                if (dialogData.approved) this.schoolAdminService.removeTeacherFromSubject$(subject.id, dialogData.teacherId)
+                    .subscribe(() => this.showDetails(subject.id))
+            });
+    }
+
+    protected addTeacherDialog(subject: SubjectViewModel){
+        const dialog = this.dialogService.open(ConfigureSubjectTeacherComponent, {
+            context: {
+                header: "Добави учител",
+                agree: "Добави нов преподавател",
+                data: this.schoolAdminService.getAllTeachers$(this.schoolId),
+                subject: subject
+            }
+        });
+        
+        return dialog.onClose;
+    }
+    
+    protected removeTeacherDialog(subject: SubjectViewModel){
+        const dialog = this.dialogService.open(ConfigureSubjectTeacherComponent, {
+            context: {
+                header: "Премахни от списъка с учители",
+                agree: "Премахни учител",
+                data: this.schoolAdminService.getAllTeachersForSubject$(subject.id),
+                subject: subject
+            }
+        });
+
+        return dialog.onClose;
+    }
 }

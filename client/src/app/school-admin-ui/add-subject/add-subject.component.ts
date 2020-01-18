@@ -39,9 +39,7 @@ export class AddSubjectComponent implements OnInit {
 
         this.showConfirmationDialog(`Сигурни ли сте, че искате да добавите "${subject.name}" 
         в предметите на ${subject.gradeYear} клас?`)
-            .pipe(take(1), map(x => {
-                approved = x;
-            }))
+            .pipe(take(1), map(x => approved = x))
             .subscribe(() => {
                 if (approved) this.schoolAdminService.addSubject$(subject).subscribe();
                 this.subjectForm.reset();
@@ -55,9 +53,7 @@ export class AddSubjectComponent implements OnInit {
         let approved = false;
         
         this.showConfirmationDialog("Сигурни ли сте, че искате да редактирате този предмет?")
-            .pipe(take(1), map(x => {
-                approved = x;
-            }))
+            .pipe(take(1), map(x => approved = x))
             .subscribe(() => {
                 if (approved) this.schoolAdminService.editSubject$(this.subject.id, subject).subscribe();
                 this.subjectForm.reset();

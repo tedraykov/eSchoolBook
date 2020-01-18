@@ -1,0 +1,17 @@
+<nb-card>
+    <nb-card-header>{{header}}</nb-card-header>
+    <nb-card-body>
+        <h2>{{subject.name}} | {{subject.grade}} клас</h2>
+        <nb-select fullWidth [selected]="" (selectedChange)="selected = $event">
+            <nb-option *ngFor="let t of teachers" [value]="t.id">
+                {{getFullName(t)}}</nb-option>
+        </nb-select>
+    </nb-card-body>
+    <nb-card-footer>
+        <button nbButton status="basic"(click)="close()">Отказ</button>
+        <button nbButton ghost status="primary"(click)="approve(selected)">
+            <nb-icon icon="person-add-outline"></nb-icon>
+            {{agree}}
+        </button>
+    </nb-card-footer>
+</nb-card>

@@ -86,6 +86,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                     ex => ex.UseDestinationValue())
                 .ForMember(o => o.Address,
                     ex => ex.MapFrom(o => o.Town + ", " + o.Address));
+            CreateMap<Teacher, MinimalSchoolUserModel>();
+                
             
             CreateMap<Parent, ParentViewModel>()
                 .ForMember(o => o.SchoolUserId,

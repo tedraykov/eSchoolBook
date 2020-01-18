@@ -33,8 +33,7 @@ const schoolAdminMenu: NbMenuItem[] = [
     {
         title: 'Subjects', icon: "book-outline", expanded: true,
         children: [
-            {title: 'Active Subjects', link: 'school-admin/subjects'},
-            {title: 'Add New', link: 'principal/students'},
+            {title: 'Active Subjects', link: 'school-admin/subjects'}
         ]
     },
     {

@@ -19,16 +19,18 @@
     </nb-card-header>
     <nb-card-body>
         <nb-tabset>
-            <nb-tab tabTitle="Teachers">
-               <span *ngFor="let teacher of detailed.teachers">
-                   {{teacher.firstName + " " + teacher.secondName + " " + teacher.lastName}}</span>
-                <button nbButton ghost status="primary">
-                    <nb-icon icon="person-add-outline"></nb-icon>
-                    Добави нов преподавател
+            <nb-tab tabTitle="Учители">
+               <span *ngFor="let teacher of detailed.teachers" class="teachers">
+                   {{teacher.firstName + " " + teacher.secondName + " " + teacher.lastName}};</span>
+                <hr>
+                <button nbButton ghost status="primary"
+                    (click)="addTeacher(detailed)">
+                    <nb-icon icon="person-add-outline"></nb-icon>Добави нов преподавател
                 </button>
-                <button nbButton ghost status="primary">
-                    <nb-icon icon="person-delete-outline"></nb-icon>
-                    Премахни преподавател
+                
+                <button nbButton ghost status="danger"
+                        (click)="removeTeacher(detailed)">
+                    <nb-icon icon="person-delete-outline"></nb-icon>Премахни преподавател
                 </button>
             </nb-tab>
             <nb-tab tabTitle="Редактирай предмета" class="actions">

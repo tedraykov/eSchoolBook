@@ -20,7 +20,7 @@ export class CreateStudentComponent implements OnInit {
     @Output() back: EventEmitter<void> = new EventEmitter<void>();
     studentForm = this.fb.group({
         class: ['', Validators.required],
-        startYear: ['', [Validators.min(1970), Validators.required]]
+        startYear: [`${new Date().getFullYear()}`, [Validators.min(1970), Validators.required]]
     });
     classes: Observable<Class[]>;
 
