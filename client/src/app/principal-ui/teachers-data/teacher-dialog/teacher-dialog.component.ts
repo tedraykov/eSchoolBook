@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {MatTableDataSource} from "@angular/material/table";
-import {ParentData} from "../../shared/models/ParentData";
 import {NbDialogRef} from "@nebular/theme";
 import {TeacherDialogData} from "../../shared/models/TeacherDialogData";
 

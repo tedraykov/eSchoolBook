@@ -58,13 +58,11 @@ namespace SchoolBook.BusinessLogicLayer.Services
         {
             var subjectScores = new List<StringDoubleModel>();
 
-            var subjects = Repositories.ClassToSubject.Query()
+            var subjects = Repositories.TeacherToSubject.Query()
                 .Include(cts => cts.Subject)
                 .Include(cts => cts.Teacher)
                 .ThenInclude(t => t.School)
                 .Where(cts => cts.Teacher.School.Id == schoolId)
-//                .ProjectTo<Subject>(Mapper.ConfigurationProvider)
-                .Distinct()
                 .ToList();
             
             if (!subjects.Any())
@@ -84,7 +82,10 @@ namespace SchoolBook.BusinessLogicLayer.Services
                 
                 subjectScores.Add(new StringDoubleModel
                 {
-                    Name = s.Subject.Name, 
+                    Name = s.Subject.Name + " (" 
+                                          + s.Teacher.FirstName + " " + 
+                                          s.Teacher.SecondName.Substring(0,1) 
+                                          + ". " + s.Teacher.LastName + ")", 
                     Value = avg,
                 });
             }
