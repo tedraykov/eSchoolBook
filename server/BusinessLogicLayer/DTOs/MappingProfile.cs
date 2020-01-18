@@ -149,6 +149,7 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
             CreateMap<ClassToSubject, SubjectOnlyViewModel>();
 
             CreateMap<Subject, SubjectViewModel>()
+                .ForMember(o => o.Grade, ex => ex.MapFrom(o => o.GradeYear))
                 .ForMember(o => o.Teachers, ex =>
                     ex.UseDestinationValue());
             CreateMap<SubjectInputModel, Subject>();

@@ -1,0 +1,32 @@
+<form [formGroup]="subjectForm" [classList]="type">
+    <div>
+    <label>
+        <span class="label-text">Име на предмета:</span>
+        <input type="text"
+               nbInput
+               [fullWidth]="type === 'edit'"
+               class="subject-name"
+               formControlName="name"
+               value="{{subject?.name}}"
+               [status]="getInputStatus('name')">
+    </label>
+    </div>
+    <div>
+    <label>
+        <span class="label-text">Година/клас на посещаване:</span>
+        <input type="number"
+               nbInput
+               [fullWidth]="type === 'edit'"
+               class="subject-grade"
+               formControlName="grade"
+               value="{{subject?.grade}}"
+               [status]="getInputStatus('grade')">
+    </label>
+    </div>
+    <div class="btn-group">
+        <button nbButton
+                (click)="(type === 'edit')?editSubject() : addSubject()"
+                [disabled]="subjectForm.invalid">Запази
+        </button>
+    </div>
+</form>
