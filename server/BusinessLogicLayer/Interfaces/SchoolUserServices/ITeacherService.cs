@@ -12,6 +12,10 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces.SchoolUserServices
 
         IEnumerable<TeacherTableViewModel> GetAllTeachersFromSchool(string schoolId);
         
+        IEnumerable<MinimalSchoolUserModel> GetAllTeachersFromSchoolDropdown(string schoolId);
+        
+        IEnumerable<MinimalSchoolUserModel> GetTeachersListFromSubject(string subjectId);
+        
         TeacherDialogViewModel GetTeacherDialogData(string teacherId);
     }
 }

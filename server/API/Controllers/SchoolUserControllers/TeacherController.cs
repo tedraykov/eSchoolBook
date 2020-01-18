@@ -31,6 +31,20 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
             return this.TeacherService.GetAllTeachersFromSchool(schoolId);
         }
         
+        [HttpGet("dropdown/{schoolId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
+        public IEnumerable<MinimalSchoolUserModel> GetAllTeachersFromSchoolDropdown([FromRoute] string schoolId)
+        {
+            return this.TeacherService.GetAllTeachersFromSchoolDropdown(schoolId);
+        }
+        
+        [HttpGet("subject/{subjectId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
+        public IEnumerable<MinimalSchoolUserModel> GetTeachersListFromSubject([FromRoute] string subjectId)
+        {
+            return this.TeacherService.GetTeachersListFromSubject(subjectId);
+        }
+        
         [HttpGet("dialog/{teacherId}")]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
         public TeacherDialogViewModel GetTeacherDialogData([FromRoute] string teacherId)

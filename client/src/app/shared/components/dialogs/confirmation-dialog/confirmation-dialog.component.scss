@@ -1,0 +1,22 @@
+nb-card{
+  min-height: 34vh;
+  max-height: 34vh;
+  max-width: 40vw;
+  min-width: 40vw;
+}
+
+nb-card-body{
+  
+  padding:10% 5%;
+  text-align: center;
+}
+
+nb-card-footer{
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  
+  button {
+    margin-right: 1.5rem;
+  }
+}

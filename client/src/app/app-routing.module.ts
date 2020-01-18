@@ -27,6 +27,11 @@ const routes: Routes = [
             path: 'admin',
             loadChildren: () => import('./admin-ui/admin-ui.module').then(m => m.AdminUiModule)
          }
+         ,
+         {
+            path: 'school-admin',
+            loadChildren: () => import('./school-admin-ui/school-admin-ui.module').then(m => m.SchoolAdminUiModule)
+         }
       ]
    },
    {path: '', pathMatch: 'full', redirectTo: 'app'}

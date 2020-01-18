@@ -1,0 +1,59 @@
+<nb-card size="medium">
+    <nb-card-header>
+        <span>Предмети</span>
+        <nb-select [selected]="grade" (selectedChange)="getSubjectsByGrade($event); grade = $event">
+            <nb-option *ngFor="let g of grades" [value]="g">{{g}} клас</nb-option>
+        </nb-select>
+    </nb-card-header>
+    <nb-list>
+        <nb-list-item *ngFor="let item of data" (click)="showDetails(item.id)">
+            <span>{{item.name}}</span>
+            <span class="expand"><nb-icon icon="external-link-outline"></nb-icon></span>
+        </nb-list-item>
+    </nb-list>
+</nb-card>
+
+<nb-card size="medium" *ngIf="detailed">
+    <nb-card-header>
+        <span>{{detailed.name}} | {{detailed.grade}} клас</span>
+    </nb-card-header>
+    <nb-card-body>
+        <nb-tabset>
+            <nb-tab tabTitle="Учители">
+               <span *ngFor="let teacher of detailed.teachers" class="teachers">
+                   {{teacher.firstName + " " + teacher.secondName + " " + teacher.lastName}};</span>
+                <hr>
+                <button nbButton ghost status="primary"
+                    (click)="addTeacher(detailed)">
+                    <nb-icon icon="person-add-outline"></nb-icon>Добави нов преподавател
+                </button>
+                
+                <button nbButton ghost status="danger"
+                        (click)="removeTeacher(detailed)">
+                    <nb-icon icon="person-delete-outline"></nb-icon>Премахни преподавател
+                </button>
+            </nb-tab>
+            <nb-tab tabTitle="Редактирай предмета" class="actions">
+                <app-add-subject
+                        [type]="'edit'"
+                        [subject]="detailed">
+                </app-add-subject>
+                <button nbButton ghost status="danger" (click)="deleteSubject(detailed.id)">
+                    <nb-icon icon="minus-circle-outline"></nb-icon>
+                    Премахни предмета
+                </button>
+            </nb-tab>
+        </nb-tabset>
+    </nb-card-body>
+</nb-card>
+
+<nb-card id="add">
+    <nb-card-header>
+        <span>Добави нов предмет</span>
+    </nb-card-header>
+    <nb-card-body>
+        <app-add-subject
+                [type]="'add'">
+        </app-add-subject>
+    </nb-card-body>
+</nb-card>

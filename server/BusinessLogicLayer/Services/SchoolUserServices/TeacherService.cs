@@ -82,6 +82,40 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
             return teachers;
         }
 
+        public IEnumerable<MinimalSchoolUserModel> GetAllTeachersFromSchoolDropdown(string schoolId)
+        {
+            var teachers = Repositories.Teachers.Query()
+                .AsNoTracking()
+                .Include(t => t.School)
+                .Where(t => t.School.Id == schoolId)
+                .ProjectTo<MinimalSchoolUserModel>(Mapper.ConfigurationProvider)
+                .ToList();
+
+            if (!teachers.Any())
+            {
+                throw new TargetException("No teachers found within this school");
+            }
+
+            return teachers;
+        }
+
+        public IEnumerable<MinimalSchoolUserModel> GetTeachersListFromSubject(string subjectId)
+        {
+            var teachers = Repositories.TeacherToSubject.Query()
+                .AsNoTracking()
+                .Include(t => t.Teacher)
+                .Where(t => t.SubjectId == subjectId)
+                .ProjectTo<MinimalSchoolUserModel>(Mapper.ConfigurationProvider)
+                .ToList();
+
+            if (!teachers.Any())
+            {
+                throw new TargetException("No teachers found within this school");
+            }
+
+            return teachers;
+        }
+
         public TeacherDialogViewModel GetTeacherDialogData(string teacherId)
         {
             var teacher = Repositories.Teachers.Query()
