@@ -42,12 +42,13 @@ namespace SchoolBook.BusinessLogicLayer.Services
             return classes;
         }
 
-        public List<MinimalClassViewModel> GetAllBySchool(string schoolId)
+        public List<ClassViewModel> GetAllBySchool(string schoolId)
         {
             return Repositories.Classes.Query()
                 .Include(c => c.School)
+                .Include(c => c.ClassTeacher)
                 .Where(c => c.School.Id == schoolId)
-                .ProjectTo<MinimalClassViewModel>(Mapper.ConfigurationProvider)
+                .ProjectTo<ClassViewModel>(Mapper.ConfigurationProvider)
                 .ToList();
         }
 

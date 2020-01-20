@@ -39,8 +39,8 @@ const schoolAdminMenu: NbMenuItem[] = [
     {
         title: 'Classes', icon: "award-outline", expanded: true,
         children: [
-            {title: `${new Date().getFullYear()} Classes`, link: 'principal/teachers'},
-            {title: 'Add New', link: 'principal/students'},
+            {title: `${new Date().getFullYear()} Classes`, link: 'school-admin/classes'},
+            {title: 'Add New', link: 'school-admin/classes/add'},
         ]
     },
     {

@@ -13,11 +13,11 @@ const routes: Routes = [
     {
         path: 'subjects',
         loadChildren: () => import('./subjects-list/subjects.module').then(m => m.SubjectsModule)
-    }
-    // {
-    //     // path: 'classes',
-    //     // loadChildren () => import('').then(m => m.)
-    // },
+    },
+    {
+        path: 'classes',
+        loadChildren: () => import('./classes-list/classes.module').then(m => m.ClassesModule)
+    },
 ];
 
 @NgModule({
