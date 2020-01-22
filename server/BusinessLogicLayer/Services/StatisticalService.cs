@@ -60,10 +60,8 @@ namespace SchoolBook.BusinessLogicLayer.Services
 
             var subjects = Repositories.ClassToSubject.Query()
                 .Include(cts => cts.Subject)
-                .Include(cts => cts.Teacher)
-                .ThenInclude(t => t.School)
-                .Where(cts => cts.Teacher.School.Id == schoolId)
-//                .ProjectTo<Subject>(Mapper.ConfigurationProvider)
+                .Include(cts => cts.Class)
+                .Where(cts => cts.Class.SchoolId == schoolId)
                 .Distinct()
                 .ToList();
             

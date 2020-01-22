@@ -43,6 +43,13 @@ namespace SchoolBook.API.Controllers
             return this.ClassService.GetAllByGrade(grade);
         }
         
+        /*Get all classes in school that don't have a class teacher assigned to them.*/
+        [HttpGet("unassigned/{schoolId}")]
+        public List<MinimalClassViewModel> GetClassesWithoutClassTeacher([FromRoute] string schoolId)
+        {
+            return this.ClassService.GetClassesWithoutClassTeacher(schoolId);
+        }
+        
         /*Get one class by class id.*/
         [HttpGet("{id}")]
         public ClassViewModel GetOne([FromRoute] string id)

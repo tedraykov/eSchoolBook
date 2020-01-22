@@ -11,6 +11,8 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
         
         List<ClassViewModel>  GetAllByGrade (int grade);
 
+        List<MinimalClassViewModel> GetClassesWithoutClassTeacher(string schoolId);
+
         ClassViewModel GetOne(string id);
 
         void AddClass(ClassInputModel inputModel);

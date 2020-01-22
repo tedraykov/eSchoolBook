@@ -3,34 +3,33 @@
     <nb-card-body>
         <table mat-table [dataSource]="dataForTable" matSort>
 
-            <!-- Student name column -->
+            <!-- Class grade + grade letter column -->
             <ng-container matColumnDef="grade">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Клас и паралелка</th>
-                <td mat-cell *matCellDef="let class">{{getFullGrade(class)}}</td>
+                <td mat-cell *matCellDef="let _class">{{getFullGrade(_class)}}</td>
             </ng-container>
 
-            <!-- Student grade column -->
+            <!-- Cass start year column -->
             <ng-container matColumnDef="startYear">
                 <th mat-header-cell *matHeaderCellDef>Випуск</th>
                 <td mat-cell
-                    *matCellDef="let class">{{class.startYear}}</td>
+                    *matCellDef="let _class">{{_class?.startYear}}</td>
             </ng-container>
 
-            <!-- Student address column -->
+            <!-- Class' class teacher column -->
             <ng-container matColumnDef="classTeacher">
                 <th mat-header-cell *matHeaderCellDef>Класен ръководител</th>
-                <td mat-cell *matCellDef="let class">
-                    {{getTeacherFullName(class?.classTeacher)}}</td>
+                <td mat-cell *matCellDef="let _class">
+                    {{_class?.classTeacher ? getTeacherFullName(_class?.classTeacher) : '-'}}</td>
             </ng-container>
 
-            <!-- Student actions column -->
+            <!-- Class actions column -->
 
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let class">
+                <td mat-cell *matCellDef="let _class">
                     <div class="btn-group">
-                        <button nbButton status="info" size="small"
-                                >Details
+                        <button nbButton status="info" size="small">Details
                         </button>
                     </div>
                 </td>

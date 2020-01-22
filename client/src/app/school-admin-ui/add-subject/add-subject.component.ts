@@ -15,6 +15,7 @@ import {SubjectInputModel} from "../shared/models/subject-input.model";
 export class AddSubjectComponent implements OnInit {
     @Input() subject: SubjectViewModel;
     @Input() type: string = 'edit';
+    
     subjectForm = new FormGroup({
         name: new FormControl('',
             [Validators.required]),

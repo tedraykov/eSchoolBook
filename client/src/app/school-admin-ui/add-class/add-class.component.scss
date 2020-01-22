@@ -1,0 +1,40 @@
+:host {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 1rem;
+  justify-items: stretch;
+  
+  nb-card-body>div, nb-card-body>form {
+    display: flex;
+    flex-flow: column;
+    flex-wrap: nowrap;
+  }
+
+  nb-card-body>form>label {
+    display: flex;
+    flex-flow: column;
+    flex-wrap: nowrap;
+    
+    span {
+      margin: 0.5rem 0rem;
+      font-weight: 500;
+    }
+  }
+  
+  .btn-group {
+    margin-top: 1rem;
+    
+    button {
+      margin-right: 1rem;
+    }
+  }
+
+  nb-card-body>div {
+    
+    nb-select {
+      margin-bottom: 1rem;
+    }
+  }
+  
+}
