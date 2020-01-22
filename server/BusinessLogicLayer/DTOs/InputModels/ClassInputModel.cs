@@ -14,5 +14,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs.InputModels
         
         [Required]
         public char GradeLetter { get; set; }
+        
+        [Required]
+        public string SchoolId { get; set; }
     }
 }

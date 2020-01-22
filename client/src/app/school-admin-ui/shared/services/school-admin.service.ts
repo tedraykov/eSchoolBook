@@ -4,6 +4,9 @@ import {Observable} from "rxjs";
 import {SubjectViewModel} from "../models/subject-view.model";
 import {SubjectInputModel} from "../models/subject-input.model";
 import {MinimalSchoolUser} from "../../../shared/models/minimal-school-user.interface";
+import {ClassViewModel} from "../models/class-view.model";
+import {ClassInputModel} from "../models/class-input.model";
+import {tap} from "rxjs/operators";
 
 @Injectable({providedIn: "root"})
 export class SchoolAdminService {
@@ -37,11 +40,13 @@ export class SchoolAdminService {
         return this.http.put(`${this.serverUrl}/subject/${subjectId}`, data);
     }
 
-    /*Edit subject*/
+    /*Add subject*/
     public addSubject$(data: SubjectInputModel){
         return this.http.post(`${this.serverUrl}/subject/`, data);
     }
 
+    /*----------------------------------------------------------------------------------*/
+    
     /*Get all teachers from school*/
     public getAllTeachers$(schoolId: string): Observable<MinimalSchoolUser[]>{
         return this.http.get<MinimalSchoolUser[]>(`${this.serverUrl}/teacher/dropdown/${schoolId}`);
@@ -62,4 +67,32 @@ export class SchoolAdminService {
         return this.http.request('delete',`${this.serverUrl}/subject/teacher/${subjectId}`, 
             {body: JSON.stringify(teacherId)});
     }
+
+    /*----------------------------------------------------------------------------------*/
+
+    /*Get all classes from school*/
+    public getAllClassesInSchool$(schoolId: string): Observable<ClassViewModel[]>{
+        return this.http.get<ClassViewModel[]>(`${this.serverUrl}/class/school/${schoolId}`);
+    }
+
+    /*Get all classes with unassigned class teacher from school*/
+    public getAllUnassignedClasses$(schoolId: string): Observable<ClassViewModel[]>{
+        return this.http.get<ClassViewModel[]>(`${this.serverUrl}/class/unassigned/${schoolId}`);
+    }
+
+    /*Get all teachers that aren't assigned as class teacher (from school)*/
+    public getAllUnassignedTeachers$(schoolId: string): Observable<MinimalSchoolUser[]>{
+        return this.http.get<MinimalSchoolUser[]>(`${this.serverUrl}/teacher/unassigned/${schoolId}`);
+    }
+
+    /*Add new class to school*/
+    public addNewClass$(classInputModel: ClassInputModel): Observable<any>{
+        return this.http.post(`${this.serverUrl}/class`, classInputModel);
+    }
+
+    /*Add class teacher to unassigned class*/
+    public addClassTeacher$(classId: string, teacherId: string): Observable<any>{
+        return this.http.put(`${this.serverUrl}/class/teacher/${classId}`, JSON.stringify(teacherId));
+    }
+    
 }

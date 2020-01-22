@@ -1,0 +1,43 @@
+<nb-card>
+    <nb-card-header><h4>Класове и паралелки</h4></nb-card-header>
+    <nb-card-body>
+        <table mat-table [dataSource]="dataForTable" matSort>
+
+            <!-- Class grade + grade letter column -->
+            <ng-container matColumnDef="grade">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Клас и паралелка</th>
+                <td mat-cell *matCellDef="let _class">{{getFullGrade(_class)}}</td>
+            </ng-container>
+
+            <!-- Cass start year column -->
+            <ng-container matColumnDef="startYear">
+                <th mat-header-cell *matHeaderCellDef>Випуск</th>
+                <td mat-cell
+                    *matCellDef="let _class">{{_class?.startYear}}</td>
+            </ng-container>
+
+            <!-- Class' class teacher column -->
+            <ng-container matColumnDef="classTeacher">
+                <th mat-header-cell *matHeaderCellDef>Класен ръководител</th>
+                <td mat-cell *matCellDef="let _class">
+                    {{_class?.classTeacher ? getTeacherFullName(_class?.classTeacher) : '-'}}</td>
+            </ng-container>
+
+            <!-- Class actions column -->
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let _class">
+                    <div class="btn-group">
+                        <button nbButton status="info" size="small">Details
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="classesColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: classesColumns"></tr>
+        </table>
+    </nb-card-body>
+</nb-card>

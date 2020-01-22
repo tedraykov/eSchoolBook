@@ -28,7 +28,7 @@
                         <span class="label-text">Address:</span>
                         <input type="text" id="address" nbInput formControlName="address">
                     </label>
-                    <label for="school">
+                    <label for="school" *ngIf="currentRole != 'Admin'" >
                         <span class="label-text">School:</span>
                         <nb-select placeholder="" id="school" formControlName="schoolId">
                             <nb-option *ngFor="let school of schools | async"

@@ -18,6 +18,8 @@ namespace SchoolBook.DataAccessLayer.Entities
         public Teacher ClassTeacher { get; set; }
 
         public School School { get; set; }
+        
+        public string SchoolId { get; set; }
 
         public ICollection<ClassToSubject> Subjects { get; set; } = new List<ClassToSubject>();
     }
