@@ -7,10 +7,7 @@ import {select, Store} from "@ngrx/store";
 import {AppState} from "../../state/app.state";
 import {NbDialogService} from "@nebular/theme";
 import {selectSchoolId} from "../../auth/state/auth.reducer";
-import {ClassViewModel} from "../shared/models/class-view.model";
-import {Observable} from "rxjs";
 import {map, take} from "rxjs/operators";
-import {SubjectInputModel} from "../shared/models/subject-input.model";
 import {ClassInputModel} from "../shared/models/class-input.model";
 import {ConfirmationDialogComponent} from "../../shared/components/dialogs/confirmation-dialog/confirmation-dialog.component";
 
@@ -84,7 +81,6 @@ export class AddClassComponent implements OnInit {
 
     public addClassTeacher() {
         let approved = false;
-        console.log(this.selectedTeacher)
         this.showConfirmationDialog(`Сигурни ли сте, че искате да направите  
           ${this.getTeacherFullName(this.selectedTeacher)} класен ръководител на 
           ${this.getFullGrade(this.selectedClass)}?`)
@@ -106,7 +102,7 @@ export class AddClassComponent implements OnInit {
         return dialog.onClose;
     }
 
-    protected getInputStatus(formControlName: string) {
+    public getInputStatus(formControlName: string) {
         const formControl = this.classForm.get(formControlName);
         if (formControl.valid && formControl.dirty) {
             return 'success';
@@ -117,11 +113,11 @@ export class AddClassComponent implements OnInit {
         return 'basic';
     }
 
-    protected getTeacherFullName(teacher: MinimalSchoolUser) {
+    public getTeacherFullName(teacher: MinimalSchoolUser) {
         return teacher.firstName + " " + teacher.secondName + " " + teacher.lastName;
     }
 
-    protected getFullGrade(classModel: Class | ClassInputModel) {
+    public getFullGrade(classModel: Class | ClassInputModel) {
         return classModel.grade + classModel.gradeLetter.toUpperCase();
     }
 

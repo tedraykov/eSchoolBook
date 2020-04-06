@@ -36,7 +36,7 @@ export class SubjectsComponent implements OnInit {
         this.getSubjectsByGrade(this.grade);
     }
 
-    protected getSubjectsByGrade(grade: number): void {
+    public getSubjectsByGrade(grade: number): void {
         this.schoolAdminService.getAllSubjectsByGrade$(grade)
             .pipe(take(1))
             .subscribe((subjects: SubjectViewModel[]) => {
@@ -45,7 +45,7 @@ export class SubjectsComponent implements OnInit {
             });
     }
 
-    protected showDetails(subjectId: string): void {
+    public showDetails(subjectId: string): void {
         this.schoolAdminService.getSubjectDetails$(subjectId)
             .pipe(take(1))
             .subscribe((subject: SubjectViewModel) => {
@@ -53,7 +53,7 @@ export class SubjectsComponent implements OnInit {
             })
     }
 
-    protected showConfirmationDialog(message: string) {
+    public showConfirmationDialog(message: string) {
         const dialog = this.dialogService.open(ConfirmationDialogComponent, {
             context: {
                 message: message
@@ -76,7 +76,7 @@ export class SubjectsComponent implements OnInit {
             });
     }
 
-    protected addTeacher(subject: SubjectViewModel){
+    public addTeacher(subject: SubjectViewModel){
         let dialogData;
 
         this.addTeacherDialog(subject).pipe(take(1),
@@ -87,7 +87,7 @@ export class SubjectsComponent implements OnInit {
             });
     }
 
-    protected removeTeacher(subject: SubjectViewModel){
+    public removeTeacher(subject: SubjectViewModel){
         let dialogData;
 
         this.removeTeacherDialog(subject).pipe(take(1),

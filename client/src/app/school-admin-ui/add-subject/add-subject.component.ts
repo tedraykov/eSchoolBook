@@ -35,7 +35,7 @@ export class AddSubjectComponent implements OnInit {
     public addSubject() {
         const subject = this.subjectForm.value as SubjectInputModel;
         subject.gradeYear = this.subjectForm.value.grade;
-        console.log(subject, this.subjectForm.value)
+        // console.log(subject, this.subjectForm.value);
         let approved = false;
 
         this.showConfirmationDialog(`Сигурни ли сте, че искате да добавите "${subject.name}" 
@@ -71,7 +71,7 @@ export class AddSubjectComponent implements OnInit {
         return dialog.onClose;
     }
 
-    protected getInputStatus(formControlName: string) {
+    public getInputStatus(formControlName: string) {
         const formControl = this.subjectForm.get(formControlName);
         if (formControl.valid) {
             return 'success';

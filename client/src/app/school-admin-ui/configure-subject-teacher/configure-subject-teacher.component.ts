@@ -32,7 +32,7 @@ export class ConfigureSubjectTeacherComponent implements OnInit {
         this.dialogRef.close({approved: false});
     }
 
-    protected approve(teacherId: string): void {
+    public approve(teacherId: string): void {
       this.dialogRef.close({
           approved: true, 
           subjectId: this.subject.id,
@@ -40,7 +40,7 @@ export class ConfigureSubjectTeacherComponent implements OnInit {
       });
     }
 
-    protected getFullName(teacher: MinimalSchoolUser): string {
+    public getFullName(teacher: MinimalSchoolUser): string {
         return teacher.firstName + " " + teacher.secondName + " " + teacher.lastName;
     }
 }
