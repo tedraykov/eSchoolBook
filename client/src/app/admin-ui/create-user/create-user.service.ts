@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { StudentInputModel } from './models/student-input.model';
 import { SchoolUserInputModel } from '../models/school-user.model';
 import { ParentInputModel } from './models/parent-input.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class CreateUserService {
-  private readonly serverUrl = 'http://localhost:5000';
+  private readonly serverUrl = environment.serverUrl;
   private readonly teacherEndpoint = 'teacher';
   private readonly studnetEndpoint = 'studnet';
   private readonly principalEndpoint = 'principal';

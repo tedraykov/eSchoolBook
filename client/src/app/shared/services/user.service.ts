@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Roles } from "../enums/school-user-roles";
+import { environment } from 'src/environments/environment';
 
 export interface UserModel {
    schoolUserId: string;
@@ -19,6 +20,6 @@ export class UserService {
    }
 
    getUsers$(): Observable<UserModel[]> {
-      return this.http.get<UserModel[]>("http://localhost:5000/" + this.apiEndpoint);
+      return this.http.get<UserModel[]>(environment.serverUrl + this.apiEndpoint);
    }
 }

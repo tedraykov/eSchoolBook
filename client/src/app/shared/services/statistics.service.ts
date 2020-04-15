@@ -3,12 +3,14 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {tap} from "rxjs/operators";
 import {StringDoubleModel} from "../models/string-double.model";
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
     providedIn: "root"
     })
 export class StatisticsService {
-    private readonly serverUrl = "http://localhost:5000/statistics";
+    private readonly serverUrl = environment.serverUrl;
 
     constructor(private http: HttpClient) {
     }

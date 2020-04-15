@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -45,19 +48,20 @@ namespace SchoolBook
                 .AddNewtonsoftJson(x =>
                     x.SerializerSettings.ReferenceLoopHandling =
                         ReferenceLoopHandling.Ignore);
-
+            
+            //Database connection
             services.AddDbContext<SchoolBookContext>(cfg =>
             {
-                cfg.UseNpgsql(
-                    Configuration.GetConnectionString(
-                        "SchoolBookConnectionString"));
+                cfg.UseNpgsql(Environment.GetEnvironmentVariable("ESCHOOLBOOK_ENV_CONNECTION_STRING"));
             });
+            
+            //Automapper
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers();
             services.AddControllersWithViews(options =>
                 options.Filters.Add(typeof(CustomExceptionFilter)));
-
+            
             //Configure IdentityUser
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<SchoolBookContext>();
@@ -91,19 +95,18 @@ namespace SchoolBook
             services.AddTransient<IParentService, ParentService>();
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
 
             var jwtSettingsSection = Configuration.GetSection("JwtSettings");
-            var key = Encoding.UTF8.GetBytes(jwtSettingsSection["Secret"]);
-
+            var key = Encoding.UTF8.GetBytes((jwtSettingsSection["Secret"].ToString()));
+            
             services.Configure<JwtSettings>(jwtSettingsSection);
             services.AddAuthentication(x =>
-                {
-                    x.DefaultAuthenticateScheme =
-                        JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme =
-                        JwtBearerDefaults.AuthenticationScheme;
-                })
+            {
+                x.DefaultAuthenticateScheme =
+                    JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme =
+                    JwtBearerDefaults.AuthenticationScheme;
+            })
                 .AddJwtBearer(x =>
                 {
                     x.RequireHttpsMetadata = false;
@@ -124,12 +127,22 @@ namespace SchoolBook
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler("/error-local-dev");
+                
+                app.UseDeveloperExceptionPage();
                 app.UseCors("AllowAll");
             }
-            else
+            
+            app.Use(async (context, next) =>
             {
-                app.UseExceptionHandler("/error");
-            }
+                await next();
+                if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                {
+//                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            });
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
             app.UseAuthentication();

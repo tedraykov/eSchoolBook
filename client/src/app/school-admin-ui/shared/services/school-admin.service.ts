@@ -7,10 +7,11 @@ import {MinimalSchoolUser} from "../../../shared/models/minimal-school-user.inte
 import {ClassViewModel} from "../models/class-view.model";
 import {ClassInputModel} from "../models/class-input.model";
 import {tap} from "rxjs/operators";
+import { environment } from 'src/environments/environment';
 
 @Injectable({providedIn: "root"})
 export class SchoolAdminService {
-    private readonly serverUrl = "http://localhost:5000";
+    private readonly serverUrl = environment.serverUrl;
 
     constructor(private http: HttpClient) {
     }

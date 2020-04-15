@@ -3,12 +3,13 @@ import {HttpClient} from "@angular/common/http";
 import {Class} from "../models/class.interface";
 import {Observable} from "rxjs";
 import {tap} from "rxjs/operators";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ClassService {
-    readonly url = 'http://localhost:5000';
+    readonly url = environment.serverUrl;
     private readonly endpoint = 'class';
     private readonly school = 'school';
 
