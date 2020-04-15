@@ -45,6 +45,13 @@ namespace SchoolBook.API.Controllers.SchoolUserControllers
             return this.TeacherService.GetTeachersListFromSubject(subjectId);
         }
         
+        [HttpGet("unassigned/{schoolId}")]
+        [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
+        public IEnumerable<MinimalSchoolUserModel> GetAllUnassignedToClass([FromRoute] string schoolId)
+        {
+            return this.TeacherService.GetAllUnassignedToClass(schoolId);
+        }
+        
         [HttpGet("dialog/{teacherId}")]
         [Authorize(Roles = "SuperAdmin, SchoolAdmin, Principal")]
         public TeacherDialogViewModel GetTeacherDialogData([FromRoute] string teacherId)

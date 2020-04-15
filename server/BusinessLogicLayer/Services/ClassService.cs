@@ -42,12 +42,13 @@ namespace SchoolBook.BusinessLogicLayer.Services
             return classes;
         }
 
-        public List<MinimalClassViewModel> GetAllBySchool(string schoolId)
+        public List<ClassViewModel> GetAllBySchool(string schoolId)
         {
             return Repositories.Classes.Query()
                 .Include(c => c.School)
+                .Include(c => c.ClassTeacher)
                 .Where(c => c.School.Id == schoolId)
-                .ProjectTo<MinimalClassViewModel>(Mapper.ConfigurationProvider)
+                .ProjectTo<ClassViewModel>(Mapper.ConfigurationProvider)
                 .ToList();
         }
 
@@ -69,6 +70,16 @@ namespace SchoolBook.BusinessLogicLayer.Services
             return classes;
         }
 
+        public List<MinimalClassViewModel> GetClassesWithoutClassTeacher(string schoolId)
+        {
+            return Repositories.Classes.Query()
+                .Include(c => c.School)
+                .Include(c => c.ClassTeacher)
+                .Where(c => c.School.Id == schoolId && c.ClassTeacher == null)
+                .ProjectTo<MinimalClassViewModel>(Mapper.ConfigurationProvider)
+                .ToList();
+        }
+
         public  ClassViewModel GetOne(string id)
         {
             var dbClass = this.Repositories.Classes.GetById(id);
@@ -86,6 +97,10 @@ namespace SchoolBook.BusinessLogicLayer.Services
         public void AddClass(ClassInputModel inputModel)
         {
             var entityClass = Mapper.Map<ClassInputModel, Class>(inputModel);
+            
+            entityClass.SchoolId = Repositories.Schools.Query()
+                .AsNoTracking()
+                .FirstOrDefault(s => s.Id == inputModel.SchoolId)?.Id;
 
             this.Repositories.Classes.Create(entityClass);
         }

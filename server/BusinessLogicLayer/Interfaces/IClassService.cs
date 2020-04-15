@@ -7,9 +7,11 @@ namespace SchoolBook.BusinessLogicLayer.Interfaces
     public interface IClassService
     {
         List<ClassViewModel> GetAll();
-        List<MinimalClassViewModel> GetAllBySchool(string schoolId);
+        List<ClassViewModel> GetAllBySchool(string schoolId);
         
         List<ClassViewModel>  GetAllByGrade (int grade);
+
+        List<MinimalClassViewModel> GetClassesWithoutClassTeacher(string schoolId);
 
         ClassViewModel GetOne(string id);
 

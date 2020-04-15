@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolBook.BusinessLogicLayer.DTOs.Enums;
 using SchoolBook.DataAccessLayer.Entities;
@@ -93,6 +94,13 @@ namespace SchoolBook.DataAccessLayer
                 .WithMany(subject => subject.Teachers)
                 .HasForeignKey(tts => tts.SubjectId);
             
+            /* Many to one relationship configuration */
+
+            builder.Entity<Class>()
+                .HasOne(c => c.School)
+                .WithMany(s => s.Classes)
+                .IsRequired();
+            
             /* Unique constraints configuration */
             builder.Entity<SchoolUser>()
                 .HasIndex(su => su.Pin)
@@ -101,6 +109,18 @@ namespace SchoolBook.DataAccessLayer
             builder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+            
+            /*Seed data !!! Delete lines 113-122 and */
+            builder.Entity<Subject>()
+                .HasData(
+                    new Subject{Id = Guid.NewGuid().ToString(), Name = "Български език и литература", GradeYear = 1},
+                    new Subject{Id = Guid.NewGuid().ToString(), Name = "Математика", GradeYear = 1},
+                    new Subject{Id = Guid.NewGuid().ToString(), Name = "Околен свят", GradeYear = 1},
+                    new Subject{Id = Guid.NewGuid().ToString(), Name = "Музика", GradeYear = 1},
+                    new Subject{Id = Guid.NewGuid().ToString(), Name = "Български език и литература", GradeYear = 2},
+                    new Subject{Id = Guid.NewGuid().ToString(), Name = "Математика", GradeYear = 2},
+                    new Subject{Id = Guid.NewGuid().ToString(), Name = "Английски език", GradeYear = 2}
+                );
         }
     }
 }

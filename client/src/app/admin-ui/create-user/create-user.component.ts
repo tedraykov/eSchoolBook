@@ -9,6 +9,9 @@ import {StudentFormInputModel} from "./models/student-form-input.model";
 import {StudentInputModel} from "./models/student-input.model";
 import {tap} from "rxjs/operators";
 import {NbStepperComponent} from "@nebular/theme";
+import {select, Store} from "@ngrx/store";
+import {AppState} from "../../state/app.state";
+import {selectRole, selectSchoolId} from "../../auth/state/auth.reducer";
 
 @Component({
     selector: 'app-create-user',
@@ -21,6 +24,7 @@ export class CreateUserComponent implements OnInit {
     baseUserComplete: boolean = false;
     studentData: StudentFormInputModel;
     @ViewChild('userStepper', {static: false}) stepper: NbStepperComponent;
+    currentRole: string;
 
     createUser = this.fb.group({
         firstName: ['Tedi', Validators.required],
@@ -35,7 +39,18 @@ export class CreateUserComponent implements OnInit {
 
     constructor(
         private schoolService: SchoolService,
-        private fb: FormBuilder) {
+        private fb: FormBuilder,
+        store: Store<AppState>,) {
+        
+        store.pipe(select(selectRole)).subscribe(
+            (role: string) => this.currentRole = role
+        );
+
+        if (this.currentRole === 'Admin') {
+            store.pipe(select(selectSchoolId)).subscribe(
+                (schoolId: string) => this.createUser.controls['schoolId'].setValue(schoolId)
+            );
+        }
     }
 
     ngOnInit() {

@@ -136,7 +136,8 @@ namespace SchoolBook.BusinessLogicLayer.DTOs
                     ex => ex.MapFrom(o => o.Id));
 
             CreateMap<Class, ClassViewModel>();
-            CreateMap<ClassInputModel, Class>();
+            CreateMap<ClassInputModel, Class>()
+                .ForMember(o => o.School, ex => ex.UseDestinationValue());
 
             CreateMap<Class, MinimalClassViewModel>();
 

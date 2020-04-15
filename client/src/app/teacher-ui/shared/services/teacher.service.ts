@@ -3,12 +3,13 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { Subject } from "../models/subject";
 import { subjects } from "./mocked-subjects";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TeacherService {
-   private readonly serverUrl = "http://localhost:5000";
+   private readonly serverUrl = environment.serverUrl;
    private readonly teacherEndpoint = "teacher";
 
    constructor(private http: HttpClient) {

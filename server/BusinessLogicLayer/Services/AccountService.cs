@@ -29,11 +29,9 @@ namespace SchoolBook.BusinessLogicLayer.Services
 
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly JwtSettings _jwtSettings;
         
         public AccountService(
             SignInManager<User> signInManager,
-            IOptions<JwtSettings> jwtSettings,
             IRepositories repositories, 
             UserManager<User> userManager,
             ILogger<BaseService> logger,
@@ -41,7 +39,6 @@ namespace SchoolBook.BusinessLogicLayer.Services
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
-            this._jwtSettings = jwtSettings.Value;
         }
 
         public async Task<LoginViewModel> LogIn(LoginInputModel loginInputModel)
@@ -126,7 +123,7 @@ namespace SchoolBook.BusinessLogicLayer.Services
         private async Task<string> GenerateJwt(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("ESCHOOLBOOK_ENV_JWT"));
             var isUserAdmin = await _userManager.IsInRoleAsync(user, RoleTypes.SuperAdmin.ToString());
             var userSchoolId = Repositories.SchoolUsers.Query()
                                  .AsNoTracking()

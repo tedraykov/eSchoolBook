@@ -9,10 +9,11 @@ import { JwtPayloadModel } from "../model/jwt.payload.model";
 import { AuthState } from "../state";
 import { Roles } from "../../shared/enums/school-user-roles";
 import { initialState } from "../state/auth.reducer";
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthService {
-   private readonly baseUrl = 'http://localhost:5000';
+   private readonly baseUrl = environment.serverUrl;
    private readonly loginEndpoint = '/account/login';
 
    constructor(

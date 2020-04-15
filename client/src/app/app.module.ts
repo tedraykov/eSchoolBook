@@ -18,6 +18,7 @@ import { NbAuthModule, NbPasswordAuthStrategy } from "@nebular/auth";
 import { AuthModule } from "./auth/auth.module";
 import { EffectsModule } from "@ngrx/effects";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { environment } from 'src/environments/environment';
 
 @NgModule({
    declarations: [
@@ -36,7 +37,7 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
          strategies: [
             NbPasswordAuthStrategy.setup({
                name: 'email',
-               baseEndpoint: 'http://localhost:5000',
+               baseEndpoint: environment.serverUrl,
                login: {
                   endpoint: '/account/login',
                   method: 'post'

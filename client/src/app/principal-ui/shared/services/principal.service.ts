@@ -5,10 +5,11 @@ import {SchoolUsersTableData} from "../models/SchoolUsersTableData";
 import {StudentDialogData} from "../models/StudentDialogData";
 import {ParentData} from "../models/ParentData";
 import {TeacherDialogData} from "../models/TeacherDialogData";
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class PrincipalService {
-   private readonly serverUrl = "http://localhost:5000";
+   private readonly serverUrl = environment.serverUrl;
 
    constructor(private http: HttpClient) {
    }

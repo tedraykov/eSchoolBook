@@ -11,6 +11,9 @@ using System.Linq;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Logging;
+using SchoolBook.BusinessLogicLayer.DTOs.Models.SchoolUserModels;
+using SchoolBook.BusinessLogicLayer.DTOs.ViewModels;
 using SchoolBook.BusinessLogicLayer.DTOs.ViewModels.SchoolUsers.Teacher;
 using SchoolBook.DataAccessLayer.Interfaces;
 
@@ -113,6 +116,44 @@ namespace SchoolBook.BusinessLogicLayer.Services.SchoolUserServices
                 throw new TargetException("No teachers found within this school");
             }
 
+            return teachers;
+        }
+
+        public IEnumerable<MinimalSchoolUserModel> GetAllUnassignedToClass(string schoolId)
+        {
+            var teachers = Repositories.Teachers.Query()
+                .AsNoTracking()
+                .Include(t => t.School)
+                .Where(t => t.School.Id == schoolId)
+                .ProjectTo<MinimalSchoolUserModel>(Mapper.ConfigurationProvider)
+                .ToList();
+
+            if (!teachers.Any())
+            {
+                throw new TargetException("No teachers found within this school");
+            }
+
+            var classes = Repositories.Classes.Query()
+                .Include(c => c.School)
+                .Include(c => c.ClassTeacher)
+                .Where(c => c.School.Id == schoolId)
+                .ProjectTo<ClassViewModel>(Mapper.ConfigurationProvider)
+                .ToList();
+
+            if (!classes.Any())
+            {
+                throw new TargetException("No classes found within this school");
+            }
+
+            foreach (var c in classes)
+            {
+                if (c.ClassTeacher != null)
+                {
+                    var index = teachers.FindIndex(t => t.Id == c.ClassTeacher.Id);
+                    teachers.RemoveAt(index);
+                }
+            }
+            
             return teachers;
         }
 
