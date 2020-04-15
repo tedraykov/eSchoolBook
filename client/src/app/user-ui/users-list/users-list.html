@@ -1,0 +1,14 @@
+<nb-card>
+   <nb-card-header><h4>School Users</h4></nb-card-header>
+   <nb-card-body>
+      <table [nbTreeGrid]="tableData$ | async">
+         <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumns" (click)="navigateToUser(row.data)"></tr>
+
+         <ng-container *ngFor="let column of allColumns" [nbTreeGridColumnDef]="column">
+            <td nbTreeGridCell *nbTreeGridCellDef="let row">
+               {{row.data[column]}}
+            </td>
+         </ng-container>
+      </table>
+   </nb-card-body>
+</nb-card>

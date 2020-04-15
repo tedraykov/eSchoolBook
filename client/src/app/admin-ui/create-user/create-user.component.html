@@ -1,0 +1,91 @@
+<nb-card>
+    <nb-card-header><h5>Create User</h5></nb-card-header>
+    <nb-card-body>
+        <nb-stepper orientation="vertical" disableStepNavigation #userStepper>
+            <nb-step [stepControl]="createUser" label="Basic info">
+                <form [formGroup]="createUser" class="base-user-form">
+                    <label for="first-name">
+                        <span class="label-text">First Name:</span>
+                        <input type="text" id="first-name" nbInput formControlName="firstName">
+                    </label>
+                    <label for="second-name">
+                        <span class="label-text">Second Name:</span>
+                        <input type="text" id="second-name" nbInput formControlName="secondName">
+                    </label>
+                    <label for="last-name">
+                        <span class="label-text">Last Name:</span>
+                        <input type="text" id="last-name" nbInput formControlName="lastName">
+                    </label>
+                    <label for="pin">
+                        <span class="label-text">Pin:</span>
+                        <input type="text" id="pin" nbInput formControlName="pin">
+                    </label>
+                    <label for="town">
+                        <span class="label-text">Town:</span>
+                        <input type="text" id="town" nbInput formControlName="town">
+                    </label>
+                    <label for="address">
+                        <span class="label-text">Address:</span>
+                        <input type="text" id="address" nbInput formControlName="address">
+                    </label>
+                    <label for="school" *ngIf="currentRole != 'Admin'" >
+                        <span class="label-text">School:</span>
+                        <nb-select placeholder="" id="school" formControlName="schoolId">
+                            <nb-option *ngFor="let school of schools | async"
+                                       [value]="school.id">{{school.name}}</nb-option>
+                        </nb-select>
+                    </label>
+                    <label for="role">
+                        <span class="label-text">Role:</span>
+                        <nb-select placeholder="Select school user role" id="role" formControlName="role">
+                            <nb-option *ngFor="let role of roles" [value]="role">{{role}}</nb-option>
+                        </nb-select>
+                    </label>
+                </form>
+                <div class="btn-group">
+                    <button nbButton status="basic">Cancel</button>
+                    <button nbButton
+                            nbStepperNext
+                            (click)="completeBaseUser()"
+                            [disabled]="createUser.invalid">Next
+                    </button>
+                </div>
+            </nb-step>
+            <nb-step label="Role specific info" class="role-step">
+                <div *ngIf="baseUserComplete" class="role-specific-wrapper">
+                    <new-user-summary [schoolUser]="getUserData()"></new-user-summary>
+                    <create-student
+                            class="role-form"
+                            *ngIf="getRole() === 'Student'"
+                            (back)="onBack()"
+                            [user]="getUserData()">
+                    </create-student>
+                    <create-teacher
+                            class="role-form"
+                            *ngIf="getRole() === 'Teacher'"
+                            (back)="onBack()"
+                            [user]="getUserData()">
+                    </create-teacher>
+                    <create-principal
+                            class="role-form"
+                            *ngIf="getRole() === 'Principal'"
+                            (back)="onBack()"
+                            [user]="getUserData()">
+                    </create-principal>
+                    <create-parent
+                            class="role-form"
+                            *ngIf="getRole() === 'Parent'"
+                            (back)="onBack()"
+                            [user]="getUserData()">
+                    </create-parent>
+                    <create-admin
+                            class="role-form"
+                            *ngIf="getRole() === 'Admin'"
+                            (back)="onBack()"
+                            [user]="getUserData()">
+                    </create-admin>
+                </div>
+            </nb-step>
+        </nb-stepper>
+    </nb-card-body>
+</nb-card>

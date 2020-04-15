@@ -1,0 +1,35 @@
+<section>
+    <article>
+        <div class="selected-children-header">
+            <strong>Selected children</strong>
+        </div>
+        <div class="children" *ngIf="children.length > 0; else noChildren">
+            <nb-card *ngFor="let child of children">
+                <span>{{child.fullName}}</span>
+                <nb-icon icon="close-outline" status="warning" (click)="removeChild(child)"></nb-icon>
+            </nb-card>
+        </div>
+    </article>
+    <nb-card>
+        <nb-card-header>
+            <span>Select students</span>
+        </nb-card-header>
+        <nb-list>
+            <nb-list-item *ngFor="let student of students | async" (click)="addStudentToChildren(student)">
+                <span class="student-name">{{ student.fullName }}</span>
+                <span class="grade">{{student.grade}}</span>
+            </nb-list-item>
+        </nb-list>
+    </nb-card>
+</section>
+
+<div class="btn-group">
+    <button nbButton status="basic" (click)="back.emit()">Back</button>
+    <button nbButton (click)="submitParent()">Submit</button>
+</div>
+
+<ng-template #noChildren>
+    <div class="no-result">
+        <span>No children selected</span>
+    </div>
+</ng-template>

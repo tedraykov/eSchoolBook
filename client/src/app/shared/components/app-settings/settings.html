@@ -1,0 +1,26 @@
+<nb-card>
+   <nb-card-header>App settings</nb-card-header>
+   <nb-card-body>
+      <nb-tabset>
+         <nb-tab tabTitle="Theme">
+            <form class="theme-select">
+               <label for="theme-select">Select Theme:</label>
+               <nb-select id="theme-select" placeholder="Select Showcase"
+                          [(selected)]="selectedTheme">
+                  <nb-option value="default">Default</nb-option>
+                  <nb-option value="dark">Dark</nb-option>
+               </nb-select>
+            </form>
+         </nb-tab>
+      </nb-tabset>
+   </nb-card-body>
+   <nb-card-footer>
+      <div class="btn-group">
+         <button nbButton status="info" size="small" (click)="save()">Apply
+         </button>
+         <button nbButton size="small" (click)="saveAndClose()">Okay</button>
+         <button nbButton status="basic" size="small" (click)="close()">Cancel
+         </button>
+      </div>
+   </nb-card-footer>
+</nb-card>

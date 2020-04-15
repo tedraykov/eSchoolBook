@@ -1,0 +1,57 @@
+:host {
+  display: flex;
+  height: 100%;
+
+  nb-card {
+    width: 100%;
+  }
+}
+
+form {
+
+  display: flex;
+  flex-direction: column;
+  max-width: 24rem;
+
+  label {
+    display: flex;
+    width: 100%;
+    margin: 1rem 0;
+    align-items: center;
+
+    .label-text {
+      width: 12rem;
+      text-align: right;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+:host ::ng-deep .step-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.role-specific-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  & > *:nth-last-child(1) {
+    flex: 1;
+  }
+}
+
+.role-form {
+  display: flex;
+  flex-direction: column;
+}
+
+:host ::ng-deep .btn-group {
+  margin-top: auto;
+}
+
+button {
+  margin-right: 1rem;
+}

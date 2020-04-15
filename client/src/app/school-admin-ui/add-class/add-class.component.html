@@ -1,0 +1,80 @@
+<!--Add class-->
+<nb-card>
+    <nb-card-header>
+        <span>Добави нов клас</span>
+    </nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="classForm">
+            <label>
+                <span class="label-text">Випуск:</span>
+                <input type="text"
+                       nbInput
+                       class="school-name"
+                       formControlName="startYear"
+                       [status]="getInputStatus('startYear')">
+            </label>
+            <label>
+                <span class="label-text">Клас(цифра): </span>
+                <input type="number"
+                       nbInput
+                       class="school-number"
+                       formControlName="grade"
+                       [status]="getInputStatus('grade')">
+            </label>
+            <label>
+                <span class="label-text">Паралелка:</span>
+                <input type="text"
+                       nbInput
+                       formControlName="gradeLetter"
+                       [status]="getInputStatus('gradeLetter')">
+            </label>
+            <div class="btn-group">
+                <button nbButton
+                        (click)="addClass()"
+                        [disabled]="classForm.invalid">Добави
+                </button>
+                <button nbButton status="basic">Отказ</button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>
+
+<!--Add class teacher-->
+
+<nb-card>
+    <nb-card-header>
+        <span>Добави класен ръководител</span>
+    </nb-card-header>
+    <nb-card-body>
+        <nb-alert *ngIf="unassignedClasses?.length <= 0"
+                outline="danger">В момента няма класове за разпределяне.</nb-alert>
+        <form [formGroup]="classTeacherForm">
+            <label for="class-id">
+                <span class="label-text">Клас:</span>
+                <nb-select [disabled]="unassignedClasses?.length <= 0"
+                           formControlName="classId"
+                           id="class-id"
+                           (selectedChange)="selectedClass = $event">
+                    <nb-option *ngFor="let c of unassignedClasses"
+                               [value]="c">{{getFullGrade(c)}} клас
+                    </nb-option>
+                </nb-select>
+            </label>
+            <label for="teacher-id">
+                <span class="label-text">Класен ръководител:</span>
+                <nb-select [disabled]="unassignedClasses?.length <= 0 || unassignedTeachers?.length <= 0"
+                           formControlName="teacherId"
+                           id="teacher-id"
+                           (selectedChange)="selectedTeacher = $event">
+                    <nb-option *ngFor="let t of unassignedTeachers"
+                               [value]="t">{{getTeacherFullName(t)}} клас
+                    </nb-option>
+                </nb-select>
+            </label>
+            <div class="btn-group">
+                <button nbButton [disabled]="!classTeacherForm.valid" (click)="addClassTeacher()">Добави</button>
+                <button nbButton status="basic">Отказ</button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>

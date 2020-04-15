@@ -1,0 +1,12 @@
+<app-average-score [score]="avgScore | async">
+</app-average-score>
+<app-d3-advanced-pie [result]="absences | async">
+</app-d3-advanced-pie>
+<app-category-average-score id="one"
+        [category]="'Teacher'"
+        [data]="teachersAvg | async">
+</app-category-average-score>
+<app-category-average-score id="two"
+        [category]="'Subjects'"
+        [data]="subjectsAvg | async">
+</app-category-average-score>

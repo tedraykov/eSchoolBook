@@ -1,0 +1,22 @@
+:host {
+   min-width: 24rem;
+   display: block;
+}
+
+form.theme-select {
+   display: flex;
+   flex-direction: column;
+
+   label {
+      padding: 0.5rem 0 1rem;
+   }
+}
+
+.btn-group {
+   display: inline-block;
+   float: right;
+
+   button {
+      margin-left: 0.5rem;
+   }
+}

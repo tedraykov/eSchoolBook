@@ -1,0 +1,21 @@
+<form [formGroup]="studentForm">
+    <label for="student-class">
+        <span class="label-text">Class:</span>
+        <nb-select id="student-class" formControlName="class">>
+            <nb-option
+                    *ngFor="let schoolClass of classes | async"
+                    [value]="schoolClass">
+                {{schoolClass.grade + ' ' + schoolClass.gradeLetter}}
+            </nb-option>
+        </nb-select>
+    </label>
+    <label for="start-year">
+        <span class="label-text">Start year:</span>
+        <input type="number" nbInput id="start-year"  formControlName="startYear">
+    </label>
+</form>
+
+<div class="btn-group">
+    <button nbButton status="basic" (click)="back.emit()">Back</button>
+    <button nbButton (click)="submitStudent()" [disabled]="studentForm.invalid">Submit</button>
+</div>

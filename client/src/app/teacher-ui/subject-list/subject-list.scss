@@ -1,0 +1,21 @@
+@import "src/themes";
+
+table {
+   width: 100%;
+
+   .mat-row {
+      transition: background-color 0.3s;
+   }
+
+   .mat-row:hover {
+      background-color: nb-theme(color-basic-hover);
+   }
+
+   .btn-group {
+      display: flex;
+
+      button {
+         margin-right: 1rem;
+      }
+   }
+}

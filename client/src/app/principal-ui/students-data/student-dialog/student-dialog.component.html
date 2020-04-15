@@ -1,0 +1,30 @@
+﻿<nb-card>
+    <nb-card-header>{{student.fullName}} | {{student.grade}} клас</nb-card-header>
+    <nb-card-body>
+        <nb-tabset>
+            <nb-tab tabTitle="Personal Data">
+                <h2>Address:</h2> 
+                <span>{{student.address}}</span>
+                <h2>Start year:</h2> 
+                <span>{{student.startYear}}</span>
+                <h2>Contact:</h2>
+                <span>{{student.email}}</span>
+            </nb-tab>
+            <nb-tab tabTitle="Statistics">
+                <h2>Average score:</h2>
+                <span>{{student.avgScore.toPrecision(3)}}</span>
+                <h2>Absences:</h2>
+                <span>Excused Full Absences: {{student.absences["Excused Full Absences"]}}</span><br>
+                <span>Unexcused Full Absences: {{student.absences["Unexcused Full Absences"]}}</span><br>
+                <span>Unexcused Half Absences: {{student.absences["Unexcused Half Absences"]}}</span>
+            </nb-tab>
+            <nb-tab tabTitle="Parent">      
+                <h2>Parent:</h2> 
+                <span>{{student.parentName}}</span>
+            </nb-tab>
+        </nb-tabset>
+    </nb-card-body>
+    <nb-card-footer>
+        <button nbButton status="basic" size="small" (click)="close()">Cancel</button>
+    </nb-card-footer>
+</nb-card>

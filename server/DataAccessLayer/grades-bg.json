@@ -1,0 +1,22 @@
+[
+   {
+      "ValueNum": 2,
+      "ValueWord": "Слаб"
+   },
+   {
+      "ValueNum": 3,
+      "ValueWord": "Среден"
+   },
+   {
+      "ValueNum": 4,
+      "ValueWord": "Добър"
+   },
+   {
+      "ValueNum": 5,
+      "ValueWord": "Много добър"
+   },
+   {
+      "ValueNum": 6,
+      "ValueWord": "Отличен"
+   }
+]

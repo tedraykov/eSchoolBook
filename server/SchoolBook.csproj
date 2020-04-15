@@ -1,0 +1,77 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="9.0.0" />
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.AzureAppServices.HostingStartup" Version="3.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.AzureAppServicesIntegration" Version="3.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="3.0.0" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="DataAccessLayer\Migrations" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="DataAccessLayer\Migrations\20191128084936_ConcreteClassesOnly.cs" />
+      <Compile Remove="DataAccessLayer\Migrations\20191128084936_ConcreteClassesOnly.Designer.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\1-es2015.5690cfe9ed1e287aedef.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\1-es5.11b18089b36ca96495fe.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\10-es2015.2beff0bb8947324e4c8e.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\10-es5.acf1f262e1435bf851f5.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\11-es2015.56d3387fb3345e7aed9d.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\11-es5.474f4d4100b25b052548.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\12-es2015.508a3facdf191ebeef02.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\12-es5.3d538358c94587ac001c.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\13-es2015.d5c2e10ef5cf888a2bf4.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\13-es5.fd64992520611aec6a34.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\14-es2015.f44ea99a7a1efc411c21.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\14-es5.f386f24e0b4f0594d345.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\15-es2015.df05ee442bc42db1c9b0.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\15-es5.b8bd50bd335b7489c5fc.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\16-es2015.038fa9f951723a94601f.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\16-es5.c1220f8fade5b5eeb2b9.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\17-es2015.ee7c1e9acad3389e2ad6.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\17-es5.cca04e72ed3e51293aa2.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\18-es2015.89cc7231377ae2b29e62.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\18-es5.167964620d2491e16dcc.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\19-es2015.df2774518ed141376adf.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\19-es5.cdf5ea52e38738167e52.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\20-es2015.49a26abf13f8ccbca32a.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\3-es2015.4a40c88dd375a2728059.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\3-es5.1530bca7fa741c8030d5.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\3rdpartylicenses.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\6-es5.5a5b01a61d3ea35890ce.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\7-es2015.e3c97cb6ff2ef6386507.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\7-es5.a6ba92415d0b7f0a1fcc.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\8-es2015.828a55502b378e90b7c9.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\8-es5.cccbefcdebd439721ced.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\9-es2015.57b82a5dec2f9c41e170.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\9-es5.852da2be4b887fce361a.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\common-es2015.a564c2899402c07cdbdd.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\common-es5.e95a344bc0cdbfeeab28.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\favicon.ico" />
+      <_ContentIncludedByDefault Remove="wwwroot\index.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\main-es2015.eeba673577209ff139d6.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\main-es5.52f9991408fb93a4eb1d.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\polyfills-es2015.b0031b4c0358eeeec4a6.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\polyfills-es5.8ff1424f97eabe66c014.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\runtime-es2015.a619f17399b475b0f485.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\runtime-es5.21c3e4dd2b28bb9f6ee7.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\styles.86629d140b29ae3c23d7.css" />
+    </ItemGroup>
+
+</Project>

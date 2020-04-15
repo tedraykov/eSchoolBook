@@ -1,0 +1,14 @@
+<nb-layout>
+   <nb-layout-header fixed>
+      <app-header (sidebarStateChanged)="onSidebarStateChanged()">
+      </app-header>
+   </nb-layout-header>
+   <nb-sidebar [state]="sidebarState">
+      <app-sidebar>
+      </app-sidebar>
+   </nb-sidebar>
+   <nb-layout-column>
+      <app-content>
+      </app-content>
+   </nb-layout-column>
+</nb-layout>
